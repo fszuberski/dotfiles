@@ -1,0 +1,59 @@
+- name: Install required packages
+  hosts: localhost
+
+  tasks:
+    - name: Install required packages 
+      community.general.pacman:
+        name:
+            #- avahi
+            #- tig
+          - adobe-source-code-pro-fonts
+          - alsa-utils
+          - base-devel
+          - blueman
+          - bluez
+          - bluez-utils
+          - discord
+          - docker
+          - docker-compose
+          - dunst
+          - feh
+          - firefox-developer-edition
+          - flameshot
+          - fzf
+          - git
+          - git
+          - git-delta
+          - go
+          - gopls
+          - httpie
+          - i3-gaps
+          - kitty
+          - mesa
+          - neofetch
+          - noto-fonts
+          - ntfs-3g
+          - otf-font-awesome
+          - pass
+          - pulseaudio
+          - pulseaudio-alsa
+          - ranger
+          - ripgrep-all
+          - rofi
+          - sddm
+          - tmux
+          - ttf-jetbrains-mono
+          - ttf-roboto
+          - ttf-roboto-mono
+          - xclip
+          - xorg-server
+          - xorg-xmodmap
+          - xorg-xrandr
+          - zathura
+          - zathura-cb
+          - zathura-djvu
+          - zathura-pdf-mupdf
+          - zathura-ps
+          - zsh
+      become: yes
+      become_user: root

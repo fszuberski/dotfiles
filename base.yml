@@ -1,0 +1,15 @@
+- name: Base tasks needed by other playbooks
+  hosts: localhost
+
+  tasks:
+    - name: Create '$HOME/code' directory
+      file:
+        path: /home/fszuberski/code
+        state: directory
+
+    - name: Create './library' directory
+      file:
+        path: ./library
+        state: directory
+
+- import_playbook: yay.yml

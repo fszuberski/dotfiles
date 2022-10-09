@@ -1,0 +1,6 @@
+- hosts: localhost
+
+# - import_playbook: base.yml
+# - import_playbook: yay.yml
+- import_playbook: packages.yml
+- import_playbook: packages-aur.yml

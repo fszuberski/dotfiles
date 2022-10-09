@@ -1,0 +1,39 @@
+- name: Install yay
+  hosts: localhost
+
+  tasks:
+    - name: Clone yay repository
+      git:
+        repo: https://github.com/Jguer/yay.git
+        dest: /home/fszuberski/code/yay
+      when: ansible_distribution == "Archlinux"
+
+    - name: Determine if yay is already installed
+      register: validate
+      shell: yay --version
+      when: ansible_distribution == "Archlinux"
+
+    - name: Install yay
+      shell: cd /home/fszuberski/code/yay && makepkg -si --noconfirm && yay --version
+      register: result
+      changed_when: 
+        - '"not found" in validate.stdout'
+        - '"not found" not in result.stdout'
+      when:
+        - '"not found" in validate.stdout'
+        - 'ansible_distribution == "Archlinux"'
+
+    - name: Clone ansible-yay
+      git:
+        repo: https://github.com/mnussbaum/ansible-yay.git
+        dest: /home/fszuberski/code/ansible-yay
+      when: ansible_distribution == "Archlinux"
+    
+    - name: Setup ansible-yay
+      file:
+        src: /home/fszuberski/code/ansible-yay/yay
+        dest: ./library/yay
+        state: link
+      become: yes
+      become_user: root
+      when: ansible_distribution == "Archlinux"
