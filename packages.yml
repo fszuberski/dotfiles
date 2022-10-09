@@ -41,6 +41,7 @@
           - ripgrep-all
           - rofi
           - sddm
+          - stow
           - tmux
           - ttf-jetbrains-mono
           - ttf-roboto

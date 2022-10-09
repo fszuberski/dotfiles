@@ -1,0 +1,13 @@
+- name: Link configuration files
+  hosts: localhost
+
+  tasks:
+    - name: Unstow $HOME
+      shell: "cd configuration/ && stow -D home/ --target {{ ansible_env.HOME }}"
+      changed_when: false
+
+    - name: Stow $HOME
+      shell: "cd configuration/ && stow home/ --target {{ ansible_env.HOME }} --verbose=2"
+      register: result
+      changed_when: 
+        - '"LINK: " in result.stderr'

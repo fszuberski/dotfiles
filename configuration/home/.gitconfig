@@ -1,0 +1,31 @@
+[user]
+	email = filip.szuberski@gmail.com
+	name = Filip Szuberski
+
+[alias]
+    tree = log --graph --decorate
+    t = log --graph --decorate
+    st = log --graph --decorate --oneline --all
+    diffh = diff HEAD
+    
+[init]
+	defaultBranch = main
+
+[core]
+	editor = nvim
+    pager = delta
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    navigate = true
+    line-numbers = true
+    side-by-side = true
+
+[merge]
+    conflictstyle = diff3
+
+[diff]
+    colorMoved = default
+

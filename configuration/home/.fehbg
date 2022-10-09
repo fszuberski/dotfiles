@@ -1,0 +1,2 @@
+#!/bin/sh
+feh --no-fehbg --bg-fill --no-xinerama '/home/fszuberski/pictures/55_noise_reduced.png' 
