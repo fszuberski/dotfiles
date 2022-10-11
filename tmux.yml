@@ -1,4 +1,5 @@
-- name: Install tmux plugin manager - https://github.com/tmux-plugins/tpm
+# https://github.com/tmux-plugins/tpm
+- name: Install tmux plugin manager
   hosts: localhost
 
   tasks:

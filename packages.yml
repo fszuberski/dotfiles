@@ -13,6 +13,7 @@
           - blueman
           - bluez
           - bluez-utils
+          - curl
           - discord
           - docker
           - docker-compose
@@ -46,6 +47,7 @@
           - ttf-jetbrains-mono
           - ttf-roboto
           - ttf-roboto-mono
+          - wget
           - xclip
           - xorg-server
           - xorg-xmodmap

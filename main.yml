@@ -4,5 +4,6 @@
 # - import_playbook: yay.yml
 - import_playbook: packages.yml
 - import_playbook: packages-aur.yml
+- import_playbook: zsh.yml
 - import_playbook: tmux.yml
 - import_playbook: stow.yml

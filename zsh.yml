@@ -1,0 +1,41 @@
+- name: Install Oh-My-Zsh 
+  hosts: localhost
+
+  tasks:
+    - name: Set login shell of user {{ ansible_env.USER }} to `/bin/zsh` with `usermod`
+      ansible.builtin.command: usermod --shell /bin/zsh {{ ansible_env.USER }}
+      become: true
+      changed_when: false
+
+    - name: Download installation script
+      get_url:
+        url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh 
+        dest: /tmp/install.sh
+
+    - name: Run installation script
+      shell: "sh /tmp/install.sh"
+      register: result
+      failed_when:
+        - '"folder already exists" not in result.stdout'
+        - '"is now installed" not in result.stdout'
+      changed_when:
+        - '"is now installed" in result.stdout'
+    
+    # git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+    - name: Install powerlevel-10k
+      git:
+        repo: https://github.com/romkatv/powerlevel10k.git
+        dest: /home/fszuberski/.oh-my-zsh/custom/themes/powerlevel10k
+        depth: 1
+
+    # git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+    - name: Install zsh-autosuggestions
+      git:
+        repo: https://github.com/zsh-users/zsh-autosuggestions
+        dest: /home/fszuberski/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+
+    - name: Remove default .zshrc
+      file:
+        path: /home/fszuberski/.zshrc
+        state: absent
+      changed_when: false
