@@ -1,0 +1,8 @@
+- name: Install tmux plugin manager - https://github.com/tmux-plugins/tpm
+  hosts: localhost
+
+  tasks:
+    - name: Clone tpm repository
+      git:
+        repo: https://github.com/tmux-plugins/tpm 
+        dest: /home/fszuberski/.config/tmux/plugins/tpm
