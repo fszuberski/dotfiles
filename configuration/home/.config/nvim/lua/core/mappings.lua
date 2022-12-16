@@ -128,14 +128,11 @@ nnoremap("<A-q>", function() require("harpoon.ui").nav_file(8) end)
 -- neotest
 nnoremap("<leader>nt", function() neotest.run.run() end)
 nnoremap("<leader>nr", function() neotest.run.run() end)
-nnoremap("<leader>nT",
-    function() neotest.run.run({ extra_args = { "-covermode=atomic", "-coverprofile=coverage.out" } }) end)
+nnoremap("<leader>nT", function() neotest.run.run({ extra_args = { "-covermode=atomic", "-coverprofile=coverage.out" } }) end)
 nnoremap("<leader>nf", function() neotest.run.run(vim.fn.expand("%")) end)
-nnoremap("<leader>nF",
-    function() neotest.run.run({ vim.fn.expand("%"), extra_args = { "-covermode=atomic", "-coverprofile=coverage.out" } }) end)
+nnoremap("<leader>nF", function() neotest.run.run({ vim.fn.expand("%"), extra_args = { "-covermode=atomic", "-coverprofile=coverage.out" } }) end)
 nnoremap("<leader>nl", function() neotest.run.run_last() end)
-nnoremap("<leader>nL",
-    function() neotest.run.run_last({ extra_args = { "-covermode=atomic", "-coverprofile=coverage.out" } }) end)
+nnoremap("<leader>nL", function() neotest.run.run_last({ extra_args = { "-covermode=atomic", "-coverprofile=coverage.out" } }) end)
 nnoremap("<leader>nd", function() neotest.run.run({ strategy = "dap" }) end)
 nnoremap("<leader>ndl", function() neotest.run.run_last({ strategy = "dap" }) end)
 nnoremap("<leader>ns", function() neotest.run.stop() end)

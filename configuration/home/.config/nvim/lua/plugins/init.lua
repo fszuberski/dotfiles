@@ -86,19 +86,11 @@ return require('packer').startup(function(use)
         "arkav/lualine-lsp-progress"
     }
 
-    --[[ use {
-        'akinsho/bufferline.nvim',
-        tag = "v2.*",
-        requires = 'kyazdani42/nvim-web-devicons',
-        config = function()
-            require "plugins.configs.bufferline"
-        end,
-    } ]]
-
     use {
         'lewis6991/gitsigns.nvim',
         config = function()
             require "plugins.configs.gitsigns"
+            require("scrollbar.handlers.gitsigns").setup()
         end,
     }
 
@@ -283,14 +275,6 @@ return require('packer').startup(function(use)
         end,
     }
 
-    --[[ use {
-        "Pocco81/auto-save.nvim",
-        config = function()
-            require "plugins.configs.autosave"
-        end,
-    } ]]
-
-
     -- dap
     use {
         'mfussenegger/nvim-dap'
@@ -323,19 +307,5 @@ return require('packer').startup(function(use)
             require "plugins.configs.dapgo"
         end,
     }
-
-    -- use({
-    --     "folke/noice.nvim",
-    --     event = "VimEnter",
-    --     config = function()
-    --         require "plugins.configs.noice"
-    --     end,
-    --     requires = {
-    --         -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
-    --         "MunifTanjim/nui.nvim",
-    --         "rcarriga/nvim-notify",
-    --         "hrsh7th/nvim-cmp",
-    --     }
-    -- })
 
 end)

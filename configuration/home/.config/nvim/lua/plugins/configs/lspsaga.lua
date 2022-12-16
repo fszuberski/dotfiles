@@ -13,8 +13,8 @@ local options = {
     saga_winblend = 0,
     -- when cursor in saga window you config these to move
     move_in_saga = {
-        prev = '<Up>',
-        next = '<Down>'
+        prev = '<A-k>',
+        next = '<A-j>'
     },
     -- Error, Warn, Info, Hint
     -- use emoji like
@@ -27,12 +27,10 @@ local options = {
     -- entry is a table type has these filed
     -- { bufnr, code, col, end_col, end_lnum, lnum, message, severity, source }
     diagnostic_header = { " ", " ", " ", "ﴞ " },
-    -- show diagnostic source
-    show_diagnostic_source = true,
-    -- add bracket or something with diagnostic source, just have 2 elements
-    diagnostic_source_bracket = {},
+    -- preview lines above of lsp_finder
+    preview_lines_above = 0,
     -- preview lines of lsp_finder and definition preview
-    max_preview_lines = 1000,
+    max_preview_lines = 10,
     -- use emoji lightbulb in default
     code_action_icon = "💡",
     -- if true can press number to execute the codeaction in codeaction window
@@ -40,8 +38,10 @@ local options = {
     -- same as nvim-lightbulb but async
     code_action_lightbulb = {
         enable = true,
-        sign = true,
         enable_in_insert = true,
+        -- turn on if code-action is slow
+        cache_code_action = true,
+        sign = true,
         sign_priority = 20,
         virtual_text = true,
     },
@@ -51,34 +51,51 @@ local options = {
         ref = '諭 ',
         link = '  ',
     },
+    -- finder do lsp request timeout
+    -- if your project is big enough or your server very slow
+    -- you may need to increase this value
+    finder_request_timeout = 1500,
     finder_action_keys = {
-        open = "o",
+        open = { "o", "<CR>" },
         vsplit = "s",
         split = "i",
         tabe = "t",
-        quit = "<ESC>",
+        quit = { "q", "<ESC>" }, -- quit can be a table
         scroll_down = "<C-d>",
-        scroll_up = "<C-u>", -- quit can be a table
+        scroll_up = "<C-u>",
     },
     code_action_keys = {
         quit = "<ESC>",
         exec = "<CR>",
     },
-    rename_action_quit = "<ESC>",
-    definition_preview_icon = "  ",
+    definition_action_keys = {
+        edit = '<C-c>o',
+        vsplit = '<C-c>v',
+        split = '<C-c>i',
+        tabe = '<C-c>t',
+        quit = 'q',
+    },
+    rename_action_quit = "<C-c>",
+    rename_in_select = true,
     -- show symbols in winbar must nightly
     symbol_in_winbar = {
         in_custom = false,
         enable = false,
         separator = ' ',
         show_file = true,
+        -- define how to customize filename, eg: %:., %
+        -- if not set, use default value `%:t`
+        -- more information see `vim.fn.expand` or `expand`
+        -- ## only valid after set `show_file = true`
+        file_formatter = "",
         click_support = false,
     },
     -- show outline
     show_outline = {
         win_position = 'right',
-        -- set the special filetype in there which in left like nvimtree neotree defx
-        left_with = '',
+        --set special filetype win that outline window split.like NvimTree neotree
+        -- defx, db_ui
+        win_with = '',
         win_width = 30,
         auto_enter = true,
         auto_preview = true,
@@ -87,6 +104,9 @@ local options = {
         -- auto refresh when change buffer
         auto_refresh = true,
     },
+    -- custom lsp kind
+    -- usage { Field = 'color code'} or {Field = {your icon, your color code}}
+    custom_kind = {},
     -- if you don't use nvim-lspconfig you must pass your server name and
     -- the related filetypes into this table
     -- like server_filetype_map = { metals = { "sbt", "scala" } }
@@ -94,4 +114,4 @@ local options = {
 }
 
 -- use custom config
--- saga.init_lsp_saga(options)
+saga.init_lsp_saga(options)

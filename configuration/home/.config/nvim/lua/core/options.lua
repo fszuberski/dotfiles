@@ -1,6 +1,10 @@
 local opt = vim.opt
 local g = vim.g
 
+-- disable netrw 
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
 opt.showmode = true
 opt.laststatus = 3 -- global statusline
 
@@ -41,5 +45,6 @@ opt.scrolloff = 16
 
 -- interval for writing swap file to disk, also used by gitsigns
 opt.updatetime = 50
+
 
 g.mapleader = " "

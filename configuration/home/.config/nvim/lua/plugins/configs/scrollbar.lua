@@ -21,44 +21,65 @@ local options = {
         Search = {
             text = { "-", "=" },
             priority = 0,
-            color = nil,
+            color = Colors.orange,
             cterm = nil,
             highlight = "Search",
         },
         Error = {
             text = { "-", "=" },
             priority = 1,
-            color = nil,
+            color = Colors.error,
             cterm = nil,
             highlight = "DiagnosticVirtualTextError",
         },
         Warn = {
             text = { "-", "=" },
             priority = 2,
-            color = nil,
+            color = Colors.warn,
             cterm = nil,
             highlight = "DiagnosticVirtualTextWarn",
         },
         Info = {
             text = { "-", "=" },
             priority = 3,
-            color = nil,
+            color = Colors.info,
             cterm = nil,
             highlight = "DiagnosticVirtualTextInfo",
         },
         Hint = {
             text = { "-", "=" },
             priority = 4,
-            color = nil,
+            color = Colors.hint,
             cterm = nil,
             highlight = "DiagnosticVirtualTextHint",
         },
         Misc = {
             text = { "-", "=" },
             priority = 5,
-            color = nil,
+            color = Colors.purple,
             cterm = nil,
             highlight = "Normal",
+        },
+        GitAdd = {
+            text = "▎",
+            priority = 7,
+            color = nil,
+            cterm = nil,
+            highlight = "GitSignsAdd",
+        },
+        GitChange = {
+            text = "▎",
+            priority = 7,
+            color = nil,
+            cterm = nil,
+            highlight = "GitSignsChange",
+        },
+        GitDelete = {
+            text = "▁",
+            priority = 7,
+            color = nil,
+            cterm = nil,
+            highlight = "GitSignsDelete",
         },
     },
     excluded_buftypes = {
@@ -67,6 +88,8 @@ local options = {
     excluded_filetypes = {
         "prompt",
         "TelescopePrompt",
+        "noice",
+        "harpoon",
     },
     autocmd = {
         render = {
@@ -87,7 +110,9 @@ local options = {
         },
     },
     handlers = {
+        cursor = true,
         diagnostic = true,
+        gitsigns = true,
         search = false, -- Requires hlslens to be loaded, will run require("scrollbar.handlers.search").setup() for you
     },
 }
