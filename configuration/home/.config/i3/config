@@ -205,8 +205,6 @@ client.placeholder      #000000 #0c0c0c #ffffff #000000
 client.background       #2B2C2B
 
 # monitor setup
-# 3 monitor setup
-# exec --no-startup-id xrandr --output DP-1 --primary --mode 2560x1440 --pos 2560x240 --rotate normal --output DP-2 --mode 2560x1440 --pos 0x240 --rotate normal --output HDMI-1 --off --output HDMI-2 --mode 1920x1080 --pos 5120x115 --rotate left
 # 2 monitor setup
 exec --no-startup-id xrandr --output DP-1 --primary --mode 2560x1440 --pos 2560x240 --rotate normal --output DP-2 --mode 2560x1440 --pos 0x240 --rotate normal --output HDMI-1 --off --output HDMI-2 --off
 
@@ -227,6 +225,7 @@ gaps outer -4
 default_border pixel 0
 default_floating_border none
 for_window [class="Google-chrome" title="Google Chrome"] border none
+for_window [class="discord"] border none
 
 
 # start polybar, config: .config/polybar/config
