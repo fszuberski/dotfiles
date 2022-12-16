@@ -7,9 +7,9 @@
         name:
           - google-chrome
           - gotop
+          - nerd-fonts-complete
           - nvim-packer-git	
           - nvm
-          - otf-nerd-fonts-fira-code
           - picom-ibhagwan-git
           - spotify
           - ttf-meslo-nerd-font-powerlevel10k
