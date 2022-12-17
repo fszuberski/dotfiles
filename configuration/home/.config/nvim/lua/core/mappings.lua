@@ -9,7 +9,6 @@ local diagnostic = vim.diagnostic
 
 local neotest = require "neotest"
 local coverage = require "coverage"
-local neogit = require "neogit"
 local telescope = require "telescope"
 local dap = require "dap"
 local dapui = require "dapui"
@@ -106,15 +105,9 @@ nnoremap("<leader>sh", "<cmd> Lspsaga signature_help <CR>")
 nnoremap("<leader>rn", "<cmd> Lspsaga rename <CR>")
 
 -- diffview
-nnoremap("<leader>dvo", "<cmd> DiffviewOpen <CR>") -- deprecated
-nnoremap("<leader>do", "<cmd> DiffviewOpen <CR>")
-nnoremap("<leader>dvc", "<cmd> DiffviewClose <CR>") -- deprecated
-nnoremap("<leader>dc", "<cmd> DiffviewClose <CR>")
-nnoremap("<leader>dvh", "<cmd> DiffviewFileHistory % <CR>") -- deprecated
-nnoremap("<leader>dh", "<cmd> DiffviewFileHistory % <CR>")
-
--- neogit
-nnoremap("<leader>ng", function() neogit.open() end)
+nnoremap("<leader>dvo", "<cmd> DiffviewOpen <CR>")
+nnoremap("<leader>dvc", "<cmd> DiffviewClose <CR>")
+nnoremap("<leader>dvh", "<cmd> DiffviewFileHistory % <CR>")
 
 -- harpoon
 nnoremap("<leader>ha", function() require("harpoon.mark").add_file() end)
