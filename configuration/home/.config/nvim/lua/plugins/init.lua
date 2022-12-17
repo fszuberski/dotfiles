@@ -83,10 +83,6 @@ return require('packer').startup(function(use)
     }
 
     use {
-        "arkav/lualine-lsp-progress"
-    }
-
-    use {
         'lewis6991/gitsigns.nvim',
         config = function()
             require "plugins.configs.gitsigns"
@@ -194,13 +190,12 @@ return require('packer').startup(function(use)
         end,
     }
 
-    -- cool lsp status fidget, but using lualine-lsp-progress instead
-    --[[ use {
+    use {
         "j-hui/fidget.nvim",
         config = function()
             require "plugins.configs.fidget"
         end,
-    } ]]
+    }
 
     use {
         "petertriho/nvim-scrollbar",
