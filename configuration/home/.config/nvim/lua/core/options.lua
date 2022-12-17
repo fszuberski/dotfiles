@@ -46,5 +46,7 @@ opt.scrolloff = 16
 -- interval for writing swap file to disk, also used by gitsigns
 opt.updatetime = 50
 
+-- completeopt for abetter completion experience
+opt.completeopt = 'menuone,noselect'
 
 g.mapleader = " "
