@@ -51,7 +51,7 @@ return require('packer').startup(function(use)
     -- telescope
     use {
         'nvim-telescope/telescope.nvim',
-        -- tag = '0.1.0', -- https://github.com/nvim-telescope/telescope.nvim/pull/2150
+        tag = '0.1.x', -- https://github.com/nvim-telescope/telescope.nvim/pull/2150
         requires = {
             { 'nvim-lua/plenary.nvim' },
             { "nvim-telescope/telescope-live-grep-args.nvim" },
@@ -113,33 +113,6 @@ return require('packer').startup(function(use)
             require "plugins.configs.neogit"
         end,
     }
-
-    use {
-        'rhysd/conflict-marker.vim'
-    }
-
-    --[[ use {
-        'akinsho/git-conflict.nvim',
-        tag = "*",
-        config = function()
-            require('git-conflict').setup({
-                default_mappings = true, -- disable buffer local mapping created by this plugin
-                disable_diagnostics = false, -- This will disable the diagnostics in a buffer whilst it is conflicted
-                highlights = { -- They must have background color, otherwise the default color will be used
-                    incoming = 'DiffIncoming',
-                    current = 'DiffCurrent',
-                    ancestor = 'DiffAncestor',
-                }
-            })
-        end
-    } ]]
-
-    --[[ use {
-        'rmagatti/auto-session',
-        config = function()
-            require "plugins.configs.autosession"
-        end,
-    } ]]
 
     -- cmp
     use {

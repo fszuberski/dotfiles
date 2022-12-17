@@ -106,9 +106,12 @@ nnoremap("<leader>sh", "<cmd> Lspsaga signature_help <CR>")
 nnoremap("<leader>rn", "<cmd> Lspsaga rename <CR>")
 
 -- diffview
-nnoremap("<leader>dvo", "<cmd> DiffviewOpen <CR>")
-nnoremap("<leader>dvc", "<cmd> DiffviewClose <CR>")
-nnoremap("<leader>dvh", "<cmd> DiffviewFileHistory % <CR>")
+nnoremap("<leader>dvo", "<cmd> DiffviewOpen <CR>") -- deprecated
+nnoremap("<leader>do", "<cmd> DiffviewOpen <CR>")
+nnoremap("<leader>dvc", "<cmd> DiffviewClose <CR>") -- deprecated
+nnoremap("<leader>dc", "<cmd> DiffviewClose <CR>")
+nnoremap("<leader>dvh", "<cmd> DiffviewFileHistory % <CR>") -- deprecated
+nnoremap("<leader>dh", "<cmd> DiffviewFileHistory % <CR>")
 
 -- neogit
 nnoremap("<leader>ng", function() neogit.open() end)
@@ -150,11 +153,6 @@ nnoremap("<leader>kt", function() coverage.toggle() end)
 nnoremap("<leader>kc", function() coverage.hide() end)
 nnoremap("<leader>kl", function() coverage.load() end)
 nnoremap("<leader>ks", function() coverage.summary() end)
-
--- git-conflict
---[[ nnoremap("<leader>cn", "<cmd> GitConflictNextConflict <CR>")
-nnoremap("<leader>cp", "<cmd> GitConflictPrevConflict <CR>")
-nnoremap("<leader>cq", "<cmd> GitConflictListQf <CR>") ]]
 
 -- dap
 nnoremap("<F5>", function() require('dap').continue() end)
