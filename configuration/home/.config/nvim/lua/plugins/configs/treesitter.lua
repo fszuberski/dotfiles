@@ -5,11 +5,39 @@ if not present then
 end
 
 local options = {
-    ensure_installed = { "bash", "cmake", "css", "go", "gomod", "gowork", "graphql", "html", "javascript", "json",
-        "json5", "jsonc", "lua", "make", "nix", "python", "solidity", "tsx", "typescript", "vim", "yaml" },
+    ensure_installed = {
+        "bash",
+        "cmake",
+        "css",
+        "go",
+        "gomod",
+        "gowork",
+        "graphql",
+        "help",
+        "html",
+        "javascript",
+        "json",
+        "json5",
+        "jsonc",
+        "lua",
+        "make",
+        "nix",
+        "python",
+        "solidity",
+        "tsx",
+        "typescript",
+        "vim",
+        "yaml",
+    },
     ignore_install = { "php" },
     incremental_selection = {
-        enable = true
+        enable = true,
+        keymaps = {
+            init_selection = '<a-v>',
+            node_incremental = '<a-v>',
+            scope_incremental = '<a-c>',
+            node_decremental = '<a-backspace>',
+        },
     },
     indent = {
         enable = false, -- curretly experimental
