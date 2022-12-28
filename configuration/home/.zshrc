@@ -139,6 +139,6 @@ fd() {
 # pass scripts
 # pass-local - alternative password store, not to be pushed to any repository
 pass-local() {
-  PASSWORD_STORE_DIR=~/.password-store-local pass
+  PASSWORD_STORE_DIR=~/.password-store-local pass $@
 }
 
