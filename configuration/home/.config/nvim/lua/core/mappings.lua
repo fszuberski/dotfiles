@@ -26,6 +26,9 @@ inoremap("<A-k>", "<Up>")
 -- save all
 nnoremap("<leader>w", "<cmd> wa <CR>")
 
+-- close current buffer
+nnoremap("<leader>q", "<cmd> q <CR>")
+
 -- copy relative file name to unamed register
 nnoremap("<leader>fp", "<cmd> let @+=expand(\"%:p:.\") <CR>")
 

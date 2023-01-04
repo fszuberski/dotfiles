@@ -35,6 +35,14 @@ return require('packer').startup(function(use)
         end,
     }
 
+    -- go specific
+    use {
+        'crusj/hierarchy-tree-go.nvim',
+        config = function ()
+            require "plugins.configs.hierarchy-tree-go"
+        end
+    }
+
     -- treesitter
     use {
         'nvim-treesitter/nvim-treesitter',
