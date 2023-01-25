@@ -13,6 +13,7 @@
           - blueman
           - bluez
           - bluez-utils
+          - calibre
           - curl
           - discord
           - docker
@@ -28,7 +29,7 @@
           - go
           - gopls
           - httpie
-          - i3-gaps
+          - i3-wm
           - kitty
           - mesa
           - neofetch

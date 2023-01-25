@@ -127,6 +127,10 @@ alias vim="nvim"
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+# default editor
+export VISUAL=vim
+export EDITOR="$VISUAL"
+
 # fzf scripts
 # fd - cd to selected directory
 fd() {
