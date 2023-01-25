@@ -52,18 +52,16 @@ nnoremap("<leader>wj", "<C-w>j")
 nnoremap("<leader>wk", "<C-w>k")
 nnoremap("<leader>wc", "<C-w>c")
 
--- bufferline
-nnoremap("<A-TAB>", "<cmd> BufferLineCycleNext <CR>")
-nnoremap("<S-TAB>", "<cmd> BufferLineCyclePrev <CR>")
-nnoremap("<leader>bn", "<cmd> BufferLineMoveNext <CR>")
-nnoremap("<leader>bp", "<cmd> BufferLineMovePrev <CR>")
-nnoremap("<leader>wq", "<cmd> bdelete <CR>")
-nnoremap("<leader>wq", "<cmd> bp|bd # <CR>")
+-- tab manipulation
+nnoremap("<leader>tc", "<cmd> tabc <CR>")
+nnoremap("<leader>tn", "<cmd> tabn <CR>")
+nnoremap("<leader>tp", "<cmd> tabp <CR>")
+nnoremap("<leader>to", "<cmd> tabnew <CR>")
 
 -- nvim-tree
 nnoremap("<leader>tt", "<cmd> NvimTreeToggle <CR>")
 nnoremap("<leader>tf", "<cmd> NvimTreeFocus <CR>")
-nnoremap("<leader>to", "<cmd> NvimTreeFindFile <CR>")
+nnoremap("<leader>ts", "<cmd> NvimTreeFindFile <CR>")
 nnoremap("<leader>tr", "<cmd> NvimTreeRefresh <CR>")
 
 -- lsp
@@ -105,7 +103,15 @@ nnoremap("K", "<cmd> Lspsaga hover_doc <CR>")
 nnoremap("gy", "<cmd> Lspsaga lsp_finder <CR>")
 nnoremap("<leader>ca", "<cmd> Lspsaga code_action <CR>")
 nnoremap("<leader>sh", "<cmd> Lspsaga signature_help <CR>")
+-- Toggle Outline
+-- nnoremap("<leader>ol", "<cmd>Lspsaga outline<CR>")
+-- Rename 
 nnoremap("<leader>rn", "<cmd> Lspsaga rename <CR>")
+-- Rename word in whole project
+-- nnoremap("<leader>rN", "<cmd> Lspsaga rename ++project <CR>")
+-- Callhierarchy
+-- nnoremap("<Leader>fi", "<cmd> Lspsaga incoming_calls<CR>")
+-- nnoremap("<Leader>fo", "<cmd> Lspsaga outgoing_calls<CR>")
 
 -- diffview
 nnoremap("<leader>dvo", "<cmd> DiffviewOpen <CR>")

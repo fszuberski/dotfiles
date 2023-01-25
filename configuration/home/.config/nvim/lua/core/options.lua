@@ -23,7 +23,7 @@ opt.softtabstop = 4
 
 opt.wrap = false
 
-opt.fillchars = { eob = " " }
+opt.fillchars = { eob = " ", diff = " " }
 opt.ignorecase = true
 opt.smartcase = true
 opt.mouse = "a"

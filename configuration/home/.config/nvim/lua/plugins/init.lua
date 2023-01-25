@@ -80,7 +80,6 @@ return require('packer').startup(function(use)
     use {
         'nvim-telescope/telescope-fzf-native.nvim',
         run = 'make',
-        cond = vim.fn.executable 'make' == 1,
     }
 
     use {
@@ -192,7 +191,9 @@ return require('packer').startup(function(use)
     }
     use {
         "glepnir/lspsaga.nvim",
-        branch = "main",
+        -- TODO: Using old version. Maybe switch to main in future.
+        -- branch = "main",
+        commit = 'b7b4777369b441341b2dcd45c738ea4167c11c9e',
         config = function()
             require "plugins.configs.lspsaga"
         end,
