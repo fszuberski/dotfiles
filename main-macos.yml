@@ -1,0 +1,6 @@
+- hosts: localhost
+
+- import_playbook: packages.yml
+# - import_playbook: nvim.yml
+- import_playbook: zsh.yml
+- import_playbook: yabai.yml

@@ -1,0 +1,49 @@
+- name: Install yabai and skhd
+  hosts: localhost
+  
+  tasks:
+    - name: Install yabai
+      community.general.homebrew:
+        name:
+          - koekeishiya/formulae/yabai
+        state: latest
+      when: ansible_distribution == "MacOSX"
+
+    - name: Register yabai binary path
+      command: which yabai
+      register: yabai_path
+      when: ansible_distribution == "MacOSX"
+
+    - name: Register user
+      command: whoami
+      register: user
+      when: ansible_distribution == "MacOSX"
+
+    - name: Register yabai binary sha256 hash
+      command: shasum -a 256 {{ yabai_path.stdout }}
+      ## command: shasum -a 256 /opt/homebrew/bin/yabai
+      register: yabai_hash
+      when: ansible_distribution == "MacOSX"
+
+    - name: Add yabai to sudoers
+      # shell: "echo '{{ user.stdout }} ALL=(root) NOPASSWD: sha256:{{ yabai_hash.stdout }} {{ yabai_path.stdout }} --load-sa' > /private/etc/sudoers.d/yabai"
+      shell: "echo '{{ user.stdout }} ALL=(root) NOPASSWD: sha256:{{ yabai_hash.stdout }} --load-sa' > /private/etc/sudoers.d/yabai"
+      become: yes
+      become_user: root
+      when: ansible_distribution == "MacOSX"
+
+    - name: Start yabai
+      command: brew services start yabai
+      when: ansible_distribution == "MacOSX"
+
+    - name: Install skhd
+      community.general.homebrew:
+        name:
+          - koekeishiya/formulae/skhd
+        state: latest
+      when: ansible_distribution == "MacOSX"
+
+    - name: Start skhd
+      command: brew services start skhd
+      when: ansible_distribution == "MacOSX"
+  

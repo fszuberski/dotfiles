@@ -5,9 +5,23 @@
     - name: Unstow $HOME
       shell: "cd configuration/ && stow -D home/ --target {{ ansible_env.HOME }}"
       changed_when: false
+      when: ansible_distribution == "Archlinux"
 
     - name: Stow $HOME
       shell: "cd configuration/ && stow home/ --target {{ ansible_env.HOME }} --verbose=2"
       register: result
       changed_when: 
         - '"LINK: " in result.stderr'
+      when: ansible_distribution == "Archlinux"
+          
+    - name: Unstow $HOME MacOSX
+      shell: "cd configuration-macos/ && stow -D home/ --target {{ ansible_env.HOME }}"
+      changed_when: false
+      when: ansible_distribution == "MacOSX"
+
+    - name: Stow $HOME
+      shell: "cd configuration-macos/ && stow home/ --target {{ ansible_env.HOME }} --verbose=2"
+      register: result
+      changed_when: 
+        - '"LINK: " in result.stderr'
+      when: ansible_distribution == "MacOSX"

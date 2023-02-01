@@ -7,3 +7,10 @@
       git:
         repo: https://github.com/tmux-plugins/tpm 
         dest: /home/fszuberski/.config/tmux/plugins/tpm
+      when: ansible_distribution == "Archlinux"
+
+    - name: Clone tpm repository (MacOSX)
+      git:
+        repo: https://github.com/tmux-plugins/tpm 
+        dest: /Users/fszuberski/.config/tmux/plugins/tpm
+      when: ansible_distribution == "MacOSX"

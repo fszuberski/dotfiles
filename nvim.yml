@@ -1,0 +1,47 @@
+- name: Build Neovim from source (prerequisites should already be installed)
+  hosts: localhost
+
+  tasks:
+    - name: Remove existing nvim dir
+      ansible.builtin.file:
+        path: "/Users/fszuberski/code/nvim"
+        state: absent
+
+    - name: Clone nvim repository
+      git:
+        repo: https://github.com/neovim/neovim
+        dest: "~/code/nvim"
+        clone: true
+
+    - name: Install build prerequisites
+      community.general.homebrew:
+        name:
+          - ninja
+          - libtool
+          - automake
+          - cmake
+          - pkg-config
+          - gettext
+          - curl
+        state: latest
+      when: ansible_distribution == "MacOSX"
+
+    - name: Build nvim release version
+      community.general.make:
+        chdir: "/Users/fszuberski/code/nvim" 
+        params:
+          CMAKE_BUILD_TYPE: Release
+
+    - name: Install nvim release version
+      become: true
+      become_user: root
+      community.general.make:
+        chdir: "/Users/fszuberski/code/nvim"        
+        target: install 
+
+    - name: Clone packer repository
+      git:
+        repo: https://github.com/wbthomason/packer.nvim
+        dest: "~/.local/share/nvim/site/pack/packer/start/packer.nvim"
+        clone: true
+        depth: 1

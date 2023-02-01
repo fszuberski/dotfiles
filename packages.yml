@@ -1,12 +1,54 @@
 - name: Install required packages
   hosts: localhost
+  vars:
+    fonts_macos:
+      [
+        {
+          "MesloLGS-NF-Regular.ttf": "https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf",
+          "MesloLGS-NF-Bold.ttf": "https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf",
+          "MesloLGS-NF-Italic.ttf": "https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf",
+          "MesloLGS-NF-Bold-Italic.ttf": "https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf",
+          "JetBrainsMono-Bold.ttf": "https://github.com/JetBrains/JetBrainsMono/raw/master/fonts/ttf/JetBrainsMono-Bold.ttf",
+          "JetBrainsMono-BoldItalic.ttf": "https://github.com/JetBrains/JetBrainsMono/raw/master/fonts/ttf/JetBrainsMono-BoldItalic.ttf",
+          "JetBrainsMono-ExtraBold.ttf": "https://github.com/JetBrains/JetBrainsMono/raw/master/fonts/ttf/JetBrainsMono-ExtraBold.ttf",
+          "JetBrainsMono-ExtraBoldItalic.ttf": "https://github.com/JetBrains/JetBrainsMono/raw/master/fonts/ttf/JetBrainsMono-ExtraBoldItalic.ttf",
+          "JetBrainsMono-ExtraLight.ttf": "https://github.com/JetBrains/JetBrainsMono/raw/master/fonts/ttf/JetBrainsMono-ExtraLight.ttf",
+          "JetBrainsMono-ExtraLightItalic.ttf": "https://github.com/JetBrains/JetBrainsMono/raw/master/fonts/ttf/JetBrainsMono-ExtraLightItalic.ttf",
+          "JetBrainsMono-Italic.ttf": "https://github.com/JetBrains/JetBrainsMono/raw/master/fonts/ttf/JetBrainsMono-Italic.ttf",
+          "JetBrainsMono-Light.ttf": "https://github.com/JetBrains/JetBrainsMono/raw/master/fonts/ttf/JetBrainsMono-Light.ttf",
+          "JetBrainsMono-LightItalic.ttf": "https://github.com/JetBrains/JetBrainsMono/raw/master/fonts/ttf/JetBrainsMono-LightItalic.ttf",
+          "JetBrainsMono-Medium.ttf": "https://github.com/JetBrains/JetBrainsMono/raw/master/fonts/ttf/JetBrainsMono-Medium.ttf",
+          "JetBrainsMono-MediumItalic.ttf": "https://github.com/JetBrains/JetBrainsMono/raw/master/fonts/ttf/JetBrainsMono-MediumItalic.ttf",
+          "JetBrainsMono-Regular.ttf": "https://github.com/JetBrains/JetBrainsMono/raw/master/fonts/ttf/JetBrainsMono-Regular.ttf",
+          "JetBrainsMono-SemiBold.ttf": "https://github.com/JetBrains/JetBrainsMono/raw/master/fonts/ttf/JetBrainsMono-SemiBold.ttf",
+          "JetBrainsMono-SemiBoldItalic.ttf": "https://github.com/JetBrains/JetBrainsMono/raw/master/fonts/ttf/JetBrainsMono-SemiBoldItalic.ttf",
+          "JetBrainsMono-Thin.ttf": "https://github.com/JetBrains/JetBrainsMono/raw/master/fonts/ttf/JetBrainsMono-Thin.ttf",
+          "JetBrainsMono-ThinItalic.ttf": "https://github.com/JetBrains/JetBrainsMono/raw/master/fonts/ttf/JetBrainsMono-ThinItalic.ttf",
+          "JetBrainsMonoNL-Bold.ttf": "https://github.com/JetBrains/JetBrainsMono/raw/master/fonts/ttf/JetBrainsMonoNL-Bold.ttf",
+          "JetBrainsMonoNL-BoldItalic.ttf": "https://github.com/JetBrains/JetBrainsMono/raw/master/fonts/ttf/JetBrainsMonoNL-BoldItalic.ttf",
+          "JetBrainsMonoNL-ExtraBold.ttf": "https://github.com/JetBrains/JetBrainsMono/raw/master/fonts/ttf/JetBrainsMonoNL-ExtraBold.ttf",
+          "JetBrainsMonoNL-ExtraBoldItalic.ttf": "https://github.com/JetBrains/JetBrainsMono/raw/master/fonts/ttf/JetBrainsMonoNL-ExtraBoldItalic.ttf",
+          "JetBrainsMonoNL-ExtraLight.ttf": "https://github.com/JetBrains/JetBrainsMono/raw/master/fonts/ttf/JetBrainsMonoNL-ExtraLight.ttf",
+          "JetBrainsMonoNL-ExtraLightItalic.ttf": "https://github.com/JetBrains/JetBrainsMono/raw/master/fonts/ttf/JetBrainsMonoNL-ExtraLightItalic.ttf",
+          "JetBrainsMonoNL-Italic.ttf": "https://github.com/JetBrains/JetBrainsMono/raw/master/fonts/ttf/JetBrainsMonoNL-Italic.ttf",
+          "JetBrainsMonoNL-Light.ttf": "https://github.com/JetBrains/JetBrainsMono/raw/master/fonts/ttf/JetBrainsMonoNL-Light.ttf",
+          "JetBrainsMonoNL-LightItalic.ttf": "https://github.com/JetBrains/JetBrainsMono/raw/master/fonts/ttf/JetBrainsMonoNL-LightItalic.ttf",
+          "JetBrainsMonoNL-Medium.ttf": "https://github.com/JetBrains/JetBrainsMono/raw/master/fonts/ttf/JetBrainsMonoNL-Medium.ttf",
+          "JetBrainsMonoNL-MediumItalic.ttf": "https://github.com/JetBrains/JetBrainsMono/raw/master/fonts/ttf/JetBrainsMonoNL-MediumItalic.ttf",
+          "JetBrainsMonoNL-Regular.ttf": "https://github.com/JetBrains/JetBrainsMono/raw/master/fonts/ttf/JetBrainsMonoNL-Regular.ttf",
+          "JetBrainsMonoNL-SemiBold.ttf": "https://github.com/JetBrains/JetBrainsMono/raw/master/fonts/ttf/JetBrainsMonoNL-SemiBold.ttf",
+          "JetBrainsMonoNL-SemiBoldItalic.ttf": "https://github.com/JetBrains/JetBrainsMono/raw/master/fonts/ttf/JetBrainsMonoNL-SemiBoldItalic.ttf",
+          "JetBrainsMonoNL-Thin.ttf": "https://github.com/JetBrains/JetBrainsMono/raw/master/fonts/ttf/JetBrainsMonoNL-Thin.ttf",
+          "JetBrainsMonoNL-ThinItalic.ttf": "https://github.com/JetBrains/JetBrainsMono/raw/master/fonts/ttf/JetBrainsMonoNL-ThinItalic.ttf",
+        },
+      ]
 
   tasks:
-    - name: Install required packages 
+    - name: Install required packages
       community.general.pacman:
         name:
-            #- avahi
-            #- tig
+          #- avahi
+          #- tig
           - adobe-source-code-pro-fonts
           - alsa-utils
           - base-devel
@@ -23,7 +65,6 @@
           - firefox-developer-edition
           - flameshot
           - fzf
-          - git
           - git
           - git-delta
           - go
@@ -61,3 +102,74 @@
           - zsh
       become: yes
       become_user: root
+      when: ansible_distribution == "Archlinux"
+
+    - name: Tap a Homebrew repository
+      community.general.homebrew_tap:
+        name: homebrew/cask-versions
+        state: present
+      when: ansible_distribution == "MacOSX"
+
+    - name: Install required packages MacOS
+      community.general.homebrew:
+        name:
+          - go
+          - pass
+          - ranger
+          - git-delta
+          - gotop
+          - fzf
+          - tmux
+          - nvm
+          - gpg
+          - wget
+          - neofetch
+          - ripgrep
+          - curl
+          - httpie
+          - xclip
+          - stow
+          - zsh
+          - ninja
+          - libtool
+          - automake
+          - cmake
+          - pkg-config
+          - gettext
+          - curl
+        update_homebrew: true
+        upgrade_all: true
+        state: latest
+      when: ansible_distribution == "MacOSX"
+
+    - name: Install required packages MacOS Homebrew Cask
+      community.general.homebrew_cask:
+        name:
+          - karabiner-elements
+          - calibre
+          - kitty
+          - docker
+          - google-chrome
+          - firefox-developer-edition
+          - discord
+          - slack
+          - spotify
+          - nordvpn
+        state: latest
+        install_options: "appdir=/Applications"
+      when: ansible_distribution == "MacOSX"
+
+    - name: Check if node installed
+      shell: node -v
+      register: node_version
+
+    - name: Install Node using nvm
+      shell: '[ -s "$(brew --prefix)/opt/nvm/nvm.sh" ] && \. "$(brew --prefix)/opt/nvm/nvm.sh" && nvm install --lts'
+      when: ansible_distribution == "MacOSX" and "command not found" in node_version.stderr
+
+    - name: Install fonts (MacOSX)
+      get_url:
+        url: "{{ item.value }}"
+        dest: "~/Library/Fonts/{{ item.key }}"
+      with_dict: "{{ fonts_macos }}"
+      when: ansible_distribution == "MacOSX"

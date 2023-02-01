@@ -1,0 +1,29 @@
+-- install brew
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+-- option 2
+https://apple.stackexchange.com/questions/402546/install-brew-without-prompt-password
+
+
+- Run these two commands in your terminal to add Homebrew to your PATH:
+    (echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"') >> /Users/fszuberski/.zprofile
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+
+
+-- turn off brew analytics
+brew analytics off
+
+
+-- install git
+brew install git
+
+-- python 2.6 for ansible?
+
+-- install ansible
+brew install ansible
+
+-- make code dir
+mkdir ~/code
+
+-- ANSIBLE GALAXY FOR BREW
+ansible-galaxy collection install community.general
