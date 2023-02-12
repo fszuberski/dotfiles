@@ -23,8 +23,8 @@ local options = {
     },
     discovery = {
         -- helps with performance issues in large repos;
-        -- could be set back to true once 
-        enabled = false
+        -- enabled = false
+        enabled = true
     },
     status = {
         enabled = true,
@@ -64,8 +64,10 @@ local options = {
             stop = "u",
             target = "t"
         }
+    },
+    quickfix = {
+        enabled = false
     }
-
 }
 
 neotest.setup(options)
