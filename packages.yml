@@ -153,6 +153,7 @@
           - firefox-developer-edition
           - discord
           - slack
+          - pdf-expert
           - spotify
           - nordvpn
         state: latest
