@@ -6,10 +6,28 @@ end
 
 require "plugins.configs.mason"
 
-local servers = { "html", "cssls" }
+local servers = {
+    'cssls',
+    'dockerls',
+    'gopls',
+    'html',
+    'jsonls',
+    'lua_ls',
+    'marksman',
+    'rust_analyzer',
+    'solidity',
+    'taplo',
+    'terraformls',
+    'tsserver',
+    'vimls',
+    'yamlls',
+}
 
 local M = {}
 
+LSPServers = function()
+    return servers
+end
 
 M.on_attach = function(client, bufnr)
     local vim_version = vim.version()
@@ -102,39 +120,6 @@ lspconfig.yamlls.setup {
         }
     }
 }
-
-lspconfig.sumneko_lua.setup {
-    on_attach = M.on_attach,
-    capabilities = M.capabilities,
-    flags = M.flags,
-
-    settings = {
-        Lua = {
-            format = {
-                enable = true,
-                defaultConfig = {
-                    indent_style = "space",
-                    indent_size = "2",
-                }
-            },
-            diagnostics = {
-                globals = { "vim" },
-            },
-            workspace = {
-                library = {
-                    [vim.fn.expand "$VIMRUNTIME/lua"] = true,
-                    [vim.fn.expand "$VIMRUNTIME/lua/vim/lsp"] = true,
-                },
-                maxPreload = 100000,
-                preloadFileSize = 10000,
-            },
-            telemetry = {
-                enable = false,
-            }
-        },
-    },
-}
-
 
 -- setting up signs
 local signs = {

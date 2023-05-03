@@ -125,9 +125,9 @@ setopt ignoreeof
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 
 # default editor
-export VISUAL=vim
+export VISUAL=nvim
 export EDITOR="$VISUAL"
-
+export KUBE_EDITOR="$VISUAL"
 
 # nvm
 export NVM_DIR="$HOME/.nvm"
@@ -148,3 +148,5 @@ fd() {
 pass-local() {
   PASSWORD_STORE_DIR=~/.password-store-local pass $@
 }
+
+export PATH="/opt/homebrew/opt/openjdk@11/bin:$PATH"

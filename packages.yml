@@ -122,7 +122,13 @@
           - tmux
           - nvm
           - gpg
+          - act
+          - minikube
+          - openjdk@17
+          - maven
+          - gradle
           - wget
+          - kotlin
           - neofetch
           - ripgrep
           - curl
@@ -150,6 +156,9 @@
           - kitty
           - docker
           - google-chrome
+          - tor-browser
+          - zoom
+          - jetbrains-toolbox
           - firefox-developer-edition
           - discord
           - slack

@@ -25,11 +25,11 @@
                                     "key_code": "h",
                                     "modifiers": {
                                         "mandatory": [
-                                            "option"
+                                            "left_option"
                                         ],
                                         "optional": [
-                                            "command",
-                                            "control"
+                                            "left_command",
+                                            "left_control"
                                         ]
                                     }
                                 },
@@ -45,11 +45,11 @@
                                     "key_code": "j",
                                     "modifiers": {
                                         "mandatory": [
-                                            "option"
+                                            "left_option"
                                         ],
                                         "optional": [
-                                            "command",
-                                            "control"
+                                            "left_command",
+                                            "left_control"
                                         ]
                                     }
                                 },
@@ -65,11 +65,11 @@
                                     "key_code": "k",
                                     "modifiers": {
                                         "mandatory": [
-                                            "option"
+                                            "left_option"
                                         ],
                                         "optional": [
-                                            "command",
-                                            "control"
+                                            "left_command",
+                                            "left_control"
                                         ]
                                     }
                                 },
@@ -85,11 +85,11 @@
                                     "key_code": "l",
                                     "modifiers": {
                                         "mandatory": [
-                                            "option"
+                                            "left_option"
                                         ],
                                         "optional": [
-                                            "command",
-                                            "control"
+                                            "left_command",
+                                            "left_control"
                                         ]
                                     }
                                 },
@@ -139,6 +139,38 @@
                                 "to": [
                                     {
                                         "key_code": "left_command"
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "jetbrains - ctrl + space fix",
+                        "manipulators": [
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "^com\\.jetbrains\\.intellij$"
+                                        ],
+                                        "type": "frontmost_application_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "spacebar",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "left_command"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "spacebar",
+                                        "modifiers": [
+                                            "left_control"
+                                        ]
                                     }
                                 ],
                                 "type": "basic"
@@ -779,7 +811,7 @@
                                     "key_code": "d",
                                     "modifiers": {
                                         "mandatory": [
-                                            "control"
+                                            "left_control"
                                         ]
                                     }
                                 },
@@ -1020,6 +1052,16 @@
                     "to": [
                         {
                             "key_code": "left_control"
+                        }
+                    ]
+                },
+                {
+                    "from": {
+                        "key_code": "right_command"
+                    },
+                    "to": [
+                        {
+                            "key_code": "right_option"
                         }
                     ]
                 }
