@@ -1,0 +1,137 @@
+set scrolloff=8
+
+" Do incremental searching.
+set incsearch
+
+" Don't use Ex mode, use Q for formatting.
+map Q gq
+
+"" -- Map IDE actions to IdeaVim -- https://jb.gg/abva4t
+"" Map \r to the Reformat Code action
+"map \r <Action>(ReformatCode)
+
+"" Map <leader>d to start debug
+"map <leader>d <Action>(Debug)
+
+"" Map \b to toggle the breakpoint on the current line
+"map \b <Action>(ToggleLineBreakpoint)
+
+
+" Find more examples here: https://jb.gg/share-ideavimrc
+
+"" -------------------------------------------
+let mapleader = " "
+
+set clipboard+=unnamed
+set clipboard+=ideaput
+set incsearch
+set hlsearch
+set smartcase
+
+set showcmd
+set showmode
+set visualbell
+set noerrorbells
+
+set number
+set relativenumber
+
+"---------------------- remaps
+nnoremap <D-d> <C-d>
+nnoremap <D-u> <C-u>
+vnoremap <D-d> <C-d>
+vnoremap <D-u> <C-u>
+nnoremap <D-o> <C-o>
+nnoremap <D-i> <C-i>
+
+nnoremap <esc><esc> :nohls<cr>
+nnoremap <leader>fp :action CopyContentRootPath <CR>
+
+
+nnoremap <leader>fa :action FindInPath<CR>
+nnoremap <leader>ff :action SearchEverywhere<CR>
+nnoremap <leader>ra :action ReplaceInPath<CR>
+nnoremap <leader>fb :action RecentFiles<CR>
+
+" splits
+nnoremap <M-w>v :action SplitVertically<CR>
+nnoremap <M-w>s :action SplitHorizontally<CR>
+nnoremap <leader>wv :action SplitVertically<CR> 
+nnoremap <leader>ws :action SplitHorizontally<CR> 
+nnoremap <leader>ww <C-w>w
+nnoremap <leader>wl <C-w>l
+nnoremap <leader>wh <C-w>h
+nnoremap <leader>wj <C-w>j
+nnoremap <leader>wk <C-w>k
+
+" lsp
+nnoremap gi :action GotoImplementation<CR>
+nnoremap gr :action GotoDeclaration<CR>
+nnoremap gd :action GotoDeclaration<CR>
+nnoremap gt :action GotoTest<CR>
+nnoremap <leader>fc :action ReformatCode<CR>
+nnoremap <leader>rn :action RenameElement<CR>
+"nnoremap <leader>ca :action CodeCompletion<CR>
+nnoremap <leader>ca :action ShowIntentionActions<CR>
+
+nnoremap <leader>gn :action Generate<CR>
+
+nnoremap K :action QuickJavaDoc<CR>
+nnoremap <leader>sd :action ShowErrorDescription<CR>
+"nnoremap <leader>nl :action RerunTests<CR> "doesn't work
+
+nnoremap <leader>ru :action Run<CR>
+
+nnoremap <leader>na :action Annotate<CR>
+nnoremap <leader>ng :action RunContextGroup<CR>
+
+
+" closing tabs
+nnoremap <leader>q :CloseActiveTab<CR>
+
+" improving the default Back implementation
+"nmap <D-o> :action Back<CR>
+"nmap <M-i> :action Forward<CR>
+" nnoremap <M-o> <C-o>
+" using the keymaps / IDE version of back/forward
+" https://stackoverflow.com/questions/29834788/ctrlt-ctrlo-not-working-right
+" this should be fixed in newer versions of intellij: https://youtrack.jetbrains.com/issue/VIM-44
+
+" delete to void register and paste
+vnoremap <leader>p "_dP
+
+" Maintain visual selection after indenting
+vnoremap < <gv
+vnoremap > >gv
+
+"-- move highlighted text up and own
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
+
+"Do not overwrite unnamed register with x and s
+nnoremap x "_x
+nnoremap s "_s
+
+" --- Plugins ---
+
+set NERDTree
+nnoremap <leader>tt :NERDTreeToggle<CR>
+nnoremap <leader>ts :NERDTreeFocus<CR>
+
+set commentary
+set surround
+set highlightedyank
+
+
+" --- Harpoon "
+
+nnoremap <leader>hh :action ShowHarpoon<CR>
+nnoremap <leader>ha :action AddToHarpoon<CR>
+nnoremap <A-f> :action GotoHarpoon1<CR>
+nnoremap <A-d> :action GotoHarpoon2<CR>
+nnoremap <A-s> :action GotoHarpoon3<CR>
+nnoremap <A-a> :action GotoHarpoon4<CR>
+nnoremap <A-r> :action GotoHarpoon5<CR>
+nnoremap <A-e> :action GotoHarpoon6<CR>
+nnoremap <A-w> :action GotoHarpoon7<CR>
+nnoremap <A-q> :action GotoHarpoon8<CR>
