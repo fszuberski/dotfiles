@@ -1,5 +1,5 @@
 vim.g.tokyonight_lualine_bold = true
-Colors = require("tokyonight.colors").setup({}) -- pass in any of the config options as explained above
+local Colors = require("tokyonight.colors").setup({}) -- pass in any of the config options as explained above
 local util = require("tokyonight.util")
 
 vim.cmd [[colorscheme tokyonight]]
@@ -25,3 +25,4 @@ vim.api.nvim_set_hl(0, 'ConflictMarkerEnd', { bg = util.darken(Colors.blue0, 0.4
 vim.api.nvim_set_hl(0, 'CmpBorder', { fg = util.darken(Colors.fg_gutter, 0.4) })
 vim.api.nvim_set_hl(0, 'CmpDocBorder', { fg = util.darken(Colors.fg_gutter, 0.4) })
 
+return Colors

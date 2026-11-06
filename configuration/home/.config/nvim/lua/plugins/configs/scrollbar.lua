@@ -4,6 +4,8 @@ if not present then
     return
 end
 
+local Colors = require("core.color")
+
 local options = {
     show = true,
     show_in_active_only = false,
