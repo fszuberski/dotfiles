@@ -17,6 +17,7 @@ return {
     { "nvim-treesitter/nvim-treesitter", lazy = false, build = ":TSUpdate", config = config("treesitter-modern") },
     { "nvim-treesitter/nvim-treesitter-context", config = config("treesitter-context") },
     { "nvim-lua/plenary.nvim" },
+    { "folke/todo-comments.nvim", dependencies = { "nvim-lua/plenary.nvim" }, config = function() require("todo-comments").setup() end },
     { "nvim-telescope/telescope-live-grep-args.nvim" },
     { "nvim-telescope/telescope.nvim", tag = "0.1.x", dependencies = { "nvim-lua/plenary.nvim", "nvim-telescope/telescope-live-grep-args.nvim" }, config = config("telescope") },
     { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
