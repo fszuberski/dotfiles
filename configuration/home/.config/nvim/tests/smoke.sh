@@ -15,7 +15,7 @@ export XDG_STATE_HOME="$test_dir/state"
 export XDG_CACHE_HOME="$test_dir/cache"
 unset NVIM_APPNAME NVIM_INIT
 
-if ! nvim --headless -i NONE '+lua if vim.v.errmsg ~= "" then vim.cmd("cquit 1") end' '+qa!' >"$test_dir/bootstrap-output" 2>&1; then
+if ! nvim --headless -i NONE "${3:-+lua do end}" '+lua if vim.v.errmsg ~= "" then vim.cmd("cquit 1") end' '+qa!' >"$test_dir/bootstrap-output" 2>&1; then
     cat "$test_dir/bootstrap-output" >&2
     echo 'Neovim bootstrap smoke test failed' >&2
     exit 1
