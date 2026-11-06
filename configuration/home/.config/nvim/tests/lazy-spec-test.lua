@@ -17,6 +17,7 @@ for _, repo in ipairs({
     assert(found[repo], "missing plugin: " .. repo)
 end
 assert(not found["wbthomason/packer.nvim"], "Packer should not be in the lazy.nvim specs")
+assert(vim.fn.filereadable(root .. "/lua/plugins/init.lua") == 0, "obsolete Packer entry point still exists")
 assert(not found["nvim-treesitter/playground"], "the old playground is incompatible with current Tree-sitter")
 assert(vim.fn.exists(":InspectTree") == 2, "Neovim's built-in Tree-sitter inspector is unavailable")
 assert(found["nvim-treesitter/nvim-treesitter"].build == ":TSUpdate")

@@ -4,8 +4,7 @@ local function config(name)
     end
 end
 
--- This is the existing plugin set expressed as lazy.nvim specs. Configuration
--- and load ordering will be migrated before these specs are activated.
+-- Plugin specifications and their load-time dependencies.
 return {
     { "folke/tokyonight.nvim", priority = 1000, config = function() require("core.color") end },
     { "nvim-tree/nvim-web-devicons" },
