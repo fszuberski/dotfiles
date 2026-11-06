@@ -25,9 +25,11 @@ while True:
     if "id" not in message:
         continue
     if method == "initialize":
-        result = {"capabilities": {"textDocumentSync": 1, "documentFormattingProvider": True, "completionProvider": {}}}
+        result = {"capabilities": {"textDocumentSync": 1, "documentFormattingProvider": True, "completionProvider": {}, "hoverProvider": True}}
     elif method == "textDocument/formatting":
         result = [{"range": {"start": {"line": 0, "character": 0}, "end": {"line": 0, "character": 16}}, "newText": "package formatted"}]
+    elif method == "textDocument/hover":
+        result = {"contents": {"kind": "markdown", "value": "Test hover"}}
     else:
         result = None
     send({"jsonrpc": "2.0", "id": message["id"], "result": result})
