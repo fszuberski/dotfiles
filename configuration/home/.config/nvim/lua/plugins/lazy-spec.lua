@@ -49,7 +49,7 @@ return {
     { "ThePrimeagen/harpoon", dependencies = { "nvim-lua/plenary.nvim" }, config = config("harpoon") },
     { "antoinemadec/FixCursorHold.nvim" },
     { "nvim-neotest/neotest-go" },
-    { "nvim-neotest/neotest", dependencies = { "nvim-lua/plenary.nvim", "nvim-treesitter/nvim-treesitter", "antoinemadec/FixCursorHold.nvim", "nvim-neotest/neotest-go" }, config = config("neotest") },
+    { "nvim-neotest/neotest", dependencies = { "nvim-lua/plenary.nvim", "nvim-treesitter/nvim-treesitter", "nvim-neotest/nvim-nio", "antoinemadec/FixCursorHold.nvim", "nvim-neotest/neotest-go" }, config = config("neotest") },
     { "andythigpen/nvim-coverage", dependencies = { "nvim-lua/plenary.nvim" }, config = config("coverage") },
     { "mfussenegger/nvim-dap" },
     { "rcarriga/nvim-dap-ui", dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" }, config = config("dapui") },
