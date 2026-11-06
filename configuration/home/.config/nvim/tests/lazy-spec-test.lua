@@ -45,4 +45,9 @@ assert(vim.tbl_contains(found["nvim-neotest/neotest"].dependencies, "nvim-neotes
 for _, dependency in ipairs({ "mfussenegger/nvim-dap", "nvim-treesitter/nvim-treesitter" }) do
     assert(vim.tbl_contains(found["theHamsta/nvim-dap-virtual-text"].dependencies or {}, dependency), "missing DAP virtual-text dependency: " .. dependency)
 end
+for _, dependency in ipairs({ "L3MON4D3/LuaSnip", "onsails/lspkind.nvim", "saadparwaiz1/cmp_luasnip", "hrsh7th/cmp-nvim-lsp", "hrsh7th/cmp-nvim-lua", "hrsh7th/cmp-buffer", "hrsh7th/cmp-path", "hrsh7th/cmp-cmdline" }) do
+    assert(vim.tbl_contains(found["hrsh7th/nvim-cmp"].dependencies or {}, dependency), "missing completion dependency: " .. dependency)
+end
+assert(vim.tbl_contains(found["L3MON4D3/LuaSnip"].dependencies or {}, "rafamadriz/friendly-snippets"), "LuaSnip snippets dependency missing")
+assert(vim.tbl_contains(found["windwp/nvim-autopairs"].dependencies or {}, "hrsh7th/nvim-cmp"), "autopairs completion dependency missing")
 print("lazy.nvim plugin specification test passed")
