@@ -26,7 +26,7 @@ if grep -Eiq '(^|[[:space:]])(error in|failed to|fatal:|stack traceback:)' "$tes
     exit 1
 fi
 
-if nvim --headless -i NONE '+lua if vim.v.errmsg ~= "" then vim.cmd("cquit 1") end' '+qa!' >"$test_dir/output" 2>&1; then
+if nvim --headless -i NONE "${2:-+lua do end}" '+lua if vim.v.errmsg ~= "" then io.stderr:write(vim.v.errmsg .. "\n"); vim.cmd("cquit 1") end' '+qa!' >"$test_dir/output" 2>&1; then
     if [ ! -s "$test_dir/output" ]; then
         echo 'Neovim startup smoke test passed'
         exit 0

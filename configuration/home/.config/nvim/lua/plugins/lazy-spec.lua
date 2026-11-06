@@ -9,7 +9,7 @@ end
 return {
     { "folke/tokyonight.nvim", priority = 1000, config = function() require("core.color") end },
     { "nvim-tree/nvim-web-devicons" },
-    { "nvim-tree/nvim-tree.lua", dependencies = { "nvim-tree/nvim-web-devicons" }, cmd = { "NvimTreeToggle", "NvimTreeFocus" }, config = config("nvimtree") },
+    { "nvim-tree/nvim-tree.lua", dependencies = { "nvim-tree/nvim-web-devicons" }, cmd = { "NvimTreeToggle", "NvimTreeFocus", "NvimTreeFindFile", "NvimTreeRefresh" }, config = config("nvimtree") },
     { "williamboman/mason.nvim", config = config("mason") },
     { "williamboman/mason-lspconfig.nvim", lazy = true },
     { "folke/lazydev.nvim", ft = "lua", opts = {} },

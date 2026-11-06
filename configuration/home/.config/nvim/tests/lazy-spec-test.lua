@@ -35,4 +35,7 @@ todo.config()
 assert(todo_setup, "todo-comments was not configured")
 local lazydev = found["folke/lazydev.nvim"]
 assert(lazydev.ft == "lua" and type(lazydev.opts) == "table", "lazydev must be configured for Lua files")
+for _, command in ipairs({ "NvimTreeToggle", "NvimTreeFocus", "NvimTreeFindFile", "NvimTreeRefresh" }) do
+    assert(vim.tbl_contains(found["nvim-tree/nvim-tree.lua"].cmd, command), "missing lazy-load trigger: " .. command)
+end
 print("lazy.nvim plugin specification test passed")
