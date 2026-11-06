@@ -18,6 +18,9 @@ for _, repo in ipairs({
 end
 assert(not found["wbthomason/packer.nvim"], "Packer should not be in the lazy.nvim specs")
 assert(vim.fn.filereadable(root .. "/lua/plugins/init.lua") == 0, "obsolete Packer entry point still exists")
+for _, name in ipairs({ "lspconfig", "mason-lspconfig", "treesitter", "blankline" }) do
+    assert(vim.fn.filereadable(root .. "/lua/plugins/configs/" .. name .. ".lua") == 0, "obsolete configuration remains: " .. name)
+end
 assert(not found["nvim-treesitter/playground"], "the old playground is incompatible with current Tree-sitter")
 assert(vim.fn.exists(":InspectTree") == 2, "Neovim's built-in Tree-sitter inspector is unavailable")
 assert(found["nvim-treesitter/nvim-treesitter"].build == ":TSUpdate")
