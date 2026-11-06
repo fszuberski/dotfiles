@@ -20,4 +20,10 @@ assert(not found["nvim-treesitter/playground"], "the old playground is incompati
 assert(vim.fn.exists(":InspectTree") == 2, "Neovim's built-in Tree-sitter inspector is unavailable")
 assert(found["nvim-treesitter/nvim-treesitter"].build == ":TSUpdate")
 assert(found["glepnir/lspsaga.nvim"].commit == "b7b4777369b441341b2dcd45c738ea4167c11c9e")
+local theme = found["folke/tokyonight.nvim"]
+assert(theme.priority == 1000 and type(theme.config) == "function", "theme must load before dependent plugins")
+local theme_loaded = false
+package.preload["core.color"] = function() theme_loaded = true end
+theme.config()
+assert(theme_loaded, "theme configuration did not load")
 print("lazy.nvim plugin specification test passed")

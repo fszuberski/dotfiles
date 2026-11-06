@@ -7,7 +7,7 @@ end
 -- This is the existing plugin set expressed as lazy.nvim specs. Configuration
 -- and load ordering will be migrated before these specs are activated.
 return {
-    { "folke/tokyonight.nvim" },
+    { "folke/tokyonight.nvim", priority = 1000, config = function() require("core.color") end },
     { "nvim-tree/nvim-web-devicons" },
     { "nvim-tree/nvim-tree.lua", dependencies = { "nvim-tree/nvim-web-devicons" }, cmd = { "NvimTreeToggle", "NvimTreeFocus" }, config = config("nvimtree") },
     { "williamboman/mason.nvim", config = config("mason") },
