@@ -9,6 +9,7 @@ local pending = {}
 vim.keymap.set("n", "<A-v>", "van", { remap = true, desc = "Select Tree-sitter node" })
 vim.keymap.set("x", "<A-v>", "an", { remap = true, desc = "Expand Tree-sitter selection" })
 vim.keymap.set("x", "<A-BS>", "in", { remap = true, desc = "Shrink Tree-sitter selection" })
+vim.keymap.set("x", "<A-c>", function() require("core.treesitter-scope").expand() end, { desc = "Expand to Tree-sitter scope" })
 
 local function has_parser(lang)
     return #vim.api.nvim_get_runtime_file("parser/" .. lang .. ".*", false) > 0
