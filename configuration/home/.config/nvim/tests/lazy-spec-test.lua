@@ -12,7 +12,7 @@ for _, repo in ipairs({
     "nvim-treesitter/nvim-treesitter", "nvim-telescope/telescope.nvim",
     "hrsh7th/nvim-cmp", "ThePrimeagen/harpoon", "nvim-neotest/neotest",
     "mfussenegger/nvim-dap", "rcarriga/nvim-dap-ui", "catgoose/nvim-colorizer.lua",
-    "folke/todo-comments.nvim",
+    "folke/todo-comments.nvim", "folke/lazydev.nvim",
 }) do
     assert(found[repo], "missing plugin: " .. repo)
 end
@@ -33,4 +33,6 @@ local todo_setup = false
 package.preload["todo-comments"] = function() return { setup = function() todo_setup = true end } end
 todo.config()
 assert(todo_setup, "todo-comments was not configured")
+local lazydev = found["folke/lazydev.nvim"]
+assert(lazydev.ft == "lua" and type(lazydev.opts) == "table", "lazydev must be configured for Lua files")
 print("lazy.nvim plugin specification test passed")

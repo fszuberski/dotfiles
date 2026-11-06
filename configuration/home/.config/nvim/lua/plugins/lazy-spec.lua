@@ -12,6 +12,7 @@ return {
     { "nvim-tree/nvim-tree.lua", dependencies = { "nvim-tree/nvim-web-devicons" }, cmd = { "NvimTreeToggle", "NvimTreeFocus" }, config = config("nvimtree") },
     { "williamboman/mason.nvim", config = config("mason") },
     { "williamboman/mason-lspconfig.nvim", lazy = true },
+    { "folke/lazydev.nvim", ft = "lua", opts = {} },
     { "neovim/nvim-lspconfig", dependencies = { "williamboman/mason.nvim", "williamboman/mason-lspconfig.nvim", "hrsh7th/cmp-nvim-lsp" }, config = config("lsp-modern") },
     { "crusj/hierarchy-tree-go.nvim", config = config("hierarchy-tree-go") },
     { "nvim-treesitter/nvim-treesitter", lazy = false, build = ":TSUpdate", config = config("treesitter-modern") },
