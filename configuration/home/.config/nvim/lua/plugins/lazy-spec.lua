@@ -23,10 +23,7 @@ return {
     { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
     { "lukas-reineke/indent-blankline.nvim", config = config("blankline-v3") },
     { "nvim-lualine/lualine.nvim", dependencies = { "nvim-tree/nvim-web-devicons" }, config = config("lualine") },
-    { "lewis6991/gitsigns.nvim", config = function()
-        require("plugins.configs.gitsigns")
-        require("scrollbar.handlers.gitsigns").setup()
-    end },
+    { "lewis6991/gitsigns.nvim", config = config("gitsigns") },
     { "sindrets/diffview.nvim", dependencies = { "nvim-lua/plenary.nvim" }, config = config("diffview") },
     { "tpope/vim-fugitive" },
     { "rafamadriz/friendly-snippets", event = "InsertEnter" },
@@ -43,7 +40,7 @@ return {
     { "windwp/nvim-autopairs", dependencies = { "hrsh7th/nvim-cmp" }, config = config("autopairs") },
     { "nvimdev/lspsaga.nvim", dependencies = { "nvim-tree/nvim-web-devicons", "nvim-treesitter/nvim-treesitter" }, config = config("lspsaga") },
     { "j-hui/fidget.nvim", config = config("fidget") },
-    { "petertriho/nvim-scrollbar", config = config("scrollbar") },
+    { "petertriho/nvim-scrollbar", branch = "refactor/v2", dependencies = { "lewis6991/gitsigns.nvim" }, config = config("scrollbar") },
     { "catgoose/nvim-colorizer.lua", config = config("colorizer") },
     { "ThePrimeagen/harpoon", dependencies = { "nvim-lua/plenary.nvim" }, config = config("harpoon") },
     { "antoinemadec/FixCursorHold.nvim" },
