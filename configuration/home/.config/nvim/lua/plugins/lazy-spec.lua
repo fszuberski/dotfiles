@@ -53,7 +53,7 @@ return {
     { "andythigpen/nvim-coverage", dependencies = { "nvim-lua/plenary.nvim" }, config = config("coverage") },
     { "mfussenegger/nvim-dap" },
     { "rcarriga/nvim-dap-ui", dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" }, config = config("dapui") },
-    { "theHamsta/nvim-dap-virtual-text", config = config("dapvt") },
+    { "theHamsta/nvim-dap-virtual-text", dependencies = { "mfussenegger/nvim-dap", "nvim-treesitter/nvim-treesitter" }, config = config("dapvt") },
     { "nvim-telescope/telescope-dap.nvim" },
     { "leoluz/nvim-dap-go", config = config("dapgo") },
 }

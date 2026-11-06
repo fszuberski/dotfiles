@@ -42,4 +42,7 @@ for _, dependency in ipairs({ "nvim-telescope/telescope-fzf-native.nvim", "nvim-
     assert(vim.tbl_contains(found["nvim-telescope/telescope.nvim"].dependencies, dependency), "missing Telescope dependency: " .. dependency)
 end
 assert(vim.tbl_contains(found["nvim-neotest/neotest"].dependencies, "nvim-neotest/nvim-nio"), "neotest requires nvim-nio")
+for _, dependency in ipairs({ "mfussenegger/nvim-dap", "nvim-treesitter/nvim-treesitter" }) do
+    assert(vim.tbl_contains(found["theHamsta/nvim-dap-virtual-text"].dependencies or {}, dependency), "missing DAP virtual-text dependency: " .. dependency)
+end
 print("lazy.nvim plugin specification test passed")
