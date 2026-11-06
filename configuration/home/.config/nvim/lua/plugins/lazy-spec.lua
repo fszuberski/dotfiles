@@ -22,7 +22,7 @@ return {
     { "nvim-telescope/telescope.nvim", tag = "0.1.x", dependencies = { "nvim-lua/plenary.nvim", "nvim-telescope/telescope-live-grep-args.nvim", "nvim-telescope/telescope-fzf-native.nvim", "nvim-telescope/telescope-dap.nvim" }, config = config("telescope") },
     { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
     { "lukas-reineke/indent-blankline.nvim", config = config("blankline-v3") },
-    { "nvim-lualine/lualine.nvim", dependencies = { "nvim-tree/nvim-web-devicons" }, config = config("lualine") },
+    { "nvim-lualine/lualine.nvim", dependencies = { "nvim-tree/nvim-web-devicons", "folke/tokyonight.nvim" }, config = config("lualine") },
     { "lewis6991/gitsigns.nvim", config = config("gitsigns") },
     { "sindrets/diffview.nvim", dependencies = { "nvim-lua/plenary.nvim" }, config = config("diffview") },
     { "tpope/vim-fugitive" },

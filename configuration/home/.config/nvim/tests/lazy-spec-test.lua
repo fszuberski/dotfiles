@@ -36,6 +36,7 @@ local theme_loaded = false
 package.preload["core.color"] = function() theme_loaded = true end
 theme.config()
 assert(theme_loaded, "theme configuration did not load")
+assert(vim.tbl_contains(found["nvim-lualine/lualine.nvim"].dependencies, "folke/tokyonight.nvim"), "lualine must load its Tokyo Night theme dependency")
 local todo = found["folke/todo-comments.nvim"]
 assert(vim.tbl_contains(todo.dependencies, "nvim-lua/plenary.nvim"), "todo-comments needs plenary")
 local todo_setup = false

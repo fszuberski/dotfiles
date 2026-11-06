@@ -1,4 +1,6 @@
 assert(vim.o.laststatus == 3, "global status line is not enabled")
+assert(type(require("lualine.themes.tokyonight")) == "table", "Tokyo Night lualine theme is unavailable")
+assert(require("lualine").get_config().options.theme == "tokyonight", "lualine fell back from Tokyo Night")
 assert(vim.o.statusline:find("lualine", 1, true), "lualine did not configure the status line")
 vim.api.nvim_buf_set_name(0, vim.fn.stdpath("cache") .. "/status-fixture.txt")
 require("lualine").refresh({ scope = "all", place = { "statusline" } })
