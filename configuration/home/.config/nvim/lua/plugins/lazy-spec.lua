@@ -21,7 +21,7 @@ return {
     { "nvim-telescope/telescope-live-grep-args.nvim" },
     { "nvim-telescope/telescope.nvim", tag = "0.1.x", dependencies = { "nvim-lua/plenary.nvim", "nvim-telescope/telescope-live-grep-args.nvim" }, config = config("telescope") },
     { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
-    { "lukas-reineke/indent-blankline.nvim", config = config("blankline") },
+    { "lukas-reineke/indent-blankline.nvim", config = config("blankline-v3") },
     { "nvim-lualine/lualine.nvim", dependencies = { "nvim-tree/nvim-web-devicons" }, config = config("lualine") },
     { "lewis6991/gitsigns.nvim", config = function()
         require("plugins.configs.gitsigns")
