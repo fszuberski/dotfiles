@@ -14,6 +14,9 @@ local available = false
 vim.api.nvim_get_runtime_file = function() return available and { "parser/go.so" } or {} end
 vim.treesitter.start = function(buf, lang) started = { buf = buf, lang = lang } end
 require("plugins.configs.treesitter-modern")
+assert(vim.fn.maparg("<A-v>", "n") == "van", "normal-mode node selection mapping missing")
+assert(vim.fn.maparg("<A-v>", "x") == "an", "visual-mode node expansion mapping missing")
+assert(vim.fn.maparg("<A-BS>", "x") == "in", "visual-mode node shrink mapping missing")
 assert(not installed, "empty startup must not install parsers")
 local autocmds = vim.api.nvim_get_autocmds({ group = "ConfigTreesitter", event = "FileType" })
 assert(#autocmds == 1 and type(autocmds[1].callback) == "function", "highlighting autocmd missing")
