@@ -20,7 +20,7 @@ return {
     { "nvim-lua/plenary.nvim" },
     { "folke/todo-comments.nvim", dependencies = { "nvim-lua/plenary.nvim" }, config = function() require("todo-comments").setup() end },
     { "nvim-telescope/telescope-live-grep-args.nvim" },
-    { "nvim-telescope/telescope.nvim", tag = "0.1.x", dependencies = { "nvim-lua/plenary.nvim", "nvim-telescope/telescope-live-grep-args.nvim" }, config = config("telescope") },
+    { "nvim-telescope/telescope.nvim", tag = "0.1.x", dependencies = { "nvim-lua/plenary.nvim", "nvim-telescope/telescope-live-grep-args.nvim", "nvim-telescope/telescope-fzf-native.nvim", "nvim-telescope/telescope-dap.nvim" }, config = config("telescope") },
     { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
     { "lukas-reineke/indent-blankline.nvim", config = config("blankline-v3") },
     { "nvim-lualine/lualine.nvim", dependencies = { "nvim-tree/nvim-web-devicons" }, config = config("lualine") },

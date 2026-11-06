@@ -38,4 +38,7 @@ assert(lazydev.ft == "lua" and type(lazydev.opts) == "table", "lazydev must be c
 for _, command in ipairs({ "NvimTreeToggle", "NvimTreeFocus", "NvimTreeFindFile", "NvimTreeRefresh" }) do
     assert(vim.tbl_contains(found["nvim-tree/nvim-tree.lua"].cmd, command), "missing lazy-load trigger: " .. command)
 end
+for _, dependency in ipairs({ "nvim-telescope/telescope-fzf-native.nvim", "nvim-telescope/telescope-live-grep-args.nvim", "nvim-telescope/telescope-dap.nvim" }) do
+    assert(vim.tbl_contains(found["nvim-telescope/telescope.nvim"].dependencies, dependency), "missing Telescope dependency: " .. dependency)
+end
 print("lazy.nvim plugin specification test passed")

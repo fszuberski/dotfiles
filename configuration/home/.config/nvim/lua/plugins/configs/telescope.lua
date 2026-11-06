@@ -103,8 +103,6 @@ local options = {
 telescope.setup(options)
 
 -- load extensions
-pcall(function()
-    for _, ext in ipairs(options.extensions_list) do
-        telescope.load_extension(ext)
-    end
-end)
+for _, ext in ipairs(options.extensions_list) do
+    telescope.load_extension(ext)
+end
