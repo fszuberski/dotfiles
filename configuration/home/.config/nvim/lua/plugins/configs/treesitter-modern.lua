@@ -28,12 +28,16 @@ vim.api.nvim_create_autocmd("FileType", {
         local lang = vim.treesitter.language.get_lang(vim.bo[event.buf].filetype)
         if not lang then
             return
-        elseif has_parser(lang) then
+        end
+        if has_parser(lang) then
             highlight(event.buf, lang)
-        elseif not vim.tbl_contains(parsers, lang) then
+        end
+        if not vim.tbl_contains(parsers, lang) then
             return
         elseif pending[lang] then
             table.insert(pending[lang], event.buf)
+        elseif vim.tbl_contains(require("nvim-treesitter").get_installed(), lang) then
+            return
         elseif vim.fn.executable("tree-sitter") == 0 then
             vim.notify("Tree-sitter parser installation requires the tree-sitter CLI", vim.log.levels.WARN)
         else

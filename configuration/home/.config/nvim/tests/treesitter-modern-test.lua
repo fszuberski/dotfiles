@@ -3,7 +3,7 @@ package.path = root .. "/lua/?.lua;" .. root .. "/lua/?/init.lua;" .. package.pa
 
 local installed, complete, started
 package.preload["nvim-treesitter"] = function()
-    return { install = function(parsers)
+    return { get_installed = function() return {} end, install = function(parsers)
         installed = parsers
         return { await = function(_, callback) complete = callback end }
     end }
@@ -25,4 +25,7 @@ assert(installed and vim.tbl_contains(installed, "go"), "Go parser not requested
 available = true
 complete()
 assert(started and started.lang == "go", "highlighting did not start after installation")
+installed = nil
+autocmds[1].callback({ buf = vim.api.nvim_get_current_buf() })
+assert(installed and vim.tbl_contains(installed, "go"), "bundled parser must not prevent curated queries from being installed")
 print("modern Tree-sitter configuration test passed")
