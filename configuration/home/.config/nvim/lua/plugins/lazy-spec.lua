@@ -16,7 +16,6 @@ return {
     { "crusj/hierarchy-tree-go.nvim", config = config("hierarchy-tree-go") },
     { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate", config = config("treesitter") },
     { "nvim-treesitter/nvim-treesitter-context", config = config("treesitter-context") },
-    { "nvim-treesitter/playground" },
     { "nvim-lua/plenary.nvim" },
     { "nvim-telescope/telescope-live-grep-args.nvim" },
     { "nvim-telescope/telescope.nvim", tag = "0.1.x", dependencies = { "nvim-lua/plenary.nvim", "nvim-telescope/telescope-live-grep-args.nvim" }, config = config("telescope") },

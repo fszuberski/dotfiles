@@ -16,6 +16,8 @@ for _, repo in ipairs({
     assert(found[repo], "missing plugin: " .. repo)
 end
 assert(not found["wbthomason/packer.nvim"], "Packer should not be in the lazy.nvim specs")
+assert(not found["nvim-treesitter/playground"], "the old playground is incompatible with current Tree-sitter")
+assert(vim.fn.exists(":InspectTree") == 2, "Neovim's built-in Tree-sitter inspector is unavailable")
 assert(found["nvim-treesitter/nvim-treesitter"].build == ":TSUpdate")
 assert(found["glepnir/lspsaga.nvim"].commit == "b7b4777369b441341b2dcd45c738ea4167c11c9e")
 print("lazy.nvim plugin specification test passed")
