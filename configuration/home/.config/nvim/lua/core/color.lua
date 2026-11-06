@@ -1,5 +1,5 @@
-vim.g.tokyonight_lualine_bold = true
-local Colors = require("tokyonight.colors").setup({}) -- pass in any of the config options as explained above
+require("tokyonight").setup({ style = "night", lualine_bold = true })
+local Colors = require("tokyonight.colors").setup({})
 local util = require("tokyonight.util")
 
 vim.cmd [[colorscheme tokyonight]]
