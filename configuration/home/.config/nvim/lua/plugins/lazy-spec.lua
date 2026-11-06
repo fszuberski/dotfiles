@@ -14,7 +14,7 @@ return {
     { "williamboman/mason-lspconfig.nvim", lazy = true },
     { "neovim/nvim-lspconfig", dependencies = { "williamboman/mason.nvim", "williamboman/mason-lspconfig.nvim", "hrsh7th/cmp-nvim-lsp" }, config = config("lsp-modern") },
     { "crusj/hierarchy-tree-go.nvim", config = config("hierarchy-tree-go") },
-    { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate", config = config("treesitter") },
+    { "nvim-treesitter/nvim-treesitter", lazy = false, build = ":TSUpdate", config = config("treesitter-modern") },
     { "nvim-treesitter/nvim-treesitter-context", config = config("treesitter-context") },
     { "nvim-lua/plenary.nvim" },
     { "nvim-telescope/telescope-live-grep-args.nvim" },
