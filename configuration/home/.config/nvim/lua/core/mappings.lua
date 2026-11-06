@@ -100,9 +100,9 @@ nnoremap("td", "<cmd> Telescope lsp_type_definitions <CR>")
 
 -- lspsaga
 nnoremap("K", function() lsp.hover() end)
-nnoremap("gy", "<cmd> Lspsaga lsp_finder <CR>")
+nnoremap("gy", "<cmd> Lspsaga finder <CR>")
 nnoremap("<leader>ca", "<cmd> Lspsaga code_action <CR>")
-nnoremap("<leader>sh", "<cmd> Lspsaga signature_help <CR>")
+nnoremap("<leader>sh", function() lsp.signature_help() end)
 -- Toggle Outline
 -- nnoremap("<leader>ol", "<cmd>Lspsaga outline<CR>")
 -- Rename 

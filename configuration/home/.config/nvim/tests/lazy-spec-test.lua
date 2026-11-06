@@ -12,7 +12,7 @@ for _, repo in ipairs({
     "nvim-treesitter/nvim-treesitter", "nvim-telescope/telescope.nvim",
     "hrsh7th/nvim-cmp", "ThePrimeagen/harpoon", "nvim-neotest/neotest",
     "mfussenegger/nvim-dap", "rcarriga/nvim-dap-ui", "catgoose/nvim-colorizer.lua",
-    "folke/todo-comments.nvim", "folke/lazydev.nvim",
+    "folke/todo-comments.nvim", "folke/lazydev.nvim", "nvimdev/lspsaga.nvim",
 }) do
     assert(found[repo], "missing plugin: " .. repo)
 end
@@ -24,7 +24,7 @@ end
 assert(not found["nvim-treesitter/playground"], "the old playground is incompatible with current Tree-sitter")
 assert(vim.fn.exists(":InspectTree") == 2, "Neovim's built-in Tree-sitter inspector is unavailable")
 assert(found["nvim-treesitter/nvim-treesitter"].build == ":TSUpdate")
-assert(found["glepnir/lspsaga.nvim"].commit == "b7b4777369b441341b2dcd45c738ea4167c11c9e")
+assert(vim.tbl_contains(found["nvimdev/lspsaga.nvim"].dependencies, "nvim-treesitter/nvim-treesitter"), "Lspsaga Tree-sitter dependency missing")
 local theme = found["folke/tokyonight.nvim"]
 assert(theme.priority == 1000 and type(theme.config) == "function", "theme must load before dependent plugins")
 local theme_loaded = false

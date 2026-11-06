@@ -41,7 +41,7 @@ return {
     { "hrsh7th/nvim-cmp", dependencies = { "L3MON4D3/LuaSnip", "onsails/lspkind.nvim", "saadparwaiz1/cmp_luasnip", "hrsh7th/cmp-nvim-lsp", "hrsh7th/cmp-nvim-lua", "hrsh7th/cmp-buffer", "hrsh7th/cmp-path", "hrsh7th/cmp-cmdline" }, config = config("cmp") },
     { "numToStr/Comment.nvim", config = config("comment") },
     { "windwp/nvim-autopairs", dependencies = { "hrsh7th/nvim-cmp" }, config = config("autopairs") },
-    { "glepnir/lspsaga.nvim", commit = "b7b4777369b441341b2dcd45c738ea4167c11c9e", config = config("lspsaga") },
+    { "nvimdev/lspsaga.nvim", dependencies = { "nvim-tree/nvim-web-devicons", "nvim-treesitter/nvim-treesitter" }, config = config("lspsaga") },
     { "j-hui/fidget.nvim", config = config("fidget") },
     { "petertriho/nvim-scrollbar", config = config("scrollbar") },
     { "catgoose/nvim-colorizer.lua", config = config("colorizer") },
