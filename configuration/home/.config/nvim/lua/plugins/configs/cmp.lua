@@ -21,15 +21,6 @@ local function border(hl_name)
     }
 end
 
-local cmp_window = require "cmp.utils.window"
-
-cmp_window.info_ = cmp_window.info
-cmp_window.info = function(self)
-    local info = self:info_()
-    info.scrollable = false
-    return info
-end
-
 local options = {
     window = {
         completion = {
