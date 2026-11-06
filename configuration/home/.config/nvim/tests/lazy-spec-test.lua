@@ -53,6 +53,7 @@ for _, dependency in ipairs({ "L3MON4D3/LuaSnip", "onsails/lspkind.nvim", "saadp
     assert(vim.tbl_contains(found["hrsh7th/nvim-cmp"].dependencies or {}, dependency), "missing completion dependency: " .. dependency)
 end
 assert(vim.tbl_contains(found["L3MON4D3/LuaSnip"].dependencies or {}, "rafamadriz/friendly-snippets"), "LuaSnip snippets dependency missing")
+assert(vim.tbl_contains(found["L3MON4D3/LuaSnip"].dependencies or {}, "tpope/vim-repeat"), "LuaSnip repeat dependency missing")
 assert(vim.tbl_contains(found["windwp/nvim-autopairs"].dependencies or {}, "hrsh7th/nvim-cmp"), "autopairs completion dependency missing")
 local scrollbar = found["petertriho/nvim-scrollbar"]
 assert(scrollbar.branch == "refactor/v2", "scrollbar must use the v2 branch")
