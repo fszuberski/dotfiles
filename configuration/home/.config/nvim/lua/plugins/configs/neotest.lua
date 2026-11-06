@@ -1,5 +1,5 @@
 local present1, neotest = pcall(require, "neotest")
-local present2, neotest_go = pcall(require, "neotest-go")
+local present2, neotest_go = pcall(require, "neotest-golang")
 
 if not (present1 and present2) then
     return
@@ -9,13 +9,7 @@ end
 local options = {
     adapters = {
         neotest_go({
-            experimental = {
-                test_table = true
-            },
-            --[[ args = {
-                "-covermode=atomic",
-                "-coverprofile=coverage.out",
-            }, ]]
+            go_test_args = { "-v" },
         })
     },
     diagnostic = {

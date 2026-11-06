@@ -7,8 +7,8 @@ require("nio").run(function()
     local tree = adapter.discover_positions(path)
     assert(tree and #tree:children() > 0, "no Go tests discovered")
     assert(tree:children()[1]:data().name == "TestSample", "expected Go test not discovered")
-end, function(err)
-    failure = err
+end, function(ok, err)
+    failure = not ok and err or nil
     done = true
 end)
 
