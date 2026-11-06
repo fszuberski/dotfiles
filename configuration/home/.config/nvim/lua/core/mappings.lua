@@ -106,7 +106,7 @@ nnoremap("<leader>sh", function() lsp.signature_help() end)
 -- Toggle Outline
 -- nnoremap("<leader>ol", "<cmd>Lspsaga outline<CR>")
 -- Rename 
-nnoremap("<leader>rn", "<cmd> Lspsaga rename <CR>")
+nnoremap("<leader>rn", function() lsp.rename() end)
 -- Rename word in whole project
 -- nnoremap("<leader>rN", "<cmd> Lspsaga rename ++project <CR>")
 -- Callhierarchy
