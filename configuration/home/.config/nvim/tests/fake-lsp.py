@@ -33,7 +33,9 @@ while True:
     elif method == "textDocument/signatureHelp":
         result = {"signatures": [{"label": "sample(value int)"}], "activeSignature": 0}
     elif method == "textDocument/codeAction":
-        result = [{"title": "Test action", "kind": "quickfix", "command": {"title": "Test action", "command": "test.action"}}]
+        uri = message["params"]["textDocument"]["uri"]
+        edit = {"range": {"start": {"line": 0, "character": 8}, "end": {"line": 0, "character": 17}}, "newText": "acted"}
+        result = [{"title": "Test action", "kind": "quickfix", "edit": {"changes": {uri: [edit]}}}]
     elif method == "textDocument/rename":
         uri = message["params"]["textDocument"]["uri"]
         result = {"changes": {uri: [{"range": {"start": {"line": 0, "character": 8}, "end": {"line": 0, "character": 17}}, "newText": message["params"]["newName"]}]}}
