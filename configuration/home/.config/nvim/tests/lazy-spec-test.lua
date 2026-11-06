@@ -13,6 +13,11 @@ for _, repo in ipairs({
     "hrsh7th/nvim-cmp", "ThePrimeagen/harpoon", "nvim-neotest/neotest",
     "mfussenegger/nvim-dap", "rcarriga/nvim-dap-ui", "catgoose/nvim-colorizer.lua",
     "folke/todo-comments.nvim", "folke/lazydev.nvim", "nvimdev/lspsaga.nvim",
+    "theHamsta/nvim-dap-virtual-text", "sindrets/diffview.nvim", "j-hui/fidget.nvim",
+    "lewis6991/gitsigns.nvim", "lukas-reineke/indent-blankline.nvim", "onsails/lspkind.nvim",
+    "mason-org/mason.nvim", "mason-org/mason-lspconfig.nvim", "nvim-lualine/lualine.nvim",
+    "L3MON4D3/LuaSnip", "windwp/nvim-autopairs", "andythigpen/nvim-coverage",
+    "petertriho/nvim-scrollbar", "tpope/vim-fugitive",
 }) do
     assert(found[repo], "missing plugin: " .. repo)
 end
