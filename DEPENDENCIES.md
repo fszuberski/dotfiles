@@ -18,4 +18,4 @@ brew install stow
 
 Ensure Homebrew's `bin` directory is on `PATH`. Package and system provisioning are not implemented yet; their dependencies will be documented when introduced.
 
-Verify the installation with `stow --version`. Run the checks with `sh tests/deploy.sh` and `sh tests/backup.sh` from the repository root.
+Verify the installation with `stow --version`. Run the checks with `sh tests/deploy.sh`, `sh tests/backup.sh`, and `sh tests/replace.sh` from the repository root.
