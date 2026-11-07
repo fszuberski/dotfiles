@@ -28,7 +28,7 @@ To link a single package using GNU Stow:
 sh deployment/deploy.sh /path/to/package /path/to/home
 ```
 
-For example, from the repository root, `sh deployment/deploy.sh stow/zsh "$HOME"` deploys the shared Zsh configuration. It sets Neovim as the editor and aliases `vim` to `nvim`; install Neovim separately. Prompt, plugins and machine-specific settings have not yet been configured.
+For example, from the repository root, `sh deployment/deploy.sh stow/zsh "$HOME"` deploys the shared Zsh configuration. It sets Neovim as the editor, aliases `vim` to `nvim`, and enables Zsh's built-in history and completion; install Neovim separately. Prompt, plugins and machine-specific settings have not yet been configured.
 
 Deployment requires GNU Stow. It runs a simulation first and stops if that fails, uses `--no-folding`, and does not use `--adopt` or deliberately replace existing files. Stow's user and working-directory configuration files are not loaded by the wrapper. If a filesystem error or concurrent change occurs during linking, some links or directories may already have been created; inspect the target before retrying. This tool does not yet remove stale links.
 
