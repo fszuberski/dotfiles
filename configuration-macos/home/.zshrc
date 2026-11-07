@@ -149,4 +149,4 @@ pass-local() {
   PASSWORD_STORE_DIR=~/.password-store-local pass $@
 }
 
-export PATH="/opt/homebrew/opt/openjdk@11/bin:$PATH"
+export PATH="/opt/homebrew/opt/openjdk@21/bin:$PATH"
