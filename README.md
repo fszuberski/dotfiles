@@ -12,6 +12,7 @@ Configuration and provisioning for three personal machines:
 
 - `inventory/hosts.yml` defines the supported hosts and platform groups.
 - `DEPENDENCIES.md` lists prerequisites and installation commands.
+- `stow/zsh/` contains the initial shared Zsh configuration.
 - `legacy/` preserves the previous project as a reference; it is not part of the new deployment.
 - `PLAN.md` tracks the incremental implementation.
 
@@ -26,6 +27,8 @@ To link a single package using GNU Stow:
 ```sh
 sh deployment/deploy.sh /path/to/package /path/to/home
 ```
+
+For example, from the repository root, `sh deployment/deploy.sh stow/zsh "$HOME"` deploys the shared Zsh configuration. It sets Neovim as the editor and aliases `vim` to `nvim`; install Neovim separately. Prompt, plugins and machine-specific settings have not yet been configured.
 
 Deployment requires GNU Stow. It runs a simulation first and stops if that fails, uses `--no-folding`, and does not use `--adopt` or deliberately replace existing files. Stow's user and working-directory configuration files are not loaded by the wrapper. If a filesystem error or concurrent change occurs during linking, some links or directories may already have been created; inspect the target before retrying. This tool does not yet remove stale links.
 
