@@ -13,10 +13,19 @@ Configuration and provisioning for three personal machines:
 - `inventory/hosts.yml` defines the supported hosts and platform groups.
 - `DEPENDENCIES.md` lists prerequisites and installation commands.
 - `stow/zsh/` contains the initial shared Zsh configuration.
+- `playbooks/zsh.yml` installs Zsh on the local Arch or macOS machine.
 - `legacy/` preserves the previous project as a reference; it is not part of the new deployment.
 - `PLAN.md` tracks the incremental implementation.
 
 The intended design separates shared configuration from platform and host overrides. Fleder and Kikimora will initially share an Arch/Sway profile, with room to diverge later. Configuration deployment, package installation, and privileged system changes will be separate operations.
+
+To install Zsh after setting up the Ansible dependencies in `DEPENDENCIES.md`:
+
+```sh
+ansible-playbook -i localhost, playbooks/zsh.yml --ask-become-pass
+```
+
+The playbook installs only Zsh; it does not change the login shell, deploy configuration, or install Zsh plugins. `--ask-become-pass` is needed when sudo on Arch requires a password; omit it on macOS.
 
 ## Status and safety
 

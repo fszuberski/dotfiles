@@ -1,6 +1,6 @@
 # Dependencies
 
-Configuration deployment currently needs a POSIX shell, `mktemp`, and GNU Stow. The test script also uses standard utilities such as `mkdir`, `cat`, and `rm`. It does not require Python or Ansible.
+Configuration deployment needs a POSIX shell, `mktemp`, and GNU Stow. Its test scripts also use standard utilities such as `mkdir`, `cat`, and `rm`. Deployment itself does not require Python or Ansible.
 
 ## Arch Linux (Fleder and Kikimora)
 
@@ -20,4 +20,15 @@ Ensure Homebrew's `bin` directory is on `PATH`. Package and system provisioning 
 
 Verify the installation with `stow --version`. Run the checks with `sh tests/deploy.sh`, `sh tests/backup.sh`, and `sh tests/replace.sh` from the repository root.
 
-The copied Linux Zsh configuration requires Zsh, Oh My Zsh, Powerlevel10k, zsh-autosuggestions, the Arch nvm initialization script and Neovim. These are not installed by the deployment script yet. Run `sh tests/zsh.sh` to verify deployment; it also checks Zsh syntax when Zsh is installed.
+## Ansible provisioning
+
+The Zsh installation playbook additionally requires Ansible and the `community.general` collection. On Arch install `ansible-core` with pacman; on macOS install `ansible` with Homebrew. Then, from the repository root:
+
+```sh
+ansible-galaxy collection install -r requirements.yml
+ansible-playbook -i localhost, playbooks/zsh.yml --syntax-check
+```
+
+Run `sh tests/ansible-zsh.sh` for the playbook checks. Installing Zsh on Arch requires sudo privileges; Homebrew must already be installed and configured on macOS.
+
+The copied Linux Zsh configuration also expects Oh My Zsh, Powerlevel10k, zsh-autosuggestions, the Arch nvm initialization script and Neovim. The Zsh installation playbook does not install those dependencies. Run `sh tests/zsh.sh` to verify configuration deployment; it also checks Zsh syntax when Zsh is installed.
