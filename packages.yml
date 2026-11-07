@@ -74,6 +74,7 @@
           - kitty
           - mesa
           - neofetch
+          - neovim
           - noto-fonts
           - ntfs-3g
           - otf-font-awesome
@@ -124,7 +125,9 @@
           - gpg
           - act
           - minikube
+          - openjdk@11
           - openjdk@17
+          - openjdk@25
           - maven
           - gradle
           - wget
@@ -143,6 +146,7 @@
           - pkg-config
           - gettext
           - curl
+          - ghostty
         update_homebrew: true
         upgrade_all: true
         state: latest
@@ -153,7 +157,6 @@
         name:
           - karabiner-elements
           - calibre
-          - kitty
           - docker
           - google-chrome
           - tor-browser
@@ -164,7 +167,7 @@
           - slack
           - pdf-expert
           - spotify
-          - nordvpn
+          - obsidian
         state: latest
         install_options: "appdir=/Applications"
       when: ansible_distribution == "MacOSX"
