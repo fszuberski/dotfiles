@@ -20,4 +20,4 @@ Ensure Homebrew's `bin` directory is on `PATH`. Package and system provisioning 
 
 Verify the installation with `stow --version`. Run the checks with `sh tests/deploy.sh`, `sh tests/backup.sh`, and `sh tests/replace.sh` from the repository root.
 
-The shared Zsh configuration requires Zsh and uses Neovim as its editor. Run `sh tests/zsh.sh` to verify deployment; it also checks Zsh syntax when Zsh is installed.
+The copied Linux Zsh configuration requires Zsh, Oh My Zsh, Powerlevel10k, zsh-autosuggestions, the Arch nvm initialization script and Neovim. These are not installed by the deployment script yet. Run `sh tests/zsh.sh` to verify deployment; it also checks Zsh syntax when Zsh is installed.
