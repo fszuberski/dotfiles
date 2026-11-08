@@ -36,6 +36,7 @@ Configuration and provisioning for three personal machines:
 - `playbooks/rofi.yml` installs Rofi on Arch Linux.
 - `playbooks/swaync.yml` installs swaync and libnotify on Arch Linux.
 - `playbooks/clipboard.yml` installs wl-clipboard and cliphist on Arch Linux.
+- `playbooks/yazi.yml` installs the Yazi terminal file manager on Arch Linux.
 - `playbooks/macos-window-manager.yml` installs yabai and skhd on macOS.
 - `playbooks/macos-window-manager-config.yml` deploys their configuration with Stow.
 - `playbooks/macos-window-manager-services.yml` starts their macOS user services.
@@ -59,6 +60,8 @@ This entry point checks all selected Stow packages for conflicts first, installs
 The initial Sway configuration uses Super+Enter for Ghostty, Super+D for the Rofi launcher, Super+N for notifications, Super+Shift+Q to close a window, Super+Shift+C to reload and Super+Shift+E to exit. Install Waybar, Rofi and swaync and deploy their configurations before reloading Sway. Sway starts swaync at session startup, not on reload; avoid running another notification daemon simultaneously. Validate with `sway -C` and start a fresh Sway session from a TTY; keep another TTY available for recovery.
 
 Sway starts clipboard history watchers for text and images at session startup. Press Super+Shift+V to select an item with Rofi. **Cliphist stores copied content on disk, potentially including passwords or other secrets.** Run `cliphist wipe` to delete the history; to disable collection, remove the two `wl-paste --watch` startup lines and restart the Sway session. This does not clear the current clipboard.
+
+Press Super+Ctrl+E to open Yazi in Ghostty. Super+E remains the Sway layout toggle.
 
 To install Zsh after setting up the Ansible dependencies in `DEPENDENCIES.md`:
 

@@ -76,6 +76,9 @@
 - import_playbook: playbooks/clipboard.yml
   tags: install
 
+- import_playbook: playbooks/yazi.yml
+  tags: install
+
 - name: Deploy the shared Arch configuration
   hosts: localhost
   connection: local
