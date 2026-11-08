@@ -23,6 +23,7 @@
           - opencode
           - sway
           - waybar
+          - rofi
       tags: always
 
     - name: Check all configuration packages for conflicts
@@ -63,6 +64,9 @@
   tags: install
 
 - import_playbook: playbooks/waybar.yml
+  tags: install
+
+- import_playbook: playbooks/rofi.yml
   tags: install
 
 - name: Deploy the shared Arch configuration

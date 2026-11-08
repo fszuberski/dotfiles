@@ -1,0 +1,79 @@
+configuration {
+    show-icons: true;
+}
+
+* {
+    background-color: #1a1b26;
+    text-color: #c0caf5;
+    font: "JetBrains Mono 12";
+}
+
+window {
+    width: 40%;
+    padding: 12px;
+    background-color: #1a1b26;
+}
+
+mainbox, listview, message, textbox {
+    background-color: #1a1b26;
+    text-color: #c0caf5;
+}
+
+inputbar {
+    padding: 8px;
+    background-color: #24283b;
+    text-color: #c0caf5;
+}
+
+prompt, entry, case-indicator, textbox-prompt-colon, num-filtered-rows, textbox-num-sep, num-rows {
+    background-color: transparent;
+    text-color: #c0caf5;
+}
+
+prompt {
+    text-color: #7aa2f7;
+    padding: 0 10px 0 0;
+}
+
+listview {
+    lines: 8;
+    border: 0;
+}
+
+scrollbar {
+    background-color: #1a1b26;
+    handle-color: #7aa2f7;
+    width: 4px;
+    handle-width: 4px;
+}
+
+element {
+    padding: 6px;
+    background-color: #1a1b26;
+    text-color: #c0caf5;
+}
+
+element normal.normal, element alternate.normal {
+    background-color: #1a1b26;
+    text-color: #c0caf5;
+}
+
+element selected.normal, element selected.active, element selected.urgent {
+    background-color: #7aa2f7;
+    text-color: #1a1b26;
+}
+
+element normal.active, element alternate.active {
+    background-color: #1a1b26;
+    text-color: #9ece6a;
+}
+
+element normal.urgent, element alternate.urgent {
+    background-color: #1a1b26;
+    text-color: #f7768e;
+}
+
+element-icon, element-text {
+    background-color: inherit;
+    text-color: inherit;
+}
