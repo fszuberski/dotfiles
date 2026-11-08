@@ -27,7 +27,7 @@ window#waybar {
   background: #f7768e;
 }
 
-#mode, #window, #clock, #tray {
+#mode, #window, #pulseaudio, #clock, #tray {
   padding: 0 10px;
 }
 

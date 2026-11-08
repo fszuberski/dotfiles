@@ -4,8 +4,13 @@
   "height": 28,
   "modules-left": ["sway/workspaces", "sway/mode"],
   "modules-center": ["sway/window"],
-  "modules-right": ["clock", "tray"],
+  "modules-right": ["pulseaudio", "clock", "tray"],
   "sway/window": { "max-length": 60 },
+  "pulseaudio": {
+    "format": "Vol {volume}%",
+    "format-muted": "Muted",
+    "on-click": "pavucontrol"
+  },
   "clock": { "format": "{:%a %d %b  %H:%M}" },
   "tray": { "spacing": 10 }
 }
