@@ -36,6 +36,8 @@ bindsym XF86AudioPlay exec playerctl play-pause
 bindsym XF86AudioPause exec playerctl play-pause
 bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
+bindsym XF86MonBrightnessUp exec brightnessctl --class=backlight set 5%+
+bindsym XF86MonBrightnessDown exec brightnessctl --class=backlight set 5%-
 
 bindsym $mod+h focus left
 bindsym $mod+j focus down

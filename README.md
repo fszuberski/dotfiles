@@ -38,6 +38,7 @@ Configuration and provisioning for three personal machines:
 - `playbooks/clipboard.yml` installs wl-clipboard and cliphist on Arch Linux.
 - `playbooks/yazi.yml` installs the Yazi terminal file manager on Arch Linux.
 - `playbooks/audio.yml` installs PipeWire audio tools on Arch Linux, stopping if the PulseAudio server is installed.
+- `playbooks/brightness.yml` installs brightnessctl on Arch Linux.
 - `playbooks/macos-window-manager.yml` installs yabai and skhd on macOS.
 - `playbooks/macos-window-manager-config.yml` deploys their configuration with Stow.
 - `playbooks/macos-window-manager-services.yml` starts their macOS user services.
@@ -67,6 +68,8 @@ Press Super+Ctrl+E to open Yazi in Ghostty. Super+E remains the Sway layout togg
 Install PipeWire audio tools with `ansible-playbook -i localhost, playbooks/audio.yml --ask-become-pass`. The playbook refuses to replace an installed PulseAudio server automatically; review any replacement and other package conflicts manually. PipeWire and WirePlumber normally run as user-session services.
 
 Sway's audio and media keys control the default PipeWire devices and media player. Waybar displays volume and opens pavucontrol when clicked.
+
+Brightness keys use brightnessctl's backlight class. External monitors may not expose a backlight device; check `brightnessctl --class=backlight --list`. DDC/CI monitor control is not configured.
 
 To install Zsh after setting up the Ansible dependencies in `DEPENDENCIES.md`:
 
