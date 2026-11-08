@@ -1,8 +1,14 @@
 #!/bin/sh
 set -eu
 
+simulate_only=false
+if [ "${1:-}" = '--check' ]; then
+    simulate_only=true
+    shift
+fi
+
 if [ "$#" -ne 2 ]; then
-    printf 'Usage: sh deployment/deploy.sh PACKAGE_DIRECTORY TARGET_DIRECTORY\n' >&2
+    printf 'Usage: sh deployment/deploy.sh [--check] PACKAGE_DIRECTORY TARGET_DIRECTORY\n' >&2
     exit 2
 fi
 
@@ -29,4 +35,6 @@ HOME=$work
 export HOME
 
 stow --simulate --no-folding --dir "$package_parent" --target "$target" --stow "$package_name"
-stow --verbose=2 --no-folding --dir "$package_parent" --target "$target" --stow "$package_name"
+if [ "$simulate_only" = false ]; then
+    stow --verbose=2 --no-folding --dir "$package_parent" --target "$target" --stow "$package_name"
+fi

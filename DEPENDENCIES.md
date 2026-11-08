@@ -5,7 +5,7 @@ Configuration deployment needs a POSIX shell, `mktemp`, and GNU Stow. Its test s
 ## Arch Linux (Fleder and Kikimora)
 
 ```sh
-sudo pacman -S --needed stow
+sudo pacman -S --needed ansible-core git stow
 ```
 
 ## macOS (Aethar)
@@ -16,7 +16,7 @@ Install [Homebrew](https://brew.sh/) first, then:
 brew install stow
 ```
 
-Ensure Homebrew's `bin` directory is on `PATH`. Package and system provisioning are not implemented yet; their dependencies will be documented when introduced.
+Ensure Homebrew's `bin` directory is on `PATH`.
 
 Verify the installation with `stow --version`. Run the checks with `sh tests/deploy.sh`, `sh tests/backup.sh`, and `sh tests/replace.sh` from the repository root.
 

@@ -37,6 +37,16 @@ Configuration and provisioning for three personal machines:
 
 The intended design separates shared configuration from platform and host overrides. Fleder and Kikimora will initially share an Arch/Sway profile, with room to diverge later. Configuration deployment, package installation, and privileged system changes will be separate operations.
 
+## Shared Arch setup
+
+After installing the prerequisites in `DEPENDENCIES.md`, run as the regular user:
+
+```sh
+ansible-playbook -i localhost, main.yml --ask-become-pass
+```
+
+This entry point checks all selected Stow packages for conflicts first, installs the current general packages, Zsh, fonts, tmux, Neovim and Ghostty, sets Zsh as the login shell, then deploys Zsh, tmux, Git, Neovim, Ghostty and OpenCode configuration. Existing conflicting files are not replaced; resolve each explicitly before retrying. `--tags config` runs only the preflight and configuration deployment; `--tags install` runs only installation; `--tags system` runs only the login-shell change. OpenCode itself and tmux plugins are not installed by this playbook. Neovim installs its plugins on startup rather than through Ansible. Sway is not yet included. macOS has separate playbooks and is not supported by this entry point yet.
+
 To install Zsh after setting up the Ansible dependencies in `DEPENDENCIES.md`:
 
 ```sh

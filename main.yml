@@ -1,0 +1,79 @@
+---
+- name: Preflight the shared Arch environment
+  hosts: localhost
+  connection: local
+  gather_facts: true
+  tasks:
+    - name: Require Arch Linux and a regular user
+      ansible.builtin.assert:
+        that:
+          - ansible_facts['distribution'] == 'Archlinux'
+          - ansible_facts['user_id'] != 'root'
+        fail_msg: Run this playbook as the regular user on Arch Linux without global become.
+      tags: always
+
+    - name: Select shared configuration packages
+      ansible.builtin.set_fact:
+        dotfiles_stow_packages:
+          - zsh
+          - tmux
+          - git
+          - nvim
+          - ghostty
+          - opencode
+      tags: always
+
+    - name: Check all configuration packages for conflicts
+      ansible.builtin.command:
+        argv:
+          - sh
+          - "{{ playbook_dir }}/deployment/deploy.sh"
+          - --check
+          - "{{ playbook_dir }}/stow/{{ item }}"
+          - "{{ ansible_facts['env']['HOME'] }}"
+      loop: "{{ dotfiles_stow_packages }}"
+      changed_when: false
+      check_mode: false
+      tags: config
+
+- import_playbook: playbooks/packages.yml
+  tags: install
+
+- import_playbook: playbooks/zsh.yml
+  tags: install
+
+- import_playbook: playbooks/login-shell.yml
+  tags: system
+
+- import_playbook: playbooks/fonts.yml
+  tags: install
+
+- import_playbook: playbooks/tmux.yml
+  tags: install
+
+- import_playbook: playbooks/nvim.yml
+  tags: install
+
+- import_playbook: playbooks/ghostty.yml
+  tags: install
+
+- name: Deploy the shared Arch configuration
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Deploy configuration packages
+      ansible.builtin.command:
+        argv:
+          - sh
+          - "{{ playbook_dir }}/deployment/deploy.sh"
+          - "{{ playbook_dir }}/stow/{{ item }}"
+          - "{{ ansible_facts['env']['HOME'] }}"
+      loop: "{{ dotfiles_stow_packages }}"
+      register: stow_result
+      changed_when: >-
+        'LINK:' in stow_result.stderr or
+        'UNLINK:' in stow_result.stderr or
+        'MKDIR:' in stow_result.stderr or
+        'RMDIR:' in stow_result.stderr
+      tags: config
