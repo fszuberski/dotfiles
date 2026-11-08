@@ -1,0 +1,24 @@
+---
+- name: Install the macOS window manager and hotkey daemon
+  hosts: localhost
+  connection: local
+  gather_facts: true
+
+  tasks:
+    - name: Require macOS
+      ansible.builtin.assert:
+        that:
+          - ansible_facts['system'] == 'Darwin'
+        fail_msg: This playbook supports macOS only.
+
+    - name: Add the yabai and skhd Homebrew tap
+      community.general.homebrew_tap:
+        name: asmvik/formulae
+        state: present
+
+    - name: Install yabai and skhd
+      community.general.homebrew:
+        name:
+          - asmvik/formulae/yabai
+          - asmvik/formulae/skhd
+        state: present
