@@ -27,6 +27,7 @@ Configuration and provisioning for three personal machines:
 - `playbooks/packages.yml` installs general-purpose development packages.
 - `playbooks/fonts.yml` installs Meslo Nerd Font and JetBrains Mono on Arch Linux or macOS.
 - `playbooks/ghostty.yml` installs Ghostty on Arch Linux or macOS.
+- `playbooks/sway.yml` installs Sway and its core Wayland dependencies on Arch Linux.
 - `playbooks/macos-window-manager.yml` installs yabai and skhd on macOS.
 - `playbooks/macos-window-manager-config.yml` deploys their configuration with Stow.
 - `playbooks/macos-window-manager-services.yml` starts their macOS user services.
@@ -45,7 +46,7 @@ After installing the prerequisites in `DEPENDENCIES.md`, run as the regular user
 ansible-playbook -i localhost, main.yml --ask-become-pass
 ```
 
-This entry point checks all selected Stow packages for conflicts first, installs the current general packages, Zsh, fonts, tmux, Neovim and Ghostty, sets Zsh as the login shell, then deploys Zsh, tmux, Git, Neovim, Ghostty and OpenCode configuration. Existing conflicting files are not replaced; resolve each explicitly before retrying. `--tags config` runs only the preflight and configuration deployment; `--tags install` runs only installation; `--tags system` runs only the login-shell change. OpenCode itself and tmux plugins are not installed by this playbook. Neovim installs its plugins on startup rather than through Ansible. Sway is not yet included. macOS has separate playbooks and is not supported by this entry point yet.
+This entry point checks all selected Stow packages for conflicts first, installs the current general packages, Zsh, fonts, tmux, Neovim, Ghostty and core Sway packages, sets Zsh as the login shell, then deploys Zsh, tmux, Git, Neovim, Ghostty and OpenCode configuration. Existing conflicting files are not replaced; resolve each explicitly before retrying. `--tags config` runs only the preflight and configuration deployment; `--tags install` runs only installation; `--tags system` runs only the login-shell change. OpenCode itself and tmux plugins are not installed by this playbook. Neovim installs its plugins on startup rather than through Ansible. Sway configuration and related desktop applications are not yet included. macOS has separate playbooks and is not supported by this entry point yet.
 
 To install Zsh after setting up the Ansible dependencies in `DEPENDENCIES.md`:
 

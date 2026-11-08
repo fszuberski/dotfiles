@@ -57,6 +57,9 @@
 - import_playbook: playbooks/ghostty.yml
   tags: install
 
+- import_playbook: playbooks/sway.yml
+  tags: install
+
 - name: Deploy the shared Arch configuration
   hosts: localhost
   connection: local
