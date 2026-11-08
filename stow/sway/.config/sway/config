@@ -1,6 +1,15 @@
 set $mod Mod4
 set $term ghostty
 
+# Tokyo Night, matching the tmux palette.
+output * bg #1a1b26 solid_color
+#                       border  background text    indicator child_border
+client.focused          #7aa2f7 #1a1b26   #c0caf5 #7aa2f7   #7aa2f7
+client.focused_inactive #1a1b26 #1a1b26   #c0caf5 #1a1b26   #1a1b26
+client.unfocused        #1a1b26 #1a1b26   #c0caf5 #1a1b26   #1a1b26
+client.urgent           #f7768e #1a1b26   #c0caf5 #f7768e   #f7768e
+client.background       #1a1b26
+
 input type:keyboard {
     xkb_layout "pl"
 }
