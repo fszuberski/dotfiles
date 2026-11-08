@@ -14,6 +14,7 @@
     - name: Install general packages on Arch Linux
       community.general.pacman:
         name:
+          - git-delta
           - nodejs
           - npm
           - go
@@ -25,6 +26,7 @@
     - name: Install general packages on macOS
       community.general.homebrew:
         name:
+          - git-delta
           - node
           - go
           - unzip
