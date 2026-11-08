@@ -7,6 +7,8 @@ lctrl - return : /Applications/Kitty.app/Contents/MacOS/kitty
 
 # close window in focus
 shift + lctrl - q : yabai -m window --close
+# Toggle topmost for the focused window (verify support with the installed yabai version).
+fn - f : yabai -m window --toggle topmost
 #shift + lctrl - q : osascript -e 'tell application "System Events" to perform action "AXPress" of (first button whose subrole is "AXCloseButton") of (first window whose subrole is "AXStandardWindow") of (first process whose frontmost is true)'
 
 
