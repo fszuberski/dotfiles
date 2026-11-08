@@ -5,7 +5,7 @@ input type:keyboard {
     xkb_layout "pl"
 }
 
-gaps inner 10
+gaps inner 0
 default_border none
 default_floating_border none
 floating_modifier $mod normal
