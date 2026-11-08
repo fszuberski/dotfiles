@@ -25,7 +25,7 @@ To install Zsh after setting up the Ansible dependencies in `DEPENDENCIES.md`:
 ansible-playbook -i localhost, playbooks/zsh.yml --ask-become-pass
 ```
 
-The playbook installs Zsh and clones Oh My Zsh if it is not already present. It does not update an existing Oh My Zsh checkout, change the login shell, deploy configuration, or install Zsh plugins. `--ask-become-pass` is needed when sudo on Arch requires a password; omit it on macOS.
+The playbook installs Zsh and clones Oh My Zsh and Powerlevel10k if they are not already present. It does not update existing checkouts, change the login shell, deploy configuration, or install Zsh plugins. `--ask-become-pass` is needed when sudo on Arch requires a password; omit it on macOS.
 
 ## Status and safety
 

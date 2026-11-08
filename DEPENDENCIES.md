@@ -31,4 +31,4 @@ ansible-playbook -i localhost, playbooks/zsh.yml --syntax-check
 
 Run `sh tests/ansible-zsh.sh` for the playbook checks. Installing Zsh on Arch requires sudo privileges; Homebrew must already be installed and configured on macOS.
 
-The Zsh installation playbook also clones Oh My Zsh. The copied Linux Zsh configuration additionally expects Powerlevel10k, zsh-autosuggestions, the Arch nvm initialization script and Neovim; the playbook does not yet install those dependencies. Run `sh tests/zsh.sh` to verify configuration deployment; it also checks Zsh syntax when Zsh is installed.
+The Zsh installation playbook also clones Oh My Zsh and Powerlevel10k. The copied Linux Zsh configuration additionally expects zsh-autosuggestions, the Arch nvm initialization script and Neovim; the playbook does not yet install those dependencies.
