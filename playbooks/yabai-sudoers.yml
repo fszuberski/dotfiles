@@ -1,0 +1,88 @@
+---
+- name: Configure sudo access for the yabai scripting addition
+  hosts: localhost
+  connection: local
+  gather_facts: true
+  vars:
+    sudoers_path: /private/etc/sudoers.d/dotfiles-yabai
+    managed_marker: '# Managed by dotfiles: yabai scripting addition'
+
+  tasks:
+    - name: Require macOS and a regular user
+      ansible.builtin.assert:
+        that:
+          - ansible_facts['system'] == 'Darwin'
+          - ansible_facts['user_id'] != 'root'
+          - ansible_facts['user_id'] is match('^[A-Za-z_][A-Za-z0-9_.-]*[$]?$')
+        fail_msg: Run this playbook as a regular macOS user without global become.
+
+    - name: Find the Homebrew prefix
+      ansible.builtin.command:
+        argv:
+          - brew
+          - --prefix
+      register: brew_prefix
+      changed_when: false
+      check_mode: false
+
+    - name: Validate the Homebrew prefix
+      ansible.builtin.assert:
+        that:
+          - brew_prefix.stdout is match('^/[A-Za-z0-9_./-]+$')
+        fail_msg: The Homebrew prefix cannot be safely used in a sudoers rule.
+
+    - name: Inspect the installed yabai binary
+      ansible.builtin.stat:
+        path: "{{ brew_prefix.stdout }}/bin/yabai"
+        follow: true
+        checksum_algorithm: sha256
+      register: yabai_binary
+
+    - name: Require an executable yabai binary
+      ansible.builtin.assert:
+        that:
+          - yabai_binary.stat.exists
+          - yabai_binary.stat.isreg | default(false)
+          - yabai_binary.stat.executable | default(false)
+          - yabai_binary.stat.checksum is defined
+        fail_msg: Install yabai with the window-manager playbook first.
+
+    - name: Inspect the dedicated sudoers file
+      ansible.builtin.stat:
+        path: "{{ sudoers_path }}"
+        follow: false
+      register: existing_sudoers
+      become: true
+
+    - name: Refuse to replace a sudoers symlink or non-file
+      ansible.builtin.assert:
+        that:
+          - not (existing_sudoers.stat.islnk | default(false))
+          - not existing_sudoers.stat.exists or (existing_sudoers.stat.isreg | default(false))
+        fail_msg: The dedicated sudoers path is not a regular file; inspect it manually.
+
+    - name: Read the existing dedicated sudoers file
+      ansible.builtin.slurp:
+        src: "{{ sudoers_path }}"
+      register: existing_sudoers_content
+      when: existing_sudoers.stat.exists
+      become: true
+
+    - name: Refuse to replace an unmanaged sudoers file
+      ansible.builtin.assert:
+        that:
+          - (existing_sudoers_content.content | b64decode).startswith(managed_marker ~ '\n')
+        fail_msg: The dedicated sudoers file is not managed by dotfiles; inspect it manually.
+      when: existing_sudoers.stat.exists
+
+    - name: Install the validated yabai sudoers rule
+      ansible.builtin.copy:
+        dest: "{{ sudoers_path }}"
+        owner: root
+        group: wheel
+        mode: '0440'
+        validate: /usr/sbin/visudo -cf %s
+        content: |
+          {{ managed_marker }}
+          {{ ansible_facts['user_id'] }} ALL=(root) NOPASSWD: sha256:{{ yabai_binary.stat.checksum }} {{ brew_prefix.stdout }}/bin/yabai --load-sa
+      become: true

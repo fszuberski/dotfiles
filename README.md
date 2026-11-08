@@ -28,6 +28,7 @@ Configuration and provisioning for three personal machines:
 - `playbooks/fonts.yml` installs Meslo Nerd Font and JetBrains Mono on Arch Linux or macOS.
 - `playbooks/ghostty.yml` installs Ghostty on Arch Linux or macOS.
 - `playbooks/macos-window-manager.yml` installs yabai and skhd on macOS.
+- `playbooks/yabai-sudoers.yml` explicitly configures validated sudo access for yabai's scripting addition on macOS.
 - `playbooks/login-shell.yml` explicitly sets the local Arch user's login shell to Zsh.
 - `legacy/` preserves the previous project as a reference; it is not part of the new deployment.
 - `PLAN.md` tracks the incremental implementation.
@@ -80,7 +81,9 @@ Install Ghostty with `ansible-playbook -i localhost, playbooks/ghostty.yml --ask
 
 On macOS, deploy the copied Karabiner configuration with `sh deployment/deploy.sh stow/karabiner "$HOME"`. Automatic backup snapshots remain in `legacy/` and are not deployed. Karabiner may modify its configuration; review changes in the repository after editing settings through the application.
 
-Install yabai and skhd on macOS with `ansible-playbook -i localhost, playbooks/macos-window-manager.yml`. The configurations in `stow/macos-window-manager/` have not been validated or deployed. Review them first: the yabai configuration invokes `sudo yabai --load-sa`, the skhd terminal shortcut points to Kitty, and the retained `fn-f` topmost command needs verification against the installed yabai version. Service and sudoers setup are not yet provided by the new playbooks. The yabai scripting addition requires partially disabled System Integrity Protection; this playbook does not change SIP.
+Install yabai and skhd on macOS with `ansible-playbook -i localhost, playbooks/macos-window-manager.yml`. The configurations in `stow/macos-window-manager/` have not been validated or deployed. Review them first: the yabai configuration invokes `sudo yabai --load-sa`, the skhd terminal shortcut points to Kitty, and the retained `fn-f` topmost command needs verification against the installed yabai version. Service startup is not yet provided by the new playbooks.
+
+For the optional yabai scripting addition, run `ansible-playbook -i localhost, playbooks/yabai-sudoers.yml --ask-become-pass` as the regular macOS user. It manages only `/private/etc/sudoers.d/dotfiles-yabai`, validates the file with `visudo`, and pins access to the installed binary's SHA-256 digest. It refuses to overwrite an unmanaged file at that path; review any separate pre-existing yabai sudoers rules manually. Rerun the playbook after updating yabai to refresh its digest. The scripting addition requires partially disabled System Integrity Protection; the playbooks do not change SIP.
 
 Install Neovim with `ansible-playbook -i localhost, playbooks/nvim.yml --ask-become-pass` (omit `--ask-become-pass` on macOS). The playbook also installs `make` and `gcc` on Arch and builds the Telescope FZF extension if the plugin is already installed and its library is missing. On macOS, install Apple's command line developer tools separately if a compiler or `make` is missing. Deploy the copied configuration separately with `ansible-playbook -i localhost, playbooks/nvim-config.yml`. Stow stops on conflicts; it does not replace existing files. See `stow/nvim/.config/nvim/README.md` for its version and additional tooling requirements. Opening Neovim bootstraps and installs plugins; Ansible does not manage plugin installation. After plugins are downloaded, rerun the Neovim playbook if the FZF build needs repair.
 
