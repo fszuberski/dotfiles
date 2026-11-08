@@ -19,6 +19,7 @@ Configuration and provisioning for three personal machines:
 - `stow/opencode/` contains OpenCode CLI settings and workflow instructions, not private service configuration.
 - `stow/ghostty/` contains the Ghostty configuration copied from macOS.
 - `stow/karabiner/` contains the existing macOS Karabiner configuration.
+- `stow/macos-window-manager/` contains the existing yabai and skhd configurations.
 - `playbooks/zsh.yml` installs Zsh on the local Arch or macOS machine.
 - `playbooks/nvim.yml` installs Neovim on the local Arch or macOS machine.
 - `playbooks/nvim-config.yml` deploys the Neovim configuration with Stow.
@@ -77,6 +78,8 @@ The OpenCode package contains the V2 CLI settings and global workflow instructio
 Install Ghostty with `ansible-playbook -i localhost, playbooks/ghostty.yml --ask-become-pass` (omit `--ask-become-pass` on macOS). Deploy its configuration separately with `sh deployment/deploy.sh stow/ghostty "$HOME"`. The configuration was tested on macOS; its Linux behavior still needs verification. It selects JetBrains Mono, which is installed by `playbooks/fonts.yml`, and contains macOS-specific settings.
 
 On macOS, deploy the copied Karabiner configuration with `sh deployment/deploy.sh stow/karabiner "$HOME"`. Automatic backup snapshots remain in `legacy/` and are not deployed. Karabiner may modify its configuration; review changes in the repository after editing settings through the application.
+
+The yabai and skhd configurations are preserved in `stow/macos-window-manager/` but have not been validated or deployed. Review them first: the yabai configuration invokes `sudo yabai --load-sa` and contains a line using skhd-style syntax, and the skhd terminal shortcut points to Kitty. No service or sudoers setup is provided by the new playbooks.
 
 Install Neovim with `ansible-playbook -i localhost, playbooks/nvim.yml --ask-become-pass` (omit `--ask-become-pass` on macOS). The playbook also installs `make` and `gcc` on Arch and builds the Telescope FZF extension if the plugin is already installed and its library is missing. On macOS, install Apple's command line developer tools separately if a compiler or `make` is missing. Deploy the copied configuration separately with `ansible-playbook -i localhost, playbooks/nvim-config.yml`. Stow stops on conflicts; it does not replace existing files. See `stow/nvim/.config/nvim/README.md` for its version and additional tooling requirements. Opening Neovim bootstraps and installs plugins; Ansible does not manage plugin installation. After plugins are downloaded, rerun the Neovim playbook if the FZF build needs repair.
 
