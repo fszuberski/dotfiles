@@ -1,0 +1,27 @@
+---
+- name: Deploy the macOS window-manager configuration
+  hosts: localhost
+  connection: local
+  gather_facts: true
+
+  tasks:
+    - name: Require macOS and a regular user
+      ansible.builtin.assert:
+        that:
+          - ansible_facts['system'] == 'Darwin'
+          - ansible_facts['user_id'] != 'root'
+        fail_msg: Run this playbook as the regular macOS user without global become.
+
+    - name: Deploy yabai and skhd with conflict-safe Stow wrapper
+      ansible.builtin.command:
+        argv:
+          - sh
+          - "{{ playbook_dir }}/../deployment/deploy.sh"
+          - "{{ playbook_dir }}/../stow/macos-window-manager"
+          - "{{ ansible_facts['env']['HOME'] }}"
+      register: stow_result
+      changed_when: >-
+        'LINK:' in stow_result.stderr or
+        'UNLINK:' in stow_result.stderr or
+        'MKDIR:' in stow_result.stderr or
+        'RMDIR:' in stow_result.stderr

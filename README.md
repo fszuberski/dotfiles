@@ -28,6 +28,7 @@ Configuration and provisioning for three personal machines:
 - `playbooks/fonts.yml` installs Meslo Nerd Font and JetBrains Mono on Arch Linux or macOS.
 - `playbooks/ghostty.yml` installs Ghostty on Arch Linux or macOS.
 - `playbooks/macos-window-manager.yml` installs yabai and skhd on macOS.
+- `playbooks/macos-window-manager-config.yml` deploys their configuration with Stow.
 - `playbooks/yabai-sudoers.yml` explicitly configures validated sudo access for yabai's scripting addition on macOS.
 - `playbooks/login-shell.yml` explicitly sets the local Arch user's login shell to Zsh.
 - `legacy/` preserves the previous project as a reference; it is not part of the new deployment.
@@ -81,7 +82,7 @@ Install Ghostty with `ansible-playbook -i localhost, playbooks/ghostty.yml --ask
 
 On macOS, deploy the copied Karabiner configuration with `sh deployment/deploy.sh stow/karabiner "$HOME"`. Automatic backup snapshots remain in `legacy/` and are not deployed. Karabiner may modify its configuration; review changes in the repository after editing settings through the application.
 
-Install yabai and skhd on macOS with `ansible-playbook -i localhost, playbooks/macos-window-manager.yml`. The configurations in `stow/macos-window-manager/` have not been validated or deployed. Review them first: the yabai configuration invokes `sudo yabai --load-sa`, the skhd terminal shortcut points to Kitty, and the retained `fn-f` topmost command needs verification against the installed yabai version. Service startup is not yet provided by the new playbooks.
+Install yabai and skhd on macOS with `ansible-playbook -i localhost, playbooks/macos-window-manager.yml`. Deploy their configuration separately with `ansible-playbook -i localhost, playbooks/macos-window-manager-config.yml`; it stops on existing-file conflicts. The configuration has not been validated on Aethar. Review it first: the yabai configuration invokes `sudo yabai --load-sa`, the skhd terminal shortcut points to Kitty, and the retained `fn-f` topmost command needs verification against the installed yabai version. Service startup is not yet provided by the new playbooks.
 
 For the optional yabai scripting addition, run `ansible-playbook -i localhost, playbooks/yabai-sudoers.yml --ask-become-pass` as the regular macOS user. It manages only `/private/etc/sudoers.d/dotfiles-yabai`, validates the file with `visudo`, and pins access to the installed binary's SHA-256 digest. It refuses to overwrite an unmanaged file at that path; review any separate pre-existing yabai sudoers rules manually. Rerun the playbook after updating yabai to refresh its digest. The scripting addition requires partially disabled System Integrity Protection; the playbooks do not change SIP.
 
