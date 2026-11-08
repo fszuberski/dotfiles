@@ -23,3 +23,10 @@
         name: zsh
         state: present
       when: ansible_facts['system'] == 'Darwin'
+
+    - name: Install Oh My Zsh without running its installer
+      ansible.builtin.git:
+        repo: https://github.com/ohmyzsh/ohmyzsh.git
+        dest: "{{ ansible_facts['env']['HOME'] }}/.oh-my-zsh"
+        depth: 1
+        update: false

@@ -22,7 +22,7 @@ Verify the installation with `stow --version`. Run the checks with `sh tests/dep
 
 ## Ansible provisioning
 
-The Zsh installation playbook additionally requires Ansible and the `community.general` collection. On Arch install `ansible-core` with pacman; on macOS install `ansible` with Homebrew. Then, from the repository root:
+The Zsh installation playbook additionally requires Git, Ansible and the `community.general` collection. On Arch install `ansible-core` and `git` with pacman; on macOS install `ansible` and `git` with Homebrew. Then, from the repository root:
 
 ```sh
 ansible-galaxy collection install -r requirements.yml
@@ -31,4 +31,4 @@ ansible-playbook -i localhost, playbooks/zsh.yml --syntax-check
 
 Run `sh tests/ansible-zsh.sh` for the playbook checks. Installing Zsh on Arch requires sudo privileges; Homebrew must already be installed and configured on macOS.
 
-The copied Linux Zsh configuration also expects Oh My Zsh, Powerlevel10k, zsh-autosuggestions, the Arch nvm initialization script and Neovim. The Zsh installation playbook does not install those dependencies. Run `sh tests/zsh.sh` to verify configuration deployment; it also checks Zsh syntax when Zsh is installed.
+The Zsh installation playbook also clones Oh My Zsh. The copied Linux Zsh configuration additionally expects Powerlevel10k, zsh-autosuggestions, the Arch nvm initialization script and Neovim; the playbook does not yet install those dependencies. Run `sh tests/zsh.sh` to verify configuration deployment; it also checks Zsh syntax when Zsh is installed.
