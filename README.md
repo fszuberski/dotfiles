@@ -24,6 +24,7 @@ Configuration and provisioning for three personal machines:
 - `playbooks/tmux.yml` installs tmux and its plugin manager.
 - `playbooks/packages.yml` installs general-purpose development packages.
 - `playbooks/fonts.yml` installs Meslo Nerd Font and JetBrains Mono on Arch Linux or macOS.
+- `playbooks/ghostty.yml` installs Ghostty on Arch Linux or macOS.
 - `playbooks/login-shell.yml` explicitly sets the local Arch user's login shell to Zsh.
 - `legacy/` preserves the previous project as a reference; it is not part of the new deployment.
 - `PLAN.md` tracks the incremental implementation.
@@ -72,7 +73,7 @@ Deploy the copied Git configuration with `sh deployment/deploy.sh stow/git "$HOM
 
 The OpenCode package contains the V2 CLI settings and global workflow instructions. Deploy it with `sh deployment/deploy.sh stow/opencode "$HOME"`; existing files will be reported as conflicts. Private OpenCode service configuration is intentionally excluded and must remain machine-local.
 
-The Ghostty configuration can be deployed with `sh deployment/deploy.sh stow/ghostty "$HOME"`. It was tested on macOS; its Linux behavior still needs verification. It selects JetBrains Mono, which is installed by `playbooks/fonts.yml`, and contains macOS-specific settings.
+Install Ghostty with `ansible-playbook -i localhost, playbooks/ghostty.yml --ask-become-pass` (omit `--ask-become-pass` on macOS). Deploy its configuration separately with `sh deployment/deploy.sh stow/ghostty "$HOME"`. The configuration was tested on macOS; its Linux behavior still needs verification. It selects JetBrains Mono, which is installed by `playbooks/fonts.yml`, and contains macOS-specific settings.
 
 Install Neovim with `ansible-playbook -i localhost, playbooks/nvim.yml --ask-become-pass` (omit `--ask-become-pass` on macOS). The playbook also installs `make` and `gcc` on Arch and builds the Telescope FZF extension if the plugin is already installed and its library is missing. On macOS, install Apple's command line developer tools separately if a compiler or `make` is missing. Deploy the copied configuration separately with `ansible-playbook -i localhost, playbooks/nvim-config.yml`. Stow stops on conflicts; it does not replace existing files. See `stow/nvim/.config/nvim/README.md` for its version and additional tooling requirements. Opening Neovim bootstraps and installs plugins; Ansible does not manage plugin installation. After plugins are downloaded, rerun the Neovim playbook if the FZF build needs repair.
 

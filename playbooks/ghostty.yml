@@ -1,0 +1,25 @@
+---
+- name: Install Ghostty on the local machine
+  hosts: localhost
+  connection: local
+  gather_facts: true
+
+  tasks:
+    - name: Require Arch Linux or macOS
+      ansible.builtin.assert:
+        that:
+          - ansible_facts['distribution'] == 'Archlinux' or ansible_facts['system'] == 'Darwin'
+        fail_msg: This playbook supports Arch Linux and macOS only.
+
+    - name: Install Ghostty on Arch Linux
+      community.general.pacman:
+        name: ghostty
+        state: present
+      become: true
+      when: ansible_facts['distribution'] == 'Archlinux'
+
+    - name: Install Ghostty on macOS
+      community.general.homebrew_cask:
+        name: ghostty
+        state: present
+      when: ansible_facts['system'] == 'Darwin'
