@@ -21,6 +21,7 @@
           - nvim
           - ghostty
           - opencode
+          - sway
       tags: always
 
     - name: Check all configuration packages for conflicts
