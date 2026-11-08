@@ -1,0 +1,40 @@
+---
+- name: Set the local user's login shell to Zsh
+  hosts: localhost
+  connection: local
+  gather_facts: true
+
+  tasks:
+    - name: Require Arch Linux and a non-root user
+      ansible.builtin.assert:
+        that:
+          - ansible_facts['distribution'] == 'Archlinux'
+          - ansible_facts['user_id'] != 'root'
+        fail_msg: Run this playbook as the regular user on Arch Linux, without global become.
+
+    - name: Check that Zsh is an allowed login shell
+      ansible.builtin.command:
+        argv:
+          - grep
+          - -Fx
+          - /usr/bin/zsh
+          - /etc/shells
+      changed_when: false
+      check_mode: false
+
+    - name: Check that Zsh is installed
+      ansible.builtin.stat:
+        path: /usr/bin/zsh
+      register: zsh_binary
+
+    - name: Require an executable Zsh binary
+      ansible.builtin.assert:
+        that:
+          - zsh_binary.stat.exists
+          - zsh_binary.stat.executable
+
+    - name: Set the user's login shell
+      ansible.builtin.user:
+        name: "{{ ansible_facts['user_id'] }}"
+        shell: /usr/bin/zsh
+      become: true
