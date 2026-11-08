@@ -1,0 +1,32 @@
+---
+- name: Install tmux and its plugin manager
+  hosts: localhost
+  connection: local
+  gather_facts: true
+
+  tasks:
+    - name: Require Arch Linux or macOS
+      ansible.builtin.assert:
+        that:
+          - ansible_facts['distribution'] == 'Archlinux' or ansible_facts['system'] == 'Darwin'
+        fail_msg: This playbook supports Arch Linux and macOS only.
+
+    - name: Install tmux on Arch Linux
+      community.general.pacman:
+        name: tmux
+        state: present
+      become: true
+      when: ansible_facts['distribution'] == 'Archlinux'
+
+    - name: Install tmux on macOS
+      community.general.homebrew:
+        name: tmux
+        state: present
+      when: ansible_facts['system'] == 'Darwin'
+
+    - name: Install tmux plugin manager
+      ansible.builtin.git:
+        repo: https://github.com/tmux-plugins/tpm.git
+        dest: "{{ ansible_facts['env']['HOME'] }}/.config/tmux/plugins/tpm"
+        depth: 1
+        update: false
