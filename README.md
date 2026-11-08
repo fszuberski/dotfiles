@@ -46,7 +46,7 @@ To link a single package using GNU Stow:
 sh deployment/deploy.sh /path/to/package /path/to/home
 ```
 
-For example, from the repository root, `sh deployment/deploy.sh stow/zsh "$HOME"` deploys the Linux Zsh and Powerlevel10k settings copied from `legacy/`. They expect Oh My Zsh, Powerlevel10k and zsh-autosuggestions. Arch's nvm initialization is loaded only if present. Review the configuration before deploying it, especially on macOS.
+For example, from the repository root, `sh deployment/deploy.sh stow/zsh "$HOME"` deploys the Linux Zsh and Powerlevel10k settings copied from `legacy/`. They expect Oh My Zsh, Powerlevel10k and zsh-autosuggestions. nvm is loaded if present at its Arch or Apple Silicon Homebrew location. Review the configuration before deploying it, especially on macOS.
 
 Deployment requires GNU Stow. It runs a simulation first and stops if that fails, uses `--no-folding`, and does not use `--adopt` or deliberately replace existing files. Stow's user and working-directory configuration files are not loaded by the wrapper. If a filesystem error or concurrent change occurs during linking, some links or directories may already have been created; inspect the target before retrying. This tool does not yet remove stale links.
 

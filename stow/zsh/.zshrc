@@ -86,8 +86,13 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-# nvm setup
-[[ -r /usr/share/nvm/init-nvm.sh ]] && source /usr/share/nvm/init-nvm.sh
+# nvm setup (optional)
+if [[ -r /usr/share/nvm/init-nvm.sh ]]; then
+  source /usr/share/nvm/init-nvm.sh
+elif [[ -r /opt/homebrew/opt/nvm/nvm.sh ]]; then
+  export NVM_DIR="$HOME/.nvm"
+  source /opt/homebrew/opt/nvm/nvm.sh
+fi
 
 # PATH
 # go
