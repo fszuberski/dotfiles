@@ -3,6 +3,9 @@
   hosts: localhost
   connection: local
   gather_facts: true
+  vars:
+    nvim_data_dir: "{{ ansible_facts['env']['XDG_DATA_HOME'] | default(ansible_facts['env']['HOME'] ~ '/.local/share', true) }}/nvim"
+    fzf_native_dir: "{{ nvim_data_dir }}/lazy/telescope-fzf-native.nvim"
 
   tasks:
     - name: Require Arch Linux or macOS
@@ -23,3 +26,26 @@
         name: neovim
         state: present
       when: ansible_facts['system'] == 'Darwin'
+
+    - name: Install Neovim build tools on Arch Linux
+      community.general.pacman:
+        name:
+          - make
+          - gcc
+        state: present
+      become: true
+      when: ansible_facts['distribution'] == 'Archlinux'
+
+    - name: Check whether Telescope FZF is installed
+      ansible.builtin.stat:
+        path: "{{ fzf_native_dir }}/Makefile"
+      register: fzf_native_makefile
+
+    - name: Build the installed Telescope FZF extension
+      ansible.builtin.command:
+        argv:
+          - make
+          - -C
+          - "{{ fzf_native_dir }}"
+        creates: "{{ fzf_native_dir }}/build/libfzf.so"
+      when: fzf_native_makefile.stat.exists
