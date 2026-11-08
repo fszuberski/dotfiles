@@ -16,6 +16,7 @@ Configuration and provisioning for three personal machines:
 - `stow/nvim/` contains the existing Neovim configuration, its lockfile and tests.
 - `stow/tmux/` contains the existing shared tmux configuration.
 - `stow/git/` contains the existing Linux Git configuration.
+- `stow/opencode/` contains OpenCode CLI settings and workflow instructions, not private service configuration.
 - `playbooks/zsh.yml` installs Zsh on the local Arch or macOS machine.
 - `playbooks/nvim.yml` installs Neovim on the local Arch or macOS machine.
 - `playbooks/nvim-config.yml` deploys the Neovim configuration with Stow.
@@ -67,6 +68,8 @@ For example, from the repository root, `sh deployment/deploy.sh stow/zsh "$HOME"
 Install tmux and its plugin manager (TPM) with `ansible-playbook -i localhost, playbooks/tmux.yml --ask-become-pass` (omit `--ask-become-pass` on macOS). The playbook does not update an existing TPM checkout or deploy configuration. Deploy the existing configuration separately with `sh deployment/deploy.sh stow/tmux "$HOME"`. Inside tmux, press `Ctrl-a` followed by uppercase `I` to install its configured plugins.
 
 Deploy the copied Git configuration with `sh deployment/deploy.sh stow/git "$HOME"`. It expects Neovim and the `delta` pager; Delta is installed by `playbooks/packages.yml`. The Linux configuration enables Delta's side-by-side view; the old macOS configuration did not.
+
+The OpenCode package contains the V2 CLI settings and global workflow instructions. Deploy it with `sh deployment/deploy.sh stow/opencode "$HOME"`; existing files will be reported as conflicts. Private OpenCode service configuration is intentionally excluded and must remain machine-local.
 
 Install Neovim with `ansible-playbook -i localhost, playbooks/nvim.yml --ask-become-pass` (omit `--ask-become-pass` on macOS). The playbook also installs `make` and `gcc` on Arch and builds the Telescope FZF extension if the plugin is already installed and its library is missing. On macOS, install Apple's command line developer tools separately if a compiler or `make` is missing. Deploy the copied configuration separately with `ansible-playbook -i localhost, playbooks/nvim-config.yml`. Stow stops on conflicts; it does not replace existing files. See `stow/nvim/.config/nvim/README.md` for its version and additional tooling requirements. Opening Neovim bootstraps and installs plugins; Ansible does not manage plugin installation. After plugins are downloaded, rerun the Neovim playbook if the FZF build needs repair.
 
