@@ -22,6 +22,7 @@ floating_modifier $mod normal
 bindsym $mod+Return exec $term
 bindsym $mod+d exec rofi -show drun
 bindsym $mod+n exec swaync-client -t -sw
+bindsym $mod+Shift+v exec sh ~/.config/sway/clipboard-menu.sh
 bindsym $mod+Shift+q kill
 bindsym $mod+Shift+c reload
 bindsym $mod+Shift+e exec swaynag -t warning -m 'Exit Sway and end the session?' -B 'Exit' 'swaymsg exit'
@@ -91,6 +92,8 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 exec swaync
+exec wl-paste --type text --watch cliphist store
+exec wl-paste --type image --watch cliphist store
 
 bar {
     swaybar_command waybar
