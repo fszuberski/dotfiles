@@ -1,0 +1,109 @@
+---
+- name: Start the macOS window-manager user services
+  hosts: localhost
+  connection: local
+  gather_facts: true
+  vars:
+    window_manager_services:
+      - name: yabai
+        label: com.asmvik.yabai
+      - name: skhd
+        label: com.asmvik.skhd
+
+  tasks:
+    - name: Require macOS and a regular user
+      ansible.builtin.assert:
+        that:
+          - ansible_facts['system'] == 'Darwin'
+          - ansible_facts['user_id'] != 'root'
+          - ansible_facts['env']['XDG_CONFIG_HOME'] | default('', true) in ['', ansible_facts['env']['HOME'] ~ '/.config']
+        fail_msg: Run as the regular macOS user with the default configuration directory.
+
+    - name: Require an active graphical login session
+      ansible.builtin.command:
+        argv:
+          - launchctl
+          - print
+          - "gui/{{ ansible_facts['user_uid'] }}"
+      changed_when: false
+      check_mode: false
+
+    - name: Find the Homebrew prefix
+      ansible.builtin.command:
+        argv:
+          - brew
+          - --prefix
+      register: brew_prefix
+      changed_when: false
+      check_mode: false
+
+    - name: Check window-manager configuration files
+      ansible.builtin.stat:
+        path: "{{ ansible_facts['env']['HOME'] }}/.config/{{ item }}"
+      loop:
+        - yabai/yabairc
+        - skhd/skhdrc
+      register: window_manager_configs
+
+    - name: Require window-manager configuration files
+      ansible.builtin.assert:
+        that:
+          - item.stat.exists
+          - item.stat.isreg | default(false)
+        fail_msg: Deploy the yabai and skhd configuration before starting the services.
+      loop: "{{ window_manager_configs.results }}"
+      loop_control:
+        label: "{{ item.item }}"
+
+    - name: Check permission to load the yabai scripting addition
+      ansible.builtin.command:
+        argv:
+          - sudo
+          - -n
+          - -l
+          - "{{ brew_prefix.stdout }}/bin/yabai"
+          - --load-sa
+      changed_when: false
+      check_mode: false
+
+    - name: Check the user services
+      ansible.builtin.command:
+        argv:
+          - launchctl
+          - print
+          - "gui/{{ ansible_facts['user_uid'] }}/{{ item.label }}"
+      loop: "{{ window_manager_services }}"
+      loop_control:
+        label: "{{ item.name }}"
+      register: service_status
+      changed_when: false
+      failed_when: false
+      check_mode: false
+
+    - name: Start or restart services that are not running
+      ansible.builtin.command:
+        argv:
+          - "{{ brew_prefix.stdout }}/bin/{{ item.item.name }}"
+          - "{{ '--restart-service' if item.rc == 0 else '--start-service' }}"
+      loop: "{{ service_status.results }}"
+      loop_control:
+        label: "{{ item.item.name }}"
+      when:
+        - not ansible_check_mode
+        - item.rc != 0 or 'state = running' not in item.stdout
+
+    - name: Verify the user services are running
+      ansible.builtin.command:
+        argv:
+          - launchctl
+          - print
+          - "gui/{{ ansible_facts['user_uid'] }}/{{ item.label }}"
+      loop: "{{ window_manager_services }}"
+      loop_control:
+        label: "{{ item.name }}"
+      register: verified_service
+      changed_when: false
+      until: verified_service.rc == 0 and 'state = running' in verified_service.stdout
+      retries: 5
+      delay: 1
+      when: not ansible_check_mode
