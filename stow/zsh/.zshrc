@@ -94,10 +94,6 @@ source $ZSH/oh-my-zsh.sh
 GOPATH="$HOME/go"
 PATH="$GOPATH/bin:$PATH"
 
-# geth
-GETH_PATH="/home/fszuberski/code/go-ethereum/build/bin"
-PATH="$GETH_PATH:$PATH"
-
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
