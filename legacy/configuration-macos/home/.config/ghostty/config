@@ -1,0 +1,59 @@
+## Font
+font-family = JetBrains Mono
+font-feature = -calt, -liga, -dlig
+font-thicken = true
+font-thicken-strength = 128
+font-style = SemiBold
+font-style-bold = Bold
+font-style-italic = SemiBold Italic
+font-style-bold-italic = Bold Italic
+font-size = 14
+
+## Theme
+theme = TokyoNight Night
+
+## Cursor
+cursor-color = #528bff
+cursor-style-blink = false
+
+## Window appearance
+macos-titlebar-style = hidden
+
+## Window padding
+window-padding-y = 6,0
+window-padding-x = 6
+
+## macos behavior
+macos-option-as-alt = left
+# macos-hidden = always
+quit-after-last-window-closed = true
+
+## Scrollback (~10k lines)
+scrollback-limit = 10000000
+
+## Clipboard
+clipboard-write = allow
+clipboard-read = ask
+
+## Keybindings
+# unbnd default super+n tab switching (physical option key = super after modifier rotation;
+# these would fire on physical option+n and interfere with tmux window switching)
+keybind = super+1=unbind
+keybind = super+2=unbind
+keybind = super+3=unbind
+keybind = super+4=unbind
+keybind = super+5=unbind
+keybind = super+6=unbind
+keybind = super+7=unbind
+keybind = super+8=unbind
+keybind = super+9=unbind
+keybind = super+0=unbind
+
+# Open links with physical ctrl+click
+# link-click = ctrl+left # error: unknown field
+
+# ctrl+c: copy of selection exists, else send iterrupt
+keybind = performable:ctrl+c=copy_to_clipboard
+
+# ctrl+v: paste from clipboard
+keybind = ctrl+v=paste_from_clipboard
