@@ -1,18 +1,25 @@
 ---
-- name: Install the terminal font on Arch Linux
+- name: Install the terminal font
   hosts: localhost
   connection: local
   gather_facts: true
 
   tasks:
-    - name: Require Arch Linux
+    - name: Require Arch Linux or macOS
       ansible.builtin.assert:
         that:
-          - ansible_facts['distribution'] == 'Archlinux'
-        fail_msg: This font playbook currently supports Arch Linux only.
+          - ansible_facts['distribution'] == 'Archlinux' or ansible_facts['system'] == 'Darwin'
+        fail_msg: This font playbook supports Arch Linux and macOS only.
 
-    - name: Install Meslo Nerd Font
+    - name: Install Meslo Nerd Font on Arch Linux
       community.general.pacman:
         name: ttf-meslo-nerd
         state: present
       become: true
+      when: ansible_facts['distribution'] == 'Archlinux'
+
+    - name: Install Meslo Nerd Font on macOS
+      community.general.homebrew_cask:
+        name: font-meslo-lg-nerd-font
+        state: present
+      when: ansible_facts['system'] == 'Darwin'
