@@ -14,6 +14,7 @@ Configuration and provisioning for three personal machines:
 - `DEPENDENCIES.md` lists prerequisites and installation commands.
 - `stow/zsh/` contains the initial shared Zsh configuration.
 - `playbooks/zsh.yml` installs Zsh on the local Arch or macOS machine.
+- `playbooks/fonts.yml` installs Meslo Nerd Font on Arch Linux.
 - `legacy/` preserves the previous project as a reference; it is not part of the new deployment.
 - `PLAN.md` tracks the incremental implementation.
 
@@ -26,6 +27,14 @@ ansible-playbook -i localhost, playbooks/zsh.yml --ask-become-pass
 ```
 
 The playbook installs Zsh and clones Oh My Zsh, Powerlevel10k and zsh-autosuggestions if they are not already present. It does not update existing checkouts, change the login shell or deploy configuration. `--ask-become-pass` is needed when sudo on Arch requires a password; omit it on macOS.
+
+To install Meslo Nerd Font on Arch Linux:
+
+```sh
+ansible-playbook -i localhost, playbooks/fonts.yml --ask-become-pass
+```
+
+The font playbook currently supports Arch only. The terminal must also be configured to use the installed font.
 
 ## Status and safety
 
