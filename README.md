@@ -14,6 +14,7 @@ Configuration and provisioning for three personal machines:
 - `DEPENDENCIES.md` lists prerequisites and installation commands.
 - `stow/zsh/` contains the initial shared Zsh configuration.
 - `stow/nvim/` contains the existing Neovim configuration, its lockfile and tests.
+- `stow/tmux/` contains the existing shared tmux configuration.
 - `playbooks/zsh.yml` installs Zsh on the local Arch or macOS machine.
 - `playbooks/nvim.yml` installs Neovim on the local Arch or macOS machine.
 - `playbooks/nvim-config.yml` deploys the Neovim configuration with Stow.
@@ -60,6 +61,8 @@ sh deployment/deploy.sh /path/to/package /path/to/home
 ```
 
 For example, from the repository root, `sh deployment/deploy.sh stow/zsh "$HOME"` deploys the Linux Zsh and Powerlevel10k settings copied from `legacy/`. They expect Oh My Zsh, Powerlevel10k and zsh-autosuggestions. nvm is loaded if present at its Arch or Apple Silicon Homebrew location. Review the configuration before deploying it, especially on macOS.
+
+The existing tmux configuration can be deployed with `sh deployment/deploy.sh stow/tmux "$HOME"`. It expects tmux and the tmux plugin manager (TPM); installation for these has not yet been added.
 
 Install Neovim with `ansible-playbook -i localhost, playbooks/nvim.yml --ask-become-pass` (omit `--ask-become-pass` on macOS). The playbook also installs `make` and `gcc` on Arch and builds the Telescope FZF extension if the plugin is already installed and its library is missing. On macOS, install Apple's command line developer tools separately if a compiler or `make` is missing. Deploy the copied configuration separately with `ansible-playbook -i localhost, playbooks/nvim-config.yml`. Stow stops on conflicts; it does not replace existing files. See `stow/nvim/.config/nvim/README.md` for its version and additional tooling requirements. Opening Neovim bootstraps and installs plugins; Ansible does not manage plugin installation. After plugins are downloaded, rerun the Neovim playbook if the FZF build needs repair.
 
