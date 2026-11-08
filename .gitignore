@@ -2,3 +2,5 @@
 .idea/
 /PLAN.md
 /stow/opencode/.config/opencode/service.json
+/legacy/configuration/home/.config/opencode/service.json
+/configuration/home/.config/opencode/service.json
