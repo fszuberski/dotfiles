@@ -8,10 +8,34 @@
   color: #c0caf5;
 }
 
+.control-center .control-center-list,
+.control-center .control-center-list > row,
+.notification-group,
+.notification-group:focus,
+.notification-row,
+.notification-row:focus,
+.notification-background {
+  background: transparent;
+  box-shadow: none;
+}
+
 .notification-row .notification-background .notification,
-.control-center .notification {
+.control-center .notification,
+.notification-group.collapsed .notification-row .notification,
+.notification-group.collapsed:hover .notification-row .notification {
   background: #24283b;
   color: #c0caf5;
+}
+
+.notification-row .notification-background .notification .notification-default-action,
+.notification-row .notification-background .notification .notification-default-action .notification-content {
+  background: transparent;
+  color: #c0caf5;
+  box-shadow: none;
+}
+
+.notification-row .notification-background .notification .notification-default-action:hover {
+  background: #414868;
 }
 
 .notification .summary,
