@@ -29,4 +29,4 @@ HOME=$work
 export HOME
 
 stow --simulate --no-folding --dir "$package_parent" --target "$target" --stow "$package_name"
-stow --no-folding --dir "$package_parent" --target "$target" --stow "$package_name"
+stow --verbose=2 --no-folding --dir "$package_parent" --target "$target" --stow "$package_name"

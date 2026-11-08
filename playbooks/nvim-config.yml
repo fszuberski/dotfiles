@@ -1,0 +1,20 @@
+---
+- name: Deploy the Neovim configuration
+  hosts: localhost
+  connection: local
+  gather_facts: true
+
+  tasks:
+    - name: Deploy Neovim with conflict-safe Stow wrapper
+      ansible.builtin.command:
+        argv:
+          - sh
+          - "{{ playbook_dir }}/../deployment/deploy.sh"
+          - "{{ playbook_dir }}/../stow/nvim"
+          - "{{ ansible_facts['env']['HOME'] }}"
+      register: stow_result
+      changed_when: >-
+        'LINK:' in stow_result.stderr or
+        'UNLINK:' in stow_result.stderr or
+        'MKDIR:' in stow_result.stderr or
+        'RMDIR:' in stow_result.stderr

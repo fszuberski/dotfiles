@@ -16,6 +16,7 @@ Configuration and provisioning for three personal machines:
 - `stow/nvim/` contains the existing Neovim configuration, its lockfile and tests.
 - `playbooks/zsh.yml` installs Zsh on the local Arch or macOS machine.
 - `playbooks/nvim.yml` installs Neovim on the local Arch or macOS machine.
+- `playbooks/nvim-config.yml` deploys the Neovim configuration with Stow.
 - `playbooks/fonts.yml` installs Meslo Nerd Font on Arch Linux or macOS.
 - `playbooks/login-shell.yml` explicitly sets the local Arch user's login shell to Zsh.
 - `legacy/` preserves the previous project as a reference; it is not part of the new deployment.
@@ -59,7 +60,7 @@ sh deployment/deploy.sh /path/to/package /path/to/home
 
 For example, from the repository root, `sh deployment/deploy.sh stow/zsh "$HOME"` deploys the Linux Zsh and Powerlevel10k settings copied from `legacy/`. They expect Oh My Zsh, Powerlevel10k and zsh-autosuggestions. nvm is loaded if present at its Arch or Apple Silicon Homebrew location. Review the configuration before deploying it, especially on macOS.
 
-Install Neovim with `ansible-playbook -i localhost, playbooks/nvim.yml --ask-become-pass` (omit `--ask-become-pass` on macOS). The playbook installs Neovim only; it does not deploy configuration or plugins. The copied configuration can be deployed separately with `sh deployment/deploy.sh stow/nvim "$HOME"`. See `stow/nvim/.config/nvim/README.md` for its version and additional tooling requirements.
+Install Neovim with `ansible-playbook -i localhost, playbooks/nvim.yml --ask-become-pass` (omit `--ask-become-pass` on macOS). The playbook installs Neovim only. Deploy the copied configuration separately with `ansible-playbook -i localhost, playbooks/nvim-config.yml`. Stow stops on conflicts; it does not replace existing files. See `stow/nvim/.config/nvim/README.md` for its version and additional tooling requirements. Plugin installation through Ansible is not yet implemented.
 
 Deployment requires GNU Stow. It runs a simulation first and stops if that fails, uses `--no-folding`, and does not use `--adopt` or deliberately replace existing files. Stow's user and working-directory configuration files are not loaded by the wrapper. If a filesystem error or concurrent change occurs during linking, some links or directories may already have been created; inspect the target before retrying. This tool does not yet remove stale links.
 
