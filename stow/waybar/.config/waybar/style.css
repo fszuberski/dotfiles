@@ -1,0 +1,36 @@
+* {
+  border: none;
+  border-radius: 0;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  min-height: 0;
+}
+
+window#waybar {
+  background: #1a1b26;
+  color: #c0caf5;
+}
+
+#workspaces button {
+  padding: 0 8px;
+  color: #c0caf5;
+  background: transparent;
+}
+
+#workspaces button.focused {
+  color: #1a1b26;
+  background: #7aa2f7;
+}
+
+#workspaces button.urgent {
+  color: #1a1b26;
+  background: #f7768e;
+}
+
+#mode, #window, #clock, #tray {
+  padding: 0 10px;
+}
+
+#mode {
+  color: #9ece6a;
+}

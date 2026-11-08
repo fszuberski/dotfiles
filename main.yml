@@ -22,6 +22,7 @@
           - ghostty
           - opencode
           - sway
+          - waybar
       tags: always
 
     - name: Check all configuration packages for conflicts
@@ -59,6 +60,9 @@
   tags: install
 
 - import_playbook: playbooks/sway.yml
+  tags: install
+
+- import_playbook: playbooks/waybar.yml
   tags: install
 
 - name: Deploy the shared Arch configuration

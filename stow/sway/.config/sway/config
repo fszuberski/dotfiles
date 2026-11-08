@@ -90,8 +90,7 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 bar {
-    position top
-    status_command while date +'%Y-%m-%d %X'; do sleep 1; done
+    swaybar_command waybar
 }
 
 include /etc/sway/config.d/*

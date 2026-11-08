@@ -1,0 +1,11 @@
+{
+  "layer": "top",
+  "position": "top",
+  "height": 28,
+  "modules-left": ["sway/workspaces", "sway/mode"],
+  "modules-center": ["sway/window"],
+  "modules-right": ["clock", "tray"],
+  "sway/window": { "max-length": 60 },
+  "clock": { "format": "{:%a %d %b  %H:%M}" },
+  "tray": { "spacing": 10 }
+}
