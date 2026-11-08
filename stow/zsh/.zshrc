@@ -87,7 +87,7 @@ source $ZSH/oh-my-zsh.sh
 # User configuration
 
 # nvm setup
-source /usr/share/nvm/init-nvm.sh
+[[ -r /usr/share/nvm/init-nvm.sh ]] && source /usr/share/nvm/init-nvm.sh
 
 # PATH
 # go
@@ -145,4 +145,3 @@ fd() {
 pass-local() {
   PASSWORD_STORE_DIR=~/.password-store-local pass $@
 }
-
