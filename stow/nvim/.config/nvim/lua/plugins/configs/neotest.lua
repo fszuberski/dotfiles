@@ -1,0 +1,67 @@
+local present1, neotest = pcall(require, "neotest")
+local present2, neotest_go = pcall(require, "neotest-golang")
+
+if not (present1 and present2) then
+    return
+end
+
+
+local options = {
+    adapters = {
+        neotest_go({
+            go_test_args = { "-v" },
+        })
+    },
+    diagnostic = {
+        enabled = true,
+    },
+    discovery = {
+        -- helps with performance issues in large repos;
+        -- enabled = false
+        enabled = true
+    },
+    status = {
+        enabled = true,
+        signs = true,
+        virtual_text = false,
+    },
+    icons = {
+        child_indent = "│",
+        child_prefix = "├",
+        collapsed = "─",
+        expanded = "╮",
+        failed = "✖",
+        final_child_indent = " ",
+        final_child_prefix = "╰",
+        non_collapsible = "─",
+        passed = "✔",
+        running = "~",
+        skipped = "ﰸ",
+        unknown = "?"
+    },
+    summary = {
+        enabled = true,
+        expand_errors = true,
+        follow = true,
+        mappings = {
+            attach = "a",
+            clear_marked = "M",
+            clear_target = "T",
+            expand = { "<CR>", "<2-LeftMouse>" },
+            expand_all = "e",
+            jumpto = "i",
+            mark = "m",
+            output = "o",
+            run = "r",
+            run_marked = "R",
+            short = "O",
+            stop = "u",
+            target = "t"
+        }
+    },
+    quickfix = {
+        enabled = false
+    }
+}
+
+neotest.setup(options)

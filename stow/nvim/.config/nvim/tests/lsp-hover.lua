@@ -1,0 +1,6 @@
+dofile(vim.fn.stdpath("config") .. "/tests/lsp-attach.lua")
+local before = #vim.api.nvim_list_wins()
+local mapping = vim.fn.maparg("K", "n", false, true)
+assert(type(mapping.callback) == "function", "native hover mapping missing")
+mapping.callback()
+assert(vim.wait(5000, function() return #vim.api.nvim_list_wins() > before end, 50), "LSP hover did not open")
