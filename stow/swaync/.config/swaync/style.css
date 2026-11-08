@@ -1,0 +1,32 @@
+* {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+}
+
+.control-center {
+  background: #1a1b26;
+  color: #c0caf5;
+}
+
+.notification-row .notification-background .notification,
+.control-center .notification {
+  background: #24283b;
+  color: #c0caf5;
+}
+
+.notification .summary,
+.notification .body,
+.notification .time,
+.widget-title {
+  color: #c0caf5;
+}
+
+.control-center button {
+  background: #24283b;
+  color: #c0caf5;
+}
+
+.control-center button:hover {
+  background: #7aa2f7;
+  color: #1a1b26;
+}

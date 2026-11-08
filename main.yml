@@ -24,6 +24,7 @@
           - sway
           - waybar
           - rofi
+          - swaync
       tags: always
 
     - name: Check all configuration packages for conflicts
@@ -67,6 +68,9 @@
   tags: install
 
 - import_playbook: playbooks/rofi.yml
+  tags: install
+
+- import_playbook: playbooks/swaync.yml
   tags: install
 
 - name: Deploy the shared Arch configuration

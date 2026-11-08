@@ -21,6 +21,7 @@ Configuration and provisioning for three personal machines:
 - `stow/sway/` contains the shared Arch Sway configuration.
 - `stow/waybar/` contains the Tokyo Night Waybar configuration.
 - `stow/rofi/` contains the Tokyo Night Rofi configuration.
+- `stow/swaync/` contains the Tokyo Night notification styling.
 - `stow/karabiner/` contains the existing macOS Karabiner configuration.
 - `stow/macos-window-manager/` contains the existing yabai and skhd configurations.
 - `playbooks/zsh.yml` installs Zsh on the local Arch or macOS machine.
@@ -33,6 +34,7 @@ Configuration and provisioning for three personal machines:
 - `playbooks/sway.yml` installs Sway and its core Wayland dependencies on Arch Linux.
 - `playbooks/waybar.yml` installs Waybar on Arch Linux.
 - `playbooks/rofi.yml` installs Rofi on Arch Linux.
+- `playbooks/swaync.yml` installs swaync and libnotify on Arch Linux.
 - `playbooks/macos-window-manager.yml` installs yabai and skhd on macOS.
 - `playbooks/macos-window-manager-config.yml` deploys their configuration with Stow.
 - `playbooks/macos-window-manager-services.yml` starts their macOS user services.
@@ -51,9 +53,9 @@ After installing the prerequisites in `DEPENDENCIES.md`, run as the regular user
 ansible-playbook -i localhost, main.yml --ask-become-pass
 ```
 
-This entry point checks all selected Stow packages for conflicts first, installs the current general packages, Zsh, fonts, tmux, Neovim, Ghostty, core Sway packages, Waybar and Rofi, sets Zsh as the login shell, then deploys Zsh, tmux, Git, Neovim, Ghostty, OpenCode, Sway, Waybar and Rofi configuration. Existing conflicting files are not replaced; resolve each explicitly before retrying. `--tags config` runs only the preflight and configuration deployment; `--tags install` runs only installation; `--tags system` runs only the login-shell change. OpenCode itself and tmux plugins are not installed by this playbook. Neovim installs its plugins on startup rather than through Ansible. Other desktop applications are not yet included. macOS has separate playbooks and is not supported by this entry point yet.
+This entry point checks all selected Stow packages for conflicts first, installs the current general packages, Zsh, fonts, tmux, Neovim, Ghostty, core Sway packages, Waybar, Rofi and swaync, sets Zsh as the login shell, then deploys Zsh, tmux, Git, Neovim, Ghostty, OpenCode, Sway, Waybar, Rofi and swaync configuration. Existing conflicting files are not replaced; resolve each explicitly before retrying. `--tags config` runs only the preflight and configuration deployment; `--tags install` runs only installation; `--tags system` runs only the login-shell change. OpenCode itself and tmux plugins are not installed by this playbook. Neovim installs its plugins on startup rather than through Ansible. Other desktop applications are not yet included. macOS has separate playbooks and is not supported by this entry point yet.
 
-The initial Sway configuration uses Super+Enter for Ghostty, Super+D for the Rofi launcher, Super+Shift+Q to close a window, Super+Shift+C to reload and Super+Shift+E to exit. Install Waybar and Rofi and deploy their configurations before reloading Sway. Validate with `sway -C` and start a fresh Sway session from a TTY; keep another TTY available for recovery.
+The initial Sway configuration uses Super+Enter for Ghostty, Super+D for the Rofi launcher, Super+N for notifications, Super+Shift+Q to close a window, Super+Shift+C to reload and Super+Shift+E to exit. Install Waybar, Rofi and swaync and deploy their configurations before reloading Sway. Sway starts swaync at session startup, not on reload; avoid running another notification daemon simultaneously. Validate with `sway -C` and start a fresh Sway session from a TTY; keep another TTY available for recovery.
 
 To install Zsh after setting up the Ansible dependencies in `DEPENDENCIES.md`:
 
