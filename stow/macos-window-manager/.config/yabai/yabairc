@@ -6,8 +6,17 @@
 # for this to work you must configure sudo such that
 # it will be able to run the command without password
 
-yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
-sudo yabai --load-sa
+# launchd may not include Homebrew in PATH.
+PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+export PATH
+if ! brew_prefix=$(brew --prefix); then
+    echo "Unable to locate Homebrew for yabai" >&2
+    exit 1
+fi
+yabai_bin="$brew_prefix/bin/yabai"
+
+"$yabai_bin" -m signal --add event=dock_did_restart action="sudo '$yabai_bin' --load-sa"
+sudo "$yabai_bin" --load-sa
 
 ##### Tiling options
 
