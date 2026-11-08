@@ -49,7 +49,7 @@ ansible-playbook -i localhost, main.yml --ask-become-pass
 
 This entry point checks all selected Stow packages for conflicts first, installs the current general packages, Zsh, fonts, tmux, Neovim, Ghostty and core Sway packages, sets Zsh as the login shell, then deploys Zsh, tmux, Git, Neovim, Ghostty, OpenCode and Sway configuration. Existing conflicting files are not replaced; resolve each explicitly before retrying. `--tags config` runs only the preflight and configuration deployment; `--tags install` runs only installation; `--tags system` runs only the login-shell change. OpenCode itself and tmux plugins are not installed by this playbook. Neovim installs its plugins on startup rather than through Ansible. The Sway configuration is minimal; related desktop applications are not yet included. macOS has separate playbooks and is not supported by this entry point yet.
 
-The initial Sway configuration uses Super+Enter for Ghostty, Super+Shift+Q to close a window, Super+Shift+C to reload and Super+Shift+E to exit. It has no launcher yet. Validate with `sway -C` and start a fresh Sway session from a TTY; keep another TTY available for recovery.
+The initial Sway configuration uses Super+Enter for Ghostty, Super+D for the wmenu launcher, Super+Shift+Q to close a window, Super+Shift+C to reload and Super+Shift+E to exit. Validate with `sway -C` and start a fresh Sway session from a TTY; keep another TTY available for recovery.
 
 To install Zsh after setting up the Ansible dependencies in `DEPENDENCIES.md`:
 
