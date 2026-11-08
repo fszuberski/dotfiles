@@ -1,0 +1,39 @@
+---
+- name: Install PipeWire audio tools on Arch Linux
+  hosts: localhost
+  connection: local
+  gather_facts: true
+  tasks:
+    - name: Require Arch Linux
+      ansible.builtin.assert:
+        that:
+          - ansible_facts['distribution'] == 'Archlinux'
+        fail_msg: This playbook supports Arch Linux only.
+
+    - name: Check for an existing PulseAudio server
+      ansible.builtin.command:
+        argv:
+          - pacman
+          - -Qq
+          - pulseaudio
+      register: pulseaudio_package
+      changed_when: false
+      failed_when: pulseaudio_package.rc not in [0, 1]
+      check_mode: false
+
+    - name: Stop before replacing PulseAudio
+      ansible.builtin.assert:
+        that:
+          - pulseaudio_package.rc == 1
+        fail_msg: PulseAudio is installed; review its replacement with pipewire-pulse manually before continuing.
+
+    - name: Install PipeWire and audio controls
+      community.general.pacman:
+        name:
+          - pipewire
+          - pipewire-pulse
+          - wireplumber
+          - pavucontrol
+          - playerctl
+        state: present
+      become: true

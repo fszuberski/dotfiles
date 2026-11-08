@@ -37,6 +37,7 @@ Configuration and provisioning for three personal machines:
 - `playbooks/swaync.yml` installs swaync and libnotify on Arch Linux.
 - `playbooks/clipboard.yml` installs wl-clipboard and cliphist on Arch Linux.
 - `playbooks/yazi.yml` installs the Yazi terminal file manager on Arch Linux.
+- `playbooks/audio.yml` installs PipeWire audio tools on Arch Linux, stopping if the PulseAudio server is installed.
 - `playbooks/macos-window-manager.yml` installs yabai and skhd on macOS.
 - `playbooks/macos-window-manager-config.yml` deploys their configuration with Stow.
 - `playbooks/macos-window-manager-services.yml` starts their macOS user services.
@@ -62,6 +63,8 @@ The initial Sway configuration uses Super+Enter for Ghostty, Super+D for the Rof
 Sway starts clipboard history watchers for text and images at session startup. Press Super+Shift+V to select an item with Rofi. **Cliphist stores copied content on disk, potentially including passwords or other secrets.** Run `cliphist wipe` to delete the history; to disable collection, remove the two `wl-paste --watch` startup lines and restart the Sway session. This does not clear the current clipboard.
 
 Press Super+Ctrl+E to open Yazi in Ghostty. Super+E remains the Sway layout toggle.
+
+Install PipeWire audio tools with `ansible-playbook -i localhost, playbooks/audio.yml --ask-become-pass`. The playbook refuses to replace an installed PulseAudio server automatically; review any replacement and other package conflicts manually. PipeWire and WirePlumber normally run as user-session services.
 
 To install Zsh after setting up the Ansible dependencies in `DEPENDENCIES.md`:
 
