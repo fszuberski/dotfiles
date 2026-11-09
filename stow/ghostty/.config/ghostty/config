@@ -22,7 +22,7 @@ macos-titlebar-style = hidden
 
 ## Window padding
 window-padding-y = 6,0
-window-padding-x = 6
+window-padding-x = 0
 
 ## macos behavior
 macos-option-as-alt = left
