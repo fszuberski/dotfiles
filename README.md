@@ -18,6 +18,7 @@ Configuration and provisioning for three personal machines:
 - `stow/git/` contains the existing Linux Git configuration.
 - `stow/opencode/` contains OpenCode CLI settings and workflow instructions, not private service configuration.
 - `stow/ghostty/` contains the Ghostty configuration copied from macOS.
+- `stow/gtk/` sets the GTK 3 and GTK 4 application font to match Ghostty.
 - `stow/sway/` contains the shared Arch Sway configuration.
 - `stow/swaylock/` contains the Tokyo Night lock-screen indicator configuration.
 - `stow/waybar/` contains the Tokyo Night Waybar configuration.
@@ -85,6 +86,8 @@ ansible-playbook -i localhost, main.yml --ask-become-pass
 ```
 
 This entry point checks all selected Stow packages for conflicts first, installs the configured packages and desktop applications, applies system changes including the Zsh login shell, Bluetooth service and greetd graphical login, then deploys the selected Stow configurations. Existing conflicting files are not replaced; resolve each explicitly before retrying. `--tags config` runs only the preflight and configuration deployment; `--tags install` runs only installation; `--tags system` runs the login-shell, Bluetooth and greetd system changes and requires their packages to be installed first. OpenCode itself and tmux plugins are not installed by this playbook. Neovim installs its plugins on startup rather than through Ansible. macOS has separate playbooks and is not supported by this entry point yet.
+
+GTK 3 and GTK 4 applications use JetBrains Mono SemiBold 14, matching Ghostty. Restart applications to pick up the change; applications with their own font settings or non-GTK toolkits may not follow it.
 
 The initial Sway configuration uses Super+Enter for Ghostty, Super+D for the Rofi launcher, Super+N for notifications, Super+Shift+Q to close a window, Super+Shift+C to reload and Super+Shift+E to exit. Install Waybar, Rofi and swaync and deploy their configurations before reloading Sway. Sway starts swaync at session startup, not on reload; avoid running another notification daemon simultaneously. Validate with `sway -C` and start a fresh Sway session from a TTY; keep another TTY available for recovery.
 
