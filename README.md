@@ -18,6 +18,7 @@ Configuration and provisioning for three personal machines:
 - `stow/git/` contains the existing Linux Git configuration.
 - `stow/opencode/` contains OpenCode CLI settings and workflow instructions, not private service configuration.
 - `stow/ghostty/` contains the Ghostty configuration copied from macOS.
+- `stow/ghostty-macos/` overrides Ghostty's font size on macOS.
 - `stow/gtk/` sets the GTK 3 and GTK 4 application font to match Ghostty.
 - `stow/sway/` contains the shared Arch Sway configuration.
 - `stow/swaylock/` contains the Tokyo Night lock-screen indicator configuration.
@@ -87,11 +88,11 @@ ansible-playbook -i localhost, main.yml --ask-become-pass
 
 This entry point checks all selected Stow packages for conflicts first, installs the configured packages and desktop applications, applies system changes including the Zsh login shell, Bluetooth service and greetd graphical login, then deploys the selected Stow configurations. Existing conflicting files are not replaced; resolve each explicitly before retrying. `--tags config` runs only the preflight and configuration deployment; `--tags install` runs only installation; `--tags system` runs the login-shell, Bluetooth and greetd system changes and requires their packages to be installed first. OpenCode itself and tmux plugins are not installed by this playbook. Neovim installs its plugins on startup rather than through Ansible. macOS has separate playbooks and is not supported by this entry point yet.
 
-GTK 3 and GTK 4 applications use JetBrains Mono SemiBold 14, matching Ghostty. Restart applications to pick up the change; applications with their own font settings or non-GTK toolkits may not follow it.
+GTK 3 and GTK 4 applications use JetBrains Mono SemiBold 14. Restart applications to pick up the change; applications with their own font settings or non-GTK toolkits may not follow it.
 
 The initial Sway configuration uses Super+Enter for Ghostty, Super+D for the Rofi launcher, Super+N for notifications, Super+Shift+Q to close a window, Super+Shift+C to reload and Super+Shift+E to exit. Install Waybar, Rofi and swaync and deploy their configurations before reloading Sway. Sway starts swaync at session startup, not on reload; avoid running another notification daemon simultaneously. Validate with `sway -C` and start a fresh Sway session from a TTY; keep another TTY available for recovery.
 
-Waybar uses Ghostty's JetBrains Mono SemiBold font and shows Wi-Fi and Bluetooth status. Click either indicator to open its existing Rofi menu. Wi-Fi tracks wireless interfaces even when Ethernet is connected. The clock shows local date and time with seconds.
+On Arch, Ghostty and Waybar use JetBrains Mono SemiBold at 12 points; the separately deployed macOS Ghostty override sets 14 points. Waybar shows Wi-Fi and Bluetooth status. Click either indicator to open its existing Rofi menu. Wi-Fi tracks wireless interfaces even when Ethernet is connected. The clock shows local date and time with seconds.
 
 Sway starts clipboard history watchers for text and images at session startup. Press Super+Shift+V to select an item with Rofi. **Cliphist stores copied content on disk, potentially including passwords or other secrets.** Run `cliphist wipe` to delete the history; to disable collection, remove the two `wl-paste --watch` startup lines and restart the Sway session. This does not clear the current clipboard.
 
@@ -189,7 +190,7 @@ Deploy the copied Git configuration with `sh deployment/deploy.sh stow/git "$HOM
 
 The OpenCode package contains the V2 CLI settings and global workflow instructions. Deploy it with `sh deployment/deploy.sh stow/opencode "$HOME"`; existing files will be reported as conflicts. Private OpenCode service configuration is intentionally excluded and must remain machine-local.
 
-Install Ghostty with `ansible-playbook -i localhost, playbooks/ghostty.yml --ask-become-pass` (omit `--ask-become-pass` on macOS). Deploy its configuration separately with `sh deployment/deploy.sh stow/ghostty "$HOME"`. The configuration was tested on macOS; its Linux behavior still needs verification. It selects JetBrains Mono, which is installed by `playbooks/fonts.yml`, and contains macOS-specific settings.
+Install Ghostty with `ansible-playbook -i localhost, playbooks/ghostty.yml --ask-become-pass` (omit `--ask-become-pass` on macOS). Deploy its configuration separately with `sh deployment/deploy.sh stow/ghostty "$HOME"`. On macOS, also deploy the 14-point font override with `sh deployment/deploy.sh stow/ghostty-macos "$HOME"`; without it the shared 12-point default applies. The override has not been validated on Aethar. The configuration selects JetBrains Mono, which is installed by `playbooks/fonts.yml`, and contains macOS-specific settings.
 
 On macOS, deploy the copied Karabiner configuration with `sh deployment/deploy.sh stow/karabiner "$HOME"`. Automatic backup snapshots remain in `legacy/` and are not deployed. Karabiner may modify its configuration; review changes in the repository after editing settings through the application.
 
