@@ -110,6 +110,9 @@
 - import_playbook: playbooks/kanshi.yml
   tags: install
 
+- import_playbook: playbooks/swaylock.yml
+  tags: install
+
 - import_playbook: playbooks/bluetooth-service.yml
   tags: system
 
