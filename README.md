@@ -29,7 +29,7 @@ Configuration and provisioning for three personal machines:
 - `playbooks/nvim.yml` installs Neovim on the local Arch or macOS machine.
 - `playbooks/nvim-config.yml` deploys the Neovim configuration with Stow.
 - `playbooks/tmux.yml` installs tmux and its plugin manager.
-- `playbooks/packages.yml` installs general-purpose development packages.
+- `playbooks/packages.yml` installs general-purpose development packages, including base-devel, Git and Go on Arch.
 - `playbooks/fonts.yml` installs Meslo Nerd Font and JetBrains Mono on Arch Linux or macOS.
 - `playbooks/ghostty.yml` installs Ghostty on Arch Linux or macOS.
 - `playbooks/sway.yml` installs Sway and its core Wayland dependencies on Arch Linux.
