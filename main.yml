@@ -123,6 +123,15 @@
 - import_playbook: playbooks/greeter.yml
   tags: install
 
+- import_playbook: playbooks/greeter-test-config.yml
+  tags: system
+
+- import_playbook: playbooks/greeter-boot-config.yml
+  tags: system
+
+- import_playbook: playbooks/greeter-enable.yml
+  tags: system
+
 - import_playbook: playbooks/bluetooth-service.yml
   tags: system
 
