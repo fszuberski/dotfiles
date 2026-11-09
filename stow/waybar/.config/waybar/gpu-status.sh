@@ -1,7 +1,7 @@
 #!/bin/sh
 
-usage=N/A
-temperature=N/A
+usage=
+temperature=
 
 for device in /sys/class/drm/card[0-9]*/device; do
     [ -r "$device/vendor" ] || continue
@@ -26,4 +26,9 @@ for device in /sys/class/drm/card[0-9]*/device; do
     break
 done
 
-printf 'GPU %4s %5s\n' "$usage" "$temperature"
+[ -n "$usage$temperature" ] || exit 0
+if [ -n "$usage" ] && [ -n "$temperature" ]; then
+    printf '%4s %5s\n' "$usage" "$temperature"
+else
+    printf '%s%s\n' "$usage" "$temperature"
+fi

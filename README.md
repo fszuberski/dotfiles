@@ -92,13 +92,15 @@ GTK 3 and GTK 4 applications use JetBrains Mono SemiBold 14. Restart application
 
 The initial Sway configuration uses Super+Enter for Ghostty, Super+D for the Rofi launcher, Super+N for notifications, Super+Shift+Q to close a window, Super+Shift+C to reload and Super+Shift+E to exit. Install Waybar, Rofi and swaync and deploy their configurations before reloading Sway. Sway starts swaync at session startup, not on reload; avoid running another notification daemon simultaneously. Validate with `sway -C` and start a fresh Sway session from a TTY; keep another TTY available for recovery.
 
-On Arch, Ghostty and Waybar use JetBrains Mono SemiBold at 12 points; the separately deployed macOS Ghostty override sets 14 points. Waybar shows the active network connection and Bluetooth status. Click either indicator to open its existing Rofi menu. The network indicator reports interface connectivity, not verified Internet access. The clock shows local date and time with seconds.
+On Arch, Ghostty uses JetBrains Mono SemiBold at 12 points and Waybar uses it at 10 points; the separately deployed macOS Ghostty override sets 14 points. Waybar shows the active network connection and Bluetooth status. Click either indicator to open its existing Rofi menu. The network indicator reports interface connectivity, not verified Internet access. The clock shows local date and time with seconds.
 
 Waybar uses Meslo Nerd Font as a fallback for its network and Bluetooth icons; it is installed by `playbooks/fonts.yml`. The network indicator shows download and upload rates in bits per second for the selected interface, refreshed every second.
 
-The Waybar CPU temperature indicator reads the Intel `coretemp` package or AMD `k10temp` Tctl sensor; it displays `CPU N/A` if neither is available. Tctl can include an AMD-specific offset and need not be the same as a physical die temperature.
+Click the Arch icon at the right end of Waybar to open a Rofi menu for suspend or shutdown. Selecting an option immediately requests that action through systemd; Escape cancels the menu.
 
-The GPU indicator reads utilization and the edge temperature from the first AMD GPU using the `amdgpu` driver, without elevated privileges. Unsupported or unavailable readings display `N/A`; Fleder's Intel GPU currently has no unprivileged usage source or separate temperature sensor. The AMD readings still need verification on Kikimora.
+The Waybar CPU temperature indicator reads the Intel `coretemp` package or AMD `k10temp` Tctl sensor; it displays `N/A` if neither is available. Tctl can include an AMD-specific offset and need not be the same as a physical die temperature.
+
+The GPU indicator reads utilization and the edge temperature from the first AMD GPU using the `amdgpu` driver, without elevated privileges. Unavailable readings are omitted, and the indicator is hidden if neither is available. Fleder's Intel GPU currently has no unprivileged usage source or separate temperature sensor. The AMD readings still need verification on Kikimora.
 
 Sway starts clipboard history watchers for text and images at session startup. Press Super+Shift+V to select an item with Rofi. **Cliphist stores copied content on disk, potentially including passwords or other secrets.** Run `cliphist wipe` to delete the history; to disable collection, remove the two `wl-paste --watch` startup lines and restart the Sway session. This does not clear the current clipboard.
 

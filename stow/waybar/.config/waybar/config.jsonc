@@ -3,10 +3,10 @@
   "position": "top",
   "height": 34,
   "modules-left": ["sway/workspaces", "sway/mode"],
-  "modules-right": ["cpu", "custom/cpu-temperature", "custom/gpu-status", "memory", "network", "bluetooth", "pulseaudio", "clock", "tray"],
+  "modules-right": ["tray", "cpu", "custom/cpu-temperature", "custom/gpu-status", "memory", "network", "bluetooth", "pulseaudio", "clock", "custom/power"],
   "cpu": {
     "interval": 2,
-    "format": "CPU {usage:>3}%"
+    "format": "<span foreground='#7aa2f7'></span> {usage:>3}%"
   },
   "custom/cpu-temperature": {
     "exec": "sh $HOME/.config/waybar/cpu-temperature.sh",
@@ -15,37 +15,53 @@
   },
   "custom/gpu-status": {
     "exec": "sh $HOME/.config/waybar/gpu-status.sh",
+    "format": "<span foreground='#7aa2f7'>󰢮</span> {}",
+    "hide-empty-text": true,
     "interval": 2,
     "tooltip": false
   },
   "memory": {
     "interval": 2,
-    "format": "RAM {percentage:>3}%"
+    "format": "<span foreground='#7aa2f7'></span>  {used:.1f}/{total:.1f} GiB"
   },
   "pulseaudio": {
-    "format": "Vol {volume}%",
-    "format-muted": "Muted",
+    "format": "<span foreground='#7aa2f7'>{icon}</span> {volume}%",
+    "format-muted": "<span foreground='#f7768e'>󰖁</span> {volume}%",
+    "states": { "zero": 0 },
+    "format-zero": "<span foreground='#f7768e'>󰖁</span> {volume}%",
+    "format-bluetooth-zero": "<span foreground='#f7768e'>󰖁</span> {volume}%",
+    "format-icons": { "default": ["󰕿", "󰖀", "󰕾"] },
     "on-click": "pavucontrol"
   },
   "network": {
     "rfkill": false,
     "interval": 1,
-    "format-ethernet": "󰈀 Wired  ↓ {bandwidthDownBits:>12} ↑ {bandwidthUpBits:>12}",
-    "format-wifi": "{icon} {essid} {signalStrength}%  ↓ {bandwidthDownBits:>12} ↑ {bandwidthUpBits:>12}",
+    "format-ethernet": "<span foreground='#9ece6a'>↓</span> {bandwidthDownBits:>12} <span foreground='#e0af68'>↑</span> {bandwidthUpBits:>12}  <span foreground='#7aa2f7'>󰤨</span>",
+    "format-wifi": "<span foreground='#9ece6a'>↓</span> {bandwidthDownBits:>12} <span foreground='#e0af68'>↑</span> {bandwidthUpBits:>12}  <span foreground='#9ece6a'>{icon}</span>",
     "format-icons": ["󰤟", "󰤢", "󰤥", "󰤨"],
-    "format-linked": "󰈀 Connecting",
-    "format-disconnected": "󰤭 Offline",
+    "format-linked": "<span foreground='#f7768e'>󰤭</span>",
+    "format-disconnected": "<span foreground='#f7768e'>󰤭</span>",
+    "tooltip-format-ethernet": "Wired: {ifname} ({ipaddr})",
+    "tooltip-format-wifi": "Wi-Fi: {essid} ({signalStrength}%)",
+    "tooltip-format-linked": "Network connecting",
+    "tooltip-format-disconnected": "Network disconnected",
     "on-click": "networkmanager_dmenu"
   },
   "bluetooth": {
-    "format": "󰂯 BT {status}",
-    "format-off": "󰂲 BT off",
-    "format-disabled": "󰂲 BT disabled",
-    "format-on": "󰂯 BT on",
-    "format-connected": "󰂱 BT connected ({num_connections})",
-    "format-no-controller": "󰂲 BT unavailable",
+    "format": "󰂯",
+    "format-off": "󰂲",
+    "format-disabled": "󰂲",
+    "format-on": "󰂯",
+    "format-connected": "󰂱",
+    "format-no-controller": "󰂲",
+    "tooltip-format": "Bluetooth: {status}",
     "on-click": "rofi-bluetooth"
   },
   "clock": { "format": "{:%Y-%m-%d %H:%M:%S}", "interval": 1 },
+  "custom/power": {
+    "format": "󰣇",
+    "tooltip-format": "Power menu",
+    "on-click": "sh $HOME/.config/waybar/power-menu.sh"
+  },
   "tray": { "spacing": 10 }
 }

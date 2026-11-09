@@ -2,7 +2,7 @@
   border: none;
   border-radius: 0;
   font-family: "JetBrains Mono", "MesloLGS Nerd Font", monospace;
-  font-size: 12pt;
+  font-size: 10pt;
   font-weight: 600;
   min-height: 0;
 }
@@ -28,10 +28,36 @@ window#waybar {
   background: #f7768e;
 }
 
-#mode, #cpu, #custom-cpu-temperature, #custom-gpu-status, #memory, #network, #bluetooth, #pulseaudio, #clock, #tray {
-  padding: 0 10px;
+#mode, #custom-gpu-status, #memory, #network, #bluetooth, #pulseaudio, #clock, #tray, #custom-power {
+  padding: 0 8px;
+}
+
+#cpu {
+  padding: 0 0 0 8px;
+}
+
+#custom-cpu-temperature {
+  padding: 0 8px 0 4px;
 }
 
 #mode {
   color: #9ece6a;
+}
+
+#custom-power {
+  color: #7aa2f7;
+  font-size: 14pt;
+  padding-right: 16px;
+}
+
+#bluetooth {
+  color: #f7768e;
+}
+
+#bluetooth.on, #bluetooth.connected, #bluetooth.discoverable, #bluetooth.discovering, #bluetooth.pairable {
+  color: #7aa2f7;
+}
+
+#bluetooth.off, #bluetooth.disabled {
+  color: #f7768e;
 }

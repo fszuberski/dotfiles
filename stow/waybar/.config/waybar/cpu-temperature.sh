@@ -14,9 +14,9 @@ for sensor in /sys/class/hwmon/hwmon*; do
         [ -r "$input" ] || continue
         value=$(cat "$input")
         case $value in ''|*[!0-9]*) continue ;; esac
-        printf 'CPU %3d°C\n' "$((value / 1000))"
+        printf '%3d°C\n' "$((value / 1000))"
         exit 0
     done
 done
 
-printf 'CPU N/A\n'
+printf 'N/A\n'
