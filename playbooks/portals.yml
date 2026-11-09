@@ -1,0 +1,20 @@
+---
+- name: Install Sway desktop portals on Arch Linux
+  hosts: localhost
+  connection: local
+  gather_facts: true
+  tasks:
+    - name: Require Arch Linux
+      ansible.builtin.assert:
+        that:
+          - ansible_facts['distribution'] == 'Archlinux'
+        fail_msg: This playbook supports Arch Linux only.
+
+    - name: Install the portal service and Wayland and GTK backends
+      community.general.pacman:
+        name:
+          - xdg-desktop-portal
+          - xdg-desktop-portal-wlr
+          - xdg-desktop-portal-gtk
+        state: present
+      become: true
