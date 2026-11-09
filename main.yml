@@ -25,6 +25,7 @@
           - waybar
           - rofi
           - swaync
+          - networkmanager-dmenu
       tags: always
 
     - name: Check all configuration packages for conflicts
@@ -83,6 +84,9 @@
   tags: install
 
 - import_playbook: playbooks/brightness.yml
+  tags: install
+
+- import_playbook: playbooks/network.yml
   tags: install
 
 - name: Deploy the shared Arch configuration

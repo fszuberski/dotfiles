@@ -22,6 +22,7 @@ Configuration and provisioning for three personal machines:
 - `stow/waybar/` contains the Tokyo Night Waybar configuration.
 - `stow/rofi/` contains the Tokyo Night Rofi configuration.
 - `stow/swaync/` contains the Tokyo Night notification styling.
+- `stow/networkmanager-dmenu/` configures the NetworkManager menu to use Rofi.
 - `stow/karabiner/` contains the existing macOS Karabiner configuration.
 - `stow/macos-window-manager/` contains the existing yabai and skhd configurations.
 - `playbooks/zsh.yml` installs Zsh on the local Arch or macOS machine.
@@ -39,6 +40,7 @@ Configuration and provisioning for three personal machines:
 - `playbooks/yazi.yml` installs the Yazi terminal file manager on Arch Linux.
 - `playbooks/audio.yml` installs PipeWire audio tools on Arch Linux, stopping if the PulseAudio server is installed.
 - `playbooks/brightness.yml` installs brightnessctl on Arch Linux.
+- `playbooks/network.yml` installs NetworkManager and its Rofi-compatible menu without changing system services.
 - `playbooks/macos-window-manager.yml` installs yabai and skhd on macOS.
 - `playbooks/macos-window-manager-config.yml` deploys their configuration with Stow.
 - `playbooks/macos-window-manager-services.yml` starts their macOS user services.
@@ -70,6 +72,8 @@ Install PipeWire audio tools with `ansible-playbook -i localhost, playbooks/audi
 Sway's audio and media keys control the default PipeWire devices and media player. Waybar displays volume and opens pavucontrol when clicked.
 
 Brightness keys use brightnessctl's backlight class. External monitors may not expose a backlight device; check `brightnessctl --class=backlight --list`. DDC/CI monitor control is not configured.
+
+Super+Shift+W opens the NetworkManager menu. NetworkManager must already be running; this playbook does not enable or start it. Some actions may require a graphical polkit agent, which is not yet configured. `nmtui` is a terminal fallback.
 
 To install Zsh after setting up the Ansible dependencies in `DEPENDENCIES.md`:
 

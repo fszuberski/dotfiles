@@ -1,0 +1,19 @@
+---
+- name: Install NetworkManager menu tools on Arch Linux
+  hosts: localhost
+  connection: local
+  gather_facts: true
+  tasks:
+    - name: Require Arch Linux
+      ansible.builtin.assert:
+        that:
+          - ansible_facts['distribution'] == 'Archlinux'
+        fail_msg: This playbook supports Arch Linux only.
+
+    - name: Install NetworkManager and its menu
+      community.general.pacman:
+        name:
+          - networkmanager
+          - networkmanager-dmenu
+        state: present
+      become: true
