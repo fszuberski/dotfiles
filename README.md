@@ -100,6 +100,8 @@ Click the Arch icon at the right end of Waybar to open a Rofi menu for suspend o
 
 Waybar's bell shows the swaync notification count; click it to toggle the notification center.
 
+The Waybar VPN lock is green for active NetworkManager VPN or WireGuard connections and orange when none are active. It is neutral if NetworkManager cannot be queried; VPNs managed outside NetworkManager are not detected.
+
 Waybar hides the battery indicator on systems without a battery. Its icon is green while charging, otherwise yellow, orange below 50%, or red below 20%.
 
 The Waybar CPU temperature indicator reads the Intel `coretemp` package or AMD `k10temp` Tctl sensor; it displays `N/A` if neither is available. Tctl can include an AMD-specific offset and need not be the same as a physical die temperature.

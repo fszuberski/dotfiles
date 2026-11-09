@@ -3,7 +3,7 @@
   "position": "top",
   "height": 34,
   "modules-left": ["sway/workspaces", "sway/mode"],
-  "modules-right": ["tray", "cpu", "custom/cpu-temperature", "custom/gpu-status", "memory", "network", "bluetooth", "custom/notifications", "pulseaudio", "battery", "clock", "custom/power"],
+  "modules-right": ["tray", "cpu", "custom/cpu-temperature", "custom/gpu-status", "memory", "network#traffic", "custom/vpn", "network", "bluetooth", "custom/notifications", "pulseaudio", "battery", "clock", "custom/power"],
   "cpu": {
     "interval": 2,
     "format": "<span foreground='#7aa2f7'></span> {usage:>3}%"
@@ -33,11 +33,26 @@
     "format-icons": { "default": ["󰕿", "󰖀", "󰕾"] },
     "on-click": "pavucontrol"
   },
+  "network#traffic": {
+    "rfkill": false,
+    "interval": 1,
+    "format-ethernet": "<span foreground='#9ece6a'>↓</span> {bandwidthDownBits:>12} <span foreground='#e0af68'>↑</span> {bandwidthUpBits:>12}",
+    "format-wifi": "<span foreground='#9ece6a'>↓</span> {bandwidthDownBits:>12} <span foreground='#e0af68'>↑</span> {bandwidthUpBits:>12}",
+    "format-linked": "",
+    "format-disconnected": "",
+    "tooltip": false
+  },
+  "custom/vpn": {
+    "exec": "sh $HOME/.config/waybar/vpn-status.sh",
+    "return-type": "json",
+    "format": "{text}",
+    "interval": 5
+  },
   "network": {
     "rfkill": false,
     "interval": 1,
-    "format-ethernet": "<span foreground='#9ece6a'>↓</span> {bandwidthDownBits:>12} <span foreground='#e0af68'>↑</span> {bandwidthUpBits:>12}  <span foreground='#7aa2f7'>󰤨</span>",
-    "format-wifi": "<span foreground='#9ece6a'>↓</span> {bandwidthDownBits:>12} <span foreground='#e0af68'>↑</span> {bandwidthUpBits:>12}  <span foreground='#9ece6a'>{icon}</span>",
+    "format-ethernet": "<span foreground='#7aa2f7'>󰤨</span>",
+    "format-wifi": "<span foreground='#9ece6a'>{icon}</span>",
     "format-icons": ["󰤟", "󰤢", "󰤥", "󰤨"],
     "format-linked": "<span foreground='#f7768e'>󰤭</span>",
     "format-disconnected": "<span foreground='#f7768e'>󰤭</span>",

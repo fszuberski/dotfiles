@@ -28,7 +28,7 @@ window#waybar {
   background: #f7768e;
 }
 
-#mode, #custom-gpu-status, #memory, #network, #bluetooth, #custom-notifications, #pulseaudio, #battery, #clock, #tray, #custom-power {
+#mode, #custom-gpu-status, #memory, #network, #custom-vpn, #bluetooth, #custom-notifications, #pulseaudio, #battery, #clock, #tray, #custom-power {
   padding: 0 8px;
 }
 
@@ -60,4 +60,12 @@ window#waybar {
 
 #bluetooth.off, #bluetooth.disabled {
   color: #f7768e;
+}
+
+#custom-vpn.active {
+  color: #9ece6a;
+}
+
+#custom-vpn.inactive {
+  color: #ff9e64;
 }
