@@ -1,0 +1,17 @@
+---
+- name: Install a graphical polkit agent on Arch Linux
+  hosts: localhost
+  connection: local
+  gather_facts: true
+  tasks:
+    - name: Require Arch Linux
+      ansible.builtin.assert:
+        that:
+          - ansible_facts['distribution'] == 'Archlinux'
+        fail_msg: This playbook supports Arch Linux only.
+
+    - name: Install the polkit GNOME authentication agent
+      community.general.pacman:
+        name: polkit-gnome
+        state: present
+      become: true
