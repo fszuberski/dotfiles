@@ -92,6 +92,12 @@
 - import_playbook: playbooks/polkit-agent.yml
   tags: install
 
+- import_playbook: playbooks/bluetooth.yml
+  tags: install
+
+- import_playbook: playbooks/bluetooth-service.yml
+  tags: system
+
 - name: Deploy the shared Arch configuration
   hosts: localhost
   connection: local

@@ -42,6 +42,7 @@ Configuration and provisioning for three personal machines:
 - `playbooks/brightness.yml` installs brightnessctl on Arch Linux.
 - `playbooks/network.yml` installs NetworkManager and its Rofi-compatible menu without changing system services.
 - `playbooks/polkit-agent.yml` installs a graphical polkit authentication agent on Arch Linux.
+- `playbooks/bluetooth.yml` installs BlueZ and bluetoothctl; `playbooks/bluetooth-service.yml` enables and starts the Bluetooth system service.
 - `playbooks/macos-window-manager.yml` installs yabai and skhd on macOS.
 - `playbooks/macos-window-manager-config.yml` deploys their configuration with Stow.
 - `playbooks/macos-window-manager-services.yml` starts their macOS user services.
@@ -60,7 +61,7 @@ After installing the prerequisites in `DEPENDENCIES.md`, run as the regular user
 ansible-playbook -i localhost, main.yml --ask-become-pass
 ```
 
-This entry point checks all selected Stow packages for conflicts first, installs the current general packages, Zsh, fonts, tmux, Neovim, Ghostty, core Sway packages, Waybar, Rofi and swaync, sets Zsh as the login shell, then deploys Zsh, tmux, Git, Neovim, Ghostty, OpenCode, Sway, Waybar, Rofi and swaync configuration. Existing conflicting files are not replaced; resolve each explicitly before retrying. `--tags config` runs only the preflight and configuration deployment; `--tags install` runs only installation; `--tags system` runs only the login-shell change. OpenCode itself and tmux plugins are not installed by this playbook. Neovim installs its plugins on startup rather than through Ansible. Other desktop applications are not yet included. macOS has separate playbooks and is not supported by this entry point yet.
+This entry point checks all selected Stow packages for conflicts first, installs the configured packages and desktop applications, applies system changes including the Zsh login shell and Bluetooth service, then deploys the selected Stow configurations. Existing conflicting files are not replaced; resolve each explicitly before retrying. `--tags config` runs only the preflight and configuration deployment; `--tags install` runs only installation; `--tags system` runs the login-shell and Bluetooth service changes. OpenCode itself and tmux plugins are not installed by this playbook. Neovim installs its plugins on startup rather than through Ansible. macOS has separate playbooks and is not supported by this entry point yet.
 
 The initial Sway configuration uses Super+Enter for Ghostty, Super+D for the Rofi launcher, Super+N for notifications, Super+Shift+Q to close a window, Super+Shift+C to reload and Super+Shift+E to exit. Install Waybar, Rofi and swaync and deploy their configurations before reloading Sway. Sway starts swaync at session startup, not on reload; avoid running another notification daemon simultaneously. Validate with `sway -C` and start a fresh Sway session from a TTY; keep another TTY available for recovery.
 
@@ -75,6 +76,8 @@ Sway's audio and media keys control the default PipeWire devices and media playe
 Brightness keys use brightnessctl's backlight class. External monitors may not expose a backlight device; check `brightnessctl --class=backlight --list`. DDC/CI monitor control is not configured.
 
 Super+Shift+W opens the NetworkManager menu. NetworkManager must already be running; this playbook does not enable or start it. Sway starts a polkit agent for actions requiring graphical authentication; avoid starting another agent in the same session. `nmtui` is a terminal fallback.
+
+The main Arch setup installs BlueZ and enables and starts `bluetooth.service`. To manage these separately, run `playbooks/bluetooth.yml` followed by `playbooks/bluetooth-service.yml`, each with `--ask-become-pass`. Use `bluetoothctl` to inspect and pair devices; a graphical Bluetooth menu is not yet configured. The `system` tag also runs Bluetooth service setup.
 
 To install Zsh after setting up the Ansible dependencies in `DEPENDENCIES.md`:
 

@@ -1,0 +1,19 @@
+---
+- name: Install Bluetooth tools on Arch Linux
+  hosts: localhost
+  connection: local
+  gather_facts: true
+  tasks:
+    - name: Require Arch Linux
+      ansible.builtin.assert:
+        that:
+          - ansible_facts['distribution'] == 'Archlinux'
+        fail_msg: This playbook supports Arch Linux only.
+
+    - name: Install BlueZ and bluetoothctl
+      community.general.pacman:
+        name:
+          - bluez
+          - bluez-utils
+        state: present
+      become: true
