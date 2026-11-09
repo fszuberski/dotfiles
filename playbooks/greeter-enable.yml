@@ -1,0 +1,105 @@
+---
+- name: Enable the tested graphical login at boot
+  hosts: localhost
+  connection: local
+  gather_facts: true
+  vars:
+    greeter_required_files:
+      - source: "{{ playbook_dir }}/../configuration/greetd/sway-config"
+        dest: /etc/greetd/dotfiles-sway-config
+      - source: "{{ playbook_dir }}/../configuration/greetd/boot-config.toml"
+        dest: /etc/greetd/dotfiles-boot-config.toml
+      - source: "{{ playbook_dir }}/../configuration/greetd/greetd-service.conf"
+        dest: /etc/systemd/system/greetd.service.d/dotfiles.conf
+  tasks:
+    - name: Require Arch Linux and a regular user
+      ansible.builtin.assert:
+        that:
+          - ansible_facts['distribution'] == 'Archlinux'
+          - ansible_facts['user_id'] != 'root'
+        fail_msg: Run this playbook as a regular user on Arch Linux without global become.
+
+    - name: Inspect required repository files
+      ansible.builtin.stat:
+        path: "{{ item.source }}"
+        checksum_algorithm: sha256
+      loop: "{{ greeter_required_files }}"
+      register: greeter_sources
+
+    - name: Inspect deployed configuration without following symlinks
+      ansible.builtin.stat:
+        path: "{{ item.dest }}"
+        follow: false
+        checksum_algorithm: sha256
+      loop: "{{ greeter_required_files }}"
+      register: greeter_destinations
+
+    - name: Require the prepared root-owned greeter configuration
+      ansible.builtin.assert:
+        that:
+          - item.0.stat.isreg | default(false)
+          - item.1.stat.isreg | default(false)
+          - not (item.1.stat.islnk | default(false))
+          - item.1.stat.uid | default(-1) == 0
+          - item.1.stat.mode | default('') == '0644'
+          - item.1.stat.checksum | default('') == item.0.stat.checksum | default('')
+        fail_msg: "{{ item.1.item.dest }} is missing or differs; prepare and review the greeter configuration first."
+      loop: "{{ greeter_sources.results | zip(greeter_destinations.results) | list }}"
+      loop_control:
+        label: "{{ item.1.item.dest }}"
+
+    - name: Inspect the display-manager service link
+      ansible.builtin.stat:
+        path: /etc/systemd/system/display-manager.service
+        follow: false
+      register: display_manager_link
+
+    - name: Refuse to replace another display manager
+      ansible.builtin.assert:
+        that:
+          - >-
+            (not display_manager_link.stat.exists and not (display_manager_link.stat.islnk | default(false))) or
+            ((display_manager_link.stat.islnk | default(false)) and
+             (display_manager_link.stat.lnk_source | default('')) == '/usr/lib/systemd/system/greetd.service')
+        fail_msg: Another display-manager.service path exists; inspect it manually before enabling greetd.
+
+    - name: Inspect the active greetd service configuration
+      ansible.builtin.command:
+        argv: [systemctl, show, greetd.service, --property=DropInPaths, --value]
+      register: greetd_dropins
+      changed_when: false
+      check_mode: false
+
+    - name: Inspect the loaded greetd unit file
+      ansible.builtin.command:
+        argv: [systemctl, show, greetd.service, --property=FragmentPath, --value]
+      register: greetd_fragment
+      changed_when: false
+      check_mode: false
+
+    - name: Require the expected greetd service drop-in
+      ansible.builtin.assert:
+        that:
+          - greetd_fragment.stdout == '/usr/lib/systemd/system/greetd.service'
+          - greetd_dropins.stdout == '/etc/systemd/system/greetd.service.d/dotfiles.conf'
+        fail_msg: Unexpected or unloaded greetd drop-ins; inspect systemctl cat greetd.service before enabling.
+
+    - name: Check whether the temporary greeter test is active
+      ansible.builtin.command:
+        argv: [systemctl, is-active, dotfiles-greeter-test.service]
+      register: greeter_test_status
+      changed_when: false
+      failed_when: greeter_test_status.rc not in [0, 3, 4]
+      check_mode: false
+
+    - name: Require the temporary test to be stopped
+      ansible.builtin.assert:
+        that:
+          - greeter_test_status.rc != 0
+        fail_msg: Stop dotfiles-greeter-test.service before enabling the boot service.
+
+    - name: Enable greetd without starting it
+      ansible.builtin.systemd_service:
+        name: greetd.service
+        enabled: true
+      become: true
