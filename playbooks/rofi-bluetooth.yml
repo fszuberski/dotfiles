@@ -1,0 +1,60 @@
+---
+- name: Install the Rofi Bluetooth menu through Yay on Arch Linux
+  hosts: localhost
+  connection: local
+  gather_facts: true
+  tasks:
+    - name: Require Arch Linux and a regular user
+      ansible.builtin.assert:
+        that:
+          - ansible_facts['distribution'] == 'Archlinux'
+          - ansible_facts['user_id'] != 'root'
+        fail_msg: Run this playbook as a regular user on Arch Linux without global become.
+
+    - name: Check whether rofi-bluetooth-git is installed
+      ansible.builtin.command:
+        argv: [pacman, -Qq, rofi-bluetooth-git]
+      register: rofi_bluetooth_installed
+      changed_when: false
+      failed_when: rofi_bluetooth_installed.rc not in [0, 1]
+      check_mode: false
+
+    - name: Require Yay before installing the AUR package
+      ansible.builtin.command:
+        argv: [pacman, -Qq, yay]
+      changed_when: false
+      check_mode: false
+      when: rofi_bluetooth_installed.rc == 1
+
+    - name: Require the official build and runtime dependencies
+      ansible.builtin.command:
+        argv: [pacman, -Qq, base-devel, git, bc, bluez-utils, rofi, python-pexpect]
+      changed_when: false
+      check_mode: false
+      when: rofi_bluetooth_installed.rc == 1
+
+    - name: Ask for the sudo password for Yay
+      ansible.builtin.pause:
+        prompt: Sudo password for Yay (may be the same as the Ansible become password)
+        echo: false
+      register: yay_sudo_password
+      no_log: true
+      when: rofi_bluetooth_installed.rc == 1 and not ansible_check_mode
+
+    - name: Install Rofi Bluetooth with Yay as the regular user
+      ansible.builtin.expect:
+        command: yay -S --aur --needed --noconfirm --answerclean None --answerdiff None --answeredit None rofi-bluetooth-git
+        responses:
+          'dotfiles-yay-sudo-password:': "{{ yay_sudo_password.user_input }}"
+        timeout: 1800
+      environment:
+        SUDO_PROMPT: 'dotfiles-yay-sudo-password: '
+      become: false
+      no_log: true
+      when: rofi_bluetooth_installed.rc == 1 and not ansible_check_mode
+
+    - name: Verify the Rofi Bluetooth package was installed
+      ansible.builtin.command:
+        argv: [pacman, -Qq, rofi-bluetooth-git]
+      changed_when: false
+      when: rofi_bluetooth_installed.rc == 1 and not ansible_check_mode

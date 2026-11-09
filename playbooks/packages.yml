@@ -15,11 +15,15 @@
       community.general.pacman:
         name:
           - base-devel
+          - bc
+          - bluez-utils
           - git
           - git-delta
           - nodejs
           - npm
           - go
+          - python-pexpect
+          - rofi
           - unzip
         state: present
       become: true

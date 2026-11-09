@@ -29,7 +29,7 @@ Configuration and provisioning for three personal machines:
 - `playbooks/nvim.yml` installs Neovim on the local Arch or macOS machine.
 - `playbooks/nvim-config.yml` deploys the Neovim configuration with Stow.
 - `playbooks/tmux.yml` installs tmux and its plugin manager.
-- `playbooks/packages.yml` installs general-purpose development packages, including base-devel, Git and Go on Arch.
+- `playbooks/packages.yml` installs general-purpose packages, including Arch build and Rofi Bluetooth dependencies.
 - `playbooks/yay.yml` builds and installs Yay from its current AUR recipe on Arch.
 - `playbooks/yay-update.yml` explicitly rebuilds and updates Yay from its current AUR recipe.
 - `playbooks/yay-install-built.yml` explicitly installs a selected existing Yay package without changing its checkout.
@@ -46,6 +46,8 @@ Configuration and provisioning for three personal machines:
 - `playbooks/network.yml` installs NetworkManager and its Rofi-compatible menu without changing system services.
 - `playbooks/polkit-agent.yml` installs a graphical polkit authentication agent on Arch Linux.
 - `playbooks/bluetooth.yml` installs BlueZ and bluetoothctl; `playbooks/bluetooth-service.yml` enables and starts the Bluetooth system service.
+- `playbooks/rofi-bluetooth.yml` installs the Rofi Bluetooth AUR menu through Yay.
+- `playbooks/rofi-bluetooth-install-built.yml` explicitly installs a selected existing Rofi Bluetooth package without changing its checkout.
 - `playbooks/macos-window-manager.yml` installs yabai and skhd on macOS.
 - `playbooks/macos-window-manager-config.yml` deploys their configuration with Stow.
 - `playbooks/macos-window-manager-services.yml` starts their macOS user services.
@@ -86,7 +88,9 @@ Brightness keys use brightnessctl's backlight class. External monitors may not e
 
 Super+Shift+W opens the NetworkManager menu. NetworkManager must already be running; this playbook does not enable or start it. Sway starts a polkit agent for actions requiring graphical authentication; avoid starting another agent in the same session. `nmtui` is a terminal fallback.
 
-The main Arch setup installs BlueZ and enables and starts `bluetooth.service`. To manage these separately, run `playbooks/bluetooth.yml` followed by `playbooks/bluetooth-service.yml`, each with `--ask-become-pass`. Use `bluetoothctl` to inspect and pair devices; a graphical Bluetooth menu is not yet configured. The `system` tag also runs Bluetooth service setup.
+The main Arch setup installs BlueZ, enables and starts `bluetooth.service`, and installs the `rofi-bluetooth-git` AUR package through Yay. Super+Shift+B opens its menu; `bluetoothctl` is a terminal fallback. Yay builds locally as the regular user using the current, unpinned PKGBUILD and upstream Git source, and runs third-party code without an interactive review pause. Review both before running the playbook. Run `playbooks/packages.yml` first when invoking the Rofi Bluetooth playbook separately; it installs `python-pexpect` and the other official dependencies. The Rofi Bluetooth playbook prompts separately for the sudo password Yay requests; Yay's task output is hidden to protect the password. Yay uses its own build cache; an existing `~/code/rofi-bluetooth-git` checkout is not modified. The playbook skips updates if the package is installed. The `system` tag also runs Bluetooth service setup.
+
+To install a trusted already-built Rofi Bluetooth package without modifying its checkout, run `ansible-playbook -i localhost, playbooks/rofi-bluetooth-install-built.yml --ask-become-pass -e "rofi_bluetooth_package_path=$HOME/code/rofi-bluetooth-git/ACTUAL_PACKAGE_FILENAME"`.
 
 To install Zsh after setting up the Ansible dependencies in `DEPENDENCIES.md`:
 

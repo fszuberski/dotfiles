@@ -1,0 +1,40 @@
+---
+- name: Install an explicitly selected, already-built Rofi Bluetooth package
+  hosts: localhost
+  connection: local
+  gather_facts: true
+  tasks:
+    - name: Require Arch Linux and a regular user
+      ansible.builtin.assert:
+        that:
+          - ansible_facts['distribution'] == 'Archlinux'
+          - ansible_facts['user_id'] != 'root'
+        fail_msg: Run this playbook as a regular user on Arch Linux without global become.
+
+    - name: Require an explicitly selected package in the checkout
+      ansible.builtin.assert:
+        that:
+          - rofi_bluetooth_package_path is defined
+          - rofi_bluetooth_package_path | default('') | dirname == ansible_facts['env']['HOME'] ~ '/code/rofi-bluetooth-git'
+          - rofi_bluetooth_package_path | default('') | basename is match('^rofi-bluetooth-git-(?!debug-)[^/]+[.]pkg[.]tar[.][A-Za-z0-9]+$')
+        fail_msg: Set rofi_bluetooth_package_path to the full path of the intended package in ~/code/rofi-bluetooth-git.
+
+    - name: Inspect the selected package without following symlinks
+      ansible.builtin.stat:
+        path: "{{ rofi_bluetooth_package_path }}"
+        follow: false
+      register: rofi_bluetooth_built_package
+
+    - name: Require a regular package file
+      ansible.builtin.assert:
+        that:
+          - rofi_bluetooth_built_package.stat.exists
+          - rofi_bluetooth_built_package.stat.isreg | default(false)
+          - not (rofi_bluetooth_built_package.stat.islnk | default(false))
+        fail_msg: The selected package must be an existing regular file, not a symlink.
+
+    - name: Install the selected Rofi Bluetooth package
+      community.general.pacman:
+        name: "{{ rofi_bluetooth_package_path }}"
+        state: present
+      become: true
