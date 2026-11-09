@@ -52,6 +52,7 @@ Configuration and provisioning for three personal machines:
 - `playbooks/swaylock.yml` installs the swaylock screen locker on Arch Linux.
 - `playbooks/swayidle.yml` installs the swayidle idle manager on Arch Linux.
 - `playbooks/portals.yml` installs the desktop portal service and Wayland and GTK backends on Arch Linux.
+- `playbooks/greeter.yml` installs greetd and ReGreet without enabling a graphical login service.
 - `playbooks/rofi-bluetooth-install-built.yml` explicitly installs a selected existing Rofi Bluetooth package without changing its checkout.
 - `playbooks/macos-window-manager.yml` installs yabai and skhd on macOS.
 - `playbooks/macos-window-manager-config.yml` deploys their configuration with Stow.
@@ -118,6 +119,8 @@ Kanshi starts on a fresh Sway session when its config exists; a Sway reload alon
 Super+Shift+Escape manually locks the screen with swaylock. Install swaylock and test locking and unlocking with your regular login password before relying on it. Keep a recovery TTY available. In a fresh Sway session, swayidle locks after five minutes of inactivity, turns displays off after ten minutes and turns them back on with activity; it also locks before sleep. It does not suspend automatically. Verify the idle and suspend behavior on the machine before relying on it.
 
 The Sway desktop portals support application integration such as screen sharing and file choosers. Arch's Sway configuration imports the graphical session environment; the portals normally start on demand. After a fresh session, check `systemctl --user show-environment | grep -E '^(WAYLAND_DISPLAY|XDG_CURRENT_DESKTOP)='`, then test a file chooser and screen sharing. If they fail, inspect `systemctl --user status xdg-desktop-portal` and `journalctl --user -b | grep -i portal`.
+
+The Arch setup installs greetd and ReGreet for a future graphical login, but does not configure or enable the login service yet. Continue starting Sway from a TTY until the greeter is configured and tested.
 
 The main Arch setup installs BlueZ, enables and starts `bluetooth.service`, and installs the `rofi-bluetooth-git` AUR package through Yay. Super+Shift+B opens its menu; `bluetoothctl` is a terminal fallback. Yay builds locally as the regular user using the current, unpinned PKGBUILD and upstream Git source, and runs third-party code without an interactive review pause. Review both before running the playbook. Run `playbooks/packages.yml` first when invoking the Rofi Bluetooth playbook separately; it installs `python-pexpect` and the other official dependencies. The Rofi Bluetooth playbook prompts separately for the sudo password Yay requests; Yay's task output is hidden to protect the password. Yay uses its own build cache; an existing `~/code/rofi-bluetooth-git` checkout is not modified. The playbook skips updates if the package is installed. The `system` tag also runs Bluetooth service setup.
 

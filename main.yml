@@ -119,6 +119,9 @@
 - import_playbook: playbooks/portals.yml
   tags: install
 
+- import_playbook: playbooks/greeter.yml
+  tags: install
+
 - import_playbook: playbooks/bluetooth-service.yml
   tags: system
 
