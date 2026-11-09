@@ -96,6 +96,8 @@ On Arch, Ghostty and Waybar use JetBrains Mono SemiBold at 12 points; the separa
 
 Waybar uses Meslo Nerd Font as a fallback for its network and Bluetooth icons; it is installed by `playbooks/fonts.yml`. The network indicator shows download and upload rates in bits per second for the selected interface, refreshed every second.
 
+The Waybar CPU temperature indicator reads the Intel `coretemp` package or AMD `k10temp` Tctl sensor; it displays `CPU N/A` if neither is available. Tctl can include an AMD-specific offset and need not be the same as a physical die temperature.
+
 Sway starts clipboard history watchers for text and images at session startup. Press Super+Shift+V to select an item with Rofi. **Cliphist stores copied content on disk, potentially including passwords or other secrets.** Run `cliphist wipe` to delete the history; to disable collection, remove the two `wl-paste --watch` startup lines and restart the Sway session. This does not clear the current clipboard.
 
 Press Super+Ctrl+E to open Yazi in Ghostty. Super+E remains the Sway layout toggle.
