@@ -28,7 +28,7 @@ window#waybar {
   background: #f7768e;
 }
 
-#mode, #cpu, #custom-cpu-temperature, #memory, #network, #bluetooth, #pulseaudio, #clock, #tray {
+#mode, #cpu, #custom-cpu-temperature, #custom-gpu-status, #memory, #network, #bluetooth, #pulseaudio, #clock, #tray {
   padding: 0 10px;
 }
 

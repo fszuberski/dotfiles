@@ -3,13 +3,18 @@
   "position": "top",
   "height": 34,
   "modules-left": ["sway/workspaces", "sway/mode"],
-  "modules-right": ["cpu", "custom/cpu-temperature", "memory", "network", "bluetooth", "pulseaudio", "clock", "tray"],
+  "modules-right": ["cpu", "custom/cpu-temperature", "custom/gpu-status", "memory", "network", "bluetooth", "pulseaudio", "clock", "tray"],
   "cpu": {
     "interval": 2,
     "format": "CPU {usage:>3}%"
   },
   "custom/cpu-temperature": {
     "exec": "sh $HOME/.config/waybar/cpu-temperature.sh",
+    "interval": 2,
+    "tooltip": false
+  },
+  "custom/gpu-status": {
+    "exec": "sh $HOME/.config/waybar/gpu-status.sh",
     "interval": 2,
     "tooltip": false
   },
