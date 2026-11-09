@@ -93,6 +93,8 @@ Press Super+Ctrl+E to open Yazi in Ghostty. Super+E remains the Sway layout togg
 
 Install PipeWire audio tools with `ansible-playbook -i localhost, playbooks/audio.yml --ask-become-pass`. The playbook refuses to replace an installed PulseAudio server automatically; review any replacement and other package conflicts manually. PipeWire and WirePlumber normally run as user-session services.
 
+Alternatively, `ansible-playbook -i localhost, main.yml --tags audio --ask-become-pass` selects only the audio installation playbook and the always-run platform preflight; it does not deploy configuration or change services.
+
 Sway's audio and media keys control the default PipeWire devices and media player. Waybar displays volume and opens pavucontrol when clicked.
 
 Brightness keys use brightnessctl's backlight class. External monitors may not expose a backlight device; check `brightnessctl --class=backlight --list`. DDC/CI monitor control is not configured.

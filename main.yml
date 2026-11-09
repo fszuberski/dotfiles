@@ -91,7 +91,7 @@
   tags: install
 
 - import_playbook: playbooks/audio.yml
-  tags: install
+  tags: [install, audio]
 
 - import_playbook: playbooks/brightness.yml
   tags: install
