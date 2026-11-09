@@ -3,7 +3,7 @@
   "position": "top",
   "height": 34,
   "modules-left": ["sway/workspaces", "sway/mode"],
-  "modules-right": ["tray", "cpu", "custom/cpu-temperature", "custom/gpu-status", "memory", "network", "bluetooth", "custom/notifications", "pulseaudio", "clock", "custom/power"],
+  "modules-right": ["tray", "cpu", "custom/cpu-temperature", "custom/gpu-status", "memory", "network", "bluetooth", "custom/notifications", "pulseaudio", "battery", "clock", "custom/power"],
   "cpu": {
     "interval": 2,
     "format": "<span foreground='#7aa2f7'></span> {usage:>3}%"
@@ -71,6 +71,15 @@
     "on-click": "swaync-client --toggle-panel",
     "restart-interval": 5,
     "exec-on-event": false
+  },
+  "battery": {
+    "interval": 30,
+    "states": { "warning": 49, "critical": 19 },
+    "format": "<span foreground='#e0af68'>{icon}</span> {capacity}%",
+    "format-warning": "<span foreground='#ff9e64'>{icon}</span> {capacity}%",
+    "format-critical": "<span foreground='#f7768e'>{icon}</span> {capacity}%",
+    "format-charging": "<span foreground='#9ece6a'>󰂄</span> {capacity}%",
+    "format-icons": ["󰂎", "󰁺", "󰁼", "󰁾", "󰂀", "󰁹"]
   },
   "clock": { "format": "{:%Y-%m-%d %H:%M:%S}", "interval": 1 },
   "custom/power": {
