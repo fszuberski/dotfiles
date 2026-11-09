@@ -1,0 +1,19 @@
+color=1a1b26
+font=JetBrains Mono
+indicator-idle-visible
+indicator-radius=70
+indicator-thickness=7
+inside-color=1a1b26
+inside-ver-color=1a1b26
+inside-wrong-color=1a1b26
+line-uses-inside
+ring-color=7aa2f7
+ring-ver-color=9ece6a
+ring-wrong-color=f7768e
+key-hl-color=7aa2f7
+bs-hl-color=f7768e
+separator-color=1a1b26
+text-color=c0caf5
+text-ver-color=9ece6a
+text-wrong-color=f7768e
+indicator-caps-lock

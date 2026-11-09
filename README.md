@@ -19,6 +19,7 @@ Configuration and provisioning for three personal machines:
 - `stow/opencode/` contains OpenCode CLI settings and workflow instructions, not private service configuration.
 - `stow/ghostty/` contains the Ghostty configuration copied from macOS.
 - `stow/sway/` contains the shared Arch Sway configuration.
+- `stow/swaylock/` contains the Tokyo Night lock-screen indicator configuration.
 - `stow/waybar/` contains the Tokyo Night Waybar configuration.
 - `stow/kanshi-fleder/` contains Fleder's display profile; other hosts do not deploy it.
 - `stow/rofi/` contains the Tokyo Night Rofi configuration.
@@ -120,7 +121,7 @@ Kanshi starts on a fresh Sway session when its config exists; a Sway reload alon
 
 ### Screen locking
 
-Super+Shift+Escape manually locks the screen with swaylock. Install swaylock and test locking and unlocking with your regular login password before relying on it. Keep a recovery TTY available. In a fresh Sway session, swayidle locks after five minutes of inactivity, turns displays off after ten minutes and turns them back on with activity; it also locks before sleep. It does not suspend automatically. Verify the idle and suspend behavior on the machine before relying on it.
+Super+Shift+Escape manually locks the screen with swaylock. Its Stow package configures a Tokyo Night unlock indicator without changing authentication. Install swaylock and test locking and unlocking with your regular login password before relying on it. Keep a recovery TTY available. In a fresh Sway session, swayidle locks after five minutes of inactivity, turns displays off after ten minutes and turns them back on with activity; it also locks before sleep. It does not suspend automatically. Verify the idle and suspend behavior on the machine before relying on it.
 
 The Sway desktop portals support application integration such as screen sharing and file choosers. Arch's Sway configuration imports the graphical session environment; the portals normally start on demand. After a fresh session, check `systemctl --user show-environment | grep -E '^(WAYLAND_DISPLAY|XDG_CURRENT_DESKTOP)='`, then test a file chooser and screen sharing. If they fail, inspect `systemctl --user status xdg-desktop-portal` and `journalctl --user -b | grep -i portal`.
 

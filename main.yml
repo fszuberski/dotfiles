@@ -22,6 +22,7 @@
           - ghostty
           - opencode
           - sway
+          - swaylock
           - waybar
           - rofi
           - swaync
