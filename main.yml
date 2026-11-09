@@ -28,6 +28,12 @@
           - networkmanager-dmenu
       tags: always
 
+    - name: Select Fleder display configuration
+      ansible.builtin.set_fact:
+        dotfiles_stow_packages: "{{ dotfiles_stow_packages + ['kanshi-fleder'] }}"
+      when: ansible_facts['hostname'] == 'fleder'
+      tags: always
+
     - name: Check all configuration packages for conflicts
       ansible.builtin.command:
         argv:

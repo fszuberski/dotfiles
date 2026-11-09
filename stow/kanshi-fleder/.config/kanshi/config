@@ -1,0 +1,4 @@
+# Fleder's current single-monitor layout. Unmatched outputs stay under Sway's control.
+profile fleder {
+    output DP-1 enable mode 2560x1440@99.946Hz position 0,0 scale 1
+}

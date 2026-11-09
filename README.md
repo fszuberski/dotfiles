@@ -20,6 +20,7 @@ Configuration and provisioning for three personal machines:
 - `stow/ghostty/` contains the Ghostty configuration copied from macOS.
 - `stow/sway/` contains the shared Arch Sway configuration.
 - `stow/waybar/` contains the Tokyo Night Waybar configuration.
+- `stow/kanshi-fleder/` contains Fleder's display profile; other hosts do not deploy it.
 - `stow/rofi/` contains the Tokyo Night Rofi configuration.
 - `stow/swaync/` contains the Tokyo Night notification styling.
 - `stow/networkmanager-dmenu/` configures the NetworkManager menu to use Rofi.
@@ -89,7 +90,25 @@ Brightness keys use brightnessctl's backlight class. External monitors may not e
 
 Super+Shift+W opens the NetworkManager menu. NetworkManager must already be running; this playbook does not enable or start it. Sway starts a polkit agent for actions requiring graphical authentication; avoid starting another agent in the same session. `nmtui` is a terminal fallback.
 
-Kanshi is installed by the main setup, but its display profiles and automatic startup are not configured yet.
+The main setup deploys a Kanshi profile only when the hostname is `fleder`. It matches DP-1 at 2560×1440, 99.946 Hz, position 0,0 and scale 1. Sway starts Kanshi at session startup only if `~/.config/kanshi/config` exists; otherwise Sway handles displays normally. For a different monitor or connector, update the host profile after inspecting `swaymsg -t get_outputs`. Unmatched configurations are left to Sway. Test display changes with a recovery TTY available.
+
+### Updating Fleder's display profile
+
+The current DP-1 profile reflects the monitor temporarily connected to Fleder; it is not a profile for the future 4K TV or for Kikimora.
+
+1. Connect the new display and, in Fleder's Sway session, run `swaymsg -t get_outputs`. Note the connector name, supported mode and refresh rate. If `swaymsg` reports a stale socket, update the current shell with `export SWAYSOCK="$(systemctl --user show-environment | sed -n 's/^SWAYSOCK=//p')"` and retry.
+2. Edit `stow/kanshi-fleder/.config/kanshi/config` in this repository. For example, **only if the TV reports this connector and mode**:
+
+   ```conf
+   profile fleder {
+       output HDMI-A-1 enable mode 3840x2160@60Hz position 0,0 scale 1
+   }
+   ```
+
+   Use an exact supported mode and adjust the position or scale as needed. Sway reports refresh rates in millihertz; for example, `59940` means `59.94Hz`.
+3. If the package isn't linked yet, deploy it with `ansible-playbook -i localhost, main.yml --tags config`. With the Stow link in place, later repository edits are immediately visible to Kanshi. Run `kanshictl reload` from the graphical session, then check `kanshictl status` and `swaymsg -t get_outputs`. Keep a recovery TTY available when testing changes.
+
+Kanshi starts on a fresh Sway session when its config exists; a Sway reload alone does not start it. Kikimora will need a separate host-specific profile and deployment selection.
 
 The main Arch setup installs BlueZ, enables and starts `bluetooth.service`, and installs the `rofi-bluetooth-git` AUR package through Yay. Super+Shift+B opens its menu; `bluetoothctl` is a terminal fallback. Yay builds locally as the regular user using the current, unpinned PKGBUILD and upstream Git source, and runs third-party code without an interactive review pause. Review both before running the playbook. Run `playbooks/packages.yml` first when invoking the Rofi Bluetooth playbook separately; it installs `python-pexpect` and the other official dependencies. The Rofi Bluetooth playbook prompts separately for the sudo password Yay requests; Yay's task output is hidden to protect the password. Yay uses its own build cache; an existing `~/code/rofi-bluetooth-git` checkout is not modified. The playbook skips updates if the package is installed. The `system` tag also runs Bluetooth service setup.
 
