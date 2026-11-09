@@ -1,0 +1,6 @@
+[terminal]
+vt = 1
+
+[default_session]
+command = "dbus-run-session sway --config /etc/greetd/dotfiles-sway-config"
+user = "greeter"

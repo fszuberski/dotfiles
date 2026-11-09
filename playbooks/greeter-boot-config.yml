@@ -1,0 +1,107 @@
+---
+- name: Prepare the graphical login boot configuration
+  hosts: localhost
+  connection: local
+  gather_facts: true
+  vars:
+    greeter_boot_files:
+      - source: "{{ playbook_dir }}/../configuration/greetd/boot-config.toml"
+        dest: /etc/greetd/dotfiles-boot-config.toml
+      - source: "{{ playbook_dir }}/../configuration/greetd/greetd-service.conf"
+        dest: /etc/systemd/system/greetd.service.d/dotfiles.conf
+  tasks:
+    - name: Require Arch Linux and a regular user
+      ansible.builtin.assert:
+        that:
+          - ansible_facts['distribution'] == 'Archlinux'
+          - ansible_facts['user_id'] != 'root'
+        fail_msg: Run this playbook as a regular user on Arch Linux without global become.
+
+    - name: Inspect the tested greeter Sway configuration
+      ansible.builtin.stat:
+        path: /etc/greetd/dotfiles-sway-config
+        follow: false
+        checksum_algorithm: sha256
+      register: deployed_greeter_sway
+
+    - name: Inspect the repository greeter Sway configuration
+      ansible.builtin.stat:
+        path: "{{ playbook_dir }}/../configuration/greetd/sway-config"
+        checksum_algorithm: sha256
+      register: source_greeter_sway
+
+    - name: Require the tested greeter Sway configuration
+      ansible.builtin.assert:
+        that:
+          - deployed_greeter_sway.stat.isreg | default(false)
+          - not (deployed_greeter_sway.stat.islnk | default(false))
+          - deployed_greeter_sway.stat.uid | default(-1) == 0
+          - deployed_greeter_sway.stat.mode | default('') == '0644'
+          - deployed_greeter_sway.stat.checksum | default('') == source_greeter_sway.stat.checksum | default('')
+        fail_msg: Deploy and test the expected root-owned greeter Sway configuration first.
+
+    - name: Inspect the greetd drop-in directory
+      ansible.builtin.stat:
+        path: /etc/systemd/system/greetd.service.d
+        follow: false
+      register: greeter_dropin_dir
+
+    - name: Refuse a symlink or non-directory drop-in path
+      ansible.builtin.assert:
+        that:
+          - not (greeter_dropin_dir.stat.islnk | default(false))
+          - not greeter_dropin_dir.stat.exists or (greeter_dropin_dir.stat.isdir | default(false))
+        fail_msg: Inspect /etc/systemd/system/greetd.service.d manually before continuing.
+
+    - name: Inspect boot configuration sources
+      ansible.builtin.stat:
+        path: "{{ item.source }}"
+        checksum_algorithm: sha256
+      loop: "{{ greeter_boot_files }}"
+      register: greeter_boot_sources
+
+    - name: Inspect boot configuration destinations
+      ansible.builtin.stat:
+        path: "{{ item.dest }}"
+        follow: false
+        checksum_algorithm: sha256
+      loop: "{{ greeter_boot_files }}"
+      register: greeter_boot_destinations
+
+    - name: Refuse to replace a different or non-regular file
+      ansible.builtin.assert:
+        that:
+          - item.0.stat.isreg | default(false)
+          - not (item.1.stat.islnk | default(false))
+          - not item.1.stat.exists or (item.1.stat.isreg | default(false) and item.1.stat.checksum | default('') == item.0.stat.checksum | default(''))
+        fail_msg: "{{ item.1.item.dest }} already exists and differs; inspect it manually."
+      loop: "{{ greeter_boot_sources.results | zip(greeter_boot_destinations.results) | list }}"
+      loop_control:
+        label: "{{ item.1.item.dest }}"
+
+    - name: Create the greetd drop-in directory
+      ansible.builtin.file:
+        path: /etc/systemd/system/greetd.service.d
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
+      become: true
+
+    - name: Install the boot configuration and service drop-in
+      ansible.builtin.copy:
+        src: "{{ item.source }}"
+        dest: "{{ item.dest }}"
+        owner: root
+        group: root
+        mode: '0644'
+        force: false
+      loop: "{{ greeter_boot_files }}"
+      register: greeter_boot_copy
+      become: true
+
+    - name: Reload systemd after changing the drop-in
+      ansible.builtin.systemd_service:
+        daemon_reload: true
+      become: true
+      when: greeter_boot_copy.changed and not ansible_check_mode
