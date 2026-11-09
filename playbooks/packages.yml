@@ -14,17 +14,40 @@
     - name: Install general packages on Arch Linux
       community.general.pacman:
         name:
+          - adobe-source-code-pro-fonts
           - base-devel
           - bc
           - bluez-utils
+          - btop
+          - calibre
+          - docker
+          - docker-compose
+          - fastfetch
+          - firefox-developer-edition
+          - fzf
           - git
           - git-delta
-          - nodejs
-          - npm
           - go
+          - httpie
+          - nodejs
+          - noto-fonts
+          - npm
+          - ntfs-3g
+          - nvm
+          - otf-font-awesome
+          - pass
           - python-pexpect
+          - ripgrep-all
           - rofi
+          - ttf-roboto
+          - ttf-roboto-mono
           - unzip
+          - wget
+          - zathura
+          - zathura-cb
+          - zathura-djvu
+          - zathura-pdf-mupdf
+          - zathura-ps
         state: present
       become: true
       when: ansible_facts['distribution'] == 'Archlinux'

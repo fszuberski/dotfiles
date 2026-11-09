@@ -32,7 +32,7 @@ Configuration and provisioning for three personal machines:
 - `playbooks/nvim.yml` installs Neovim on the local Arch or macOS machine.
 - `playbooks/nvim-config.yml` deploys the Neovim configuration with Stow.
 - `playbooks/tmux.yml` installs tmux and its plugin manager.
-- `playbooks/packages.yml` installs general-purpose packages, including Arch build and Rofi Bluetooth dependencies.
+- `playbooks/packages.yml` installs general-purpose packages, including approved Arch applications, utilities, fonts and Rofi Bluetooth dependencies.
 - `playbooks/yay.yml` builds and installs Yay from its current AUR recipe on Arch.
 - `playbooks/yay-update.yml` explicitly rebuilds and updates Yay from its current AUR recipe.
 - `playbooks/yay-install-built.yml` explicitly installs a selected existing Yay package without changing its checkout.
@@ -94,6 +94,8 @@ Press Super+Ctrl+E to open Yazi in Ghostty. Super+E remains the Sway layout togg
 Install PipeWire audio tools with `ansible-playbook -i localhost, playbooks/audio.yml --ask-become-pass`. The playbook refuses to replace an installed PulseAudio server automatically; review any replacement and other package conflicts manually. PipeWire and WirePlumber normally run as user-session services.
 
 Alternatively, `ansible-playbook -i localhost, main.yml --tags audio --ask-become-pass` selects only the audio installation playbook and the always-run platform preflight; it does not deploy configuration or change services.
+
+The Arch general packages include Docker and Compose, but installing them does not enable the Docker service or grant Docker group access. The legacy `nvm` package is also installed alongside system Node.js; your Zsh config loads nvm when it is present.
 
 Sway's audio and media keys control the default PipeWire devices and media player. Waybar displays volume and opens pavucontrol when clicked.
 
