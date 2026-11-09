@@ -3,9 +3,7 @@
   "position": "top",
   "height": 34,
   "modules-left": ["sway/workspaces", "sway/mode"],
-  "modules-center": ["sway/window"],
   "modules-right": ["network", "bluetooth", "pulseaudio", "clock", "tray"],
-  "sway/window": { "max-length": 60 },
   "pulseaudio": {
     "format": "Vol {volume}%",
     "format-muted": "Muted",
