@@ -47,6 +47,7 @@ Configuration and provisioning for three personal machines:
 - `playbooks/polkit-agent.yml` installs a graphical polkit authentication agent on Arch Linux.
 - `playbooks/bluetooth.yml` installs BlueZ and bluetoothctl; `playbooks/bluetooth-service.yml` enables and starts the Bluetooth system service.
 - `playbooks/rofi-bluetooth.yml` installs the Rofi Bluetooth AUR menu through Yay.
+- `playbooks/kanshi.yml` installs Kanshi for display profiles on Arch Linux.
 - `playbooks/rofi-bluetooth-install-built.yml` explicitly installs a selected existing Rofi Bluetooth package without changing its checkout.
 - `playbooks/macos-window-manager.yml` installs yabai and skhd on macOS.
 - `playbooks/macos-window-manager-config.yml` deploys their configuration with Stow.
@@ -87,6 +88,8 @@ Sway's audio and media keys control the default PipeWire devices and media playe
 Brightness keys use brightnessctl's backlight class. External monitors may not expose a backlight device; check `brightnessctl --class=backlight --list`. DDC/CI monitor control is not configured.
 
 Super+Shift+W opens the NetworkManager menu. NetworkManager must already be running; this playbook does not enable or start it. Sway starts a polkit agent for actions requiring graphical authentication; avoid starting another agent in the same session. `nmtui` is a terminal fallback.
+
+Kanshi is installed by the main setup, but its display profiles and automatic startup are not configured yet.
 
 The main Arch setup installs BlueZ, enables and starts `bluetooth.service`, and installs the `rofi-bluetooth-git` AUR package through Yay. Super+Shift+B opens its menu; `bluetoothctl` is a terminal fallback. Yay builds locally as the regular user using the current, unpinned PKGBUILD and upstream Git source, and runs third-party code without an interactive review pause. Review both before running the playbook. Run `playbooks/packages.yml` first when invoking the Rofi Bluetooth playbook separately; it installs `python-pexpect` and the other official dependencies. The Rofi Bluetooth playbook prompts separately for the sudo password Yay requests; Yay's task output is hidden to protect the password. Yay uses its own build cache; an existing `~/code/rofi-bluetooth-git` checkout is not modified. The playbook skips updates if the package is installed. The `system` tag also runs Bluetooth service setup.
 
