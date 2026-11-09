@@ -3,7 +3,15 @@
   "position": "top",
   "height": 34,
   "modules-left": ["sway/workspaces", "sway/mode"],
-  "modules-right": ["network", "bluetooth", "pulseaudio", "clock", "tray"],
+  "modules-right": ["cpu", "memory", "network", "bluetooth", "pulseaudio", "clock", "tray"],
+  "cpu": {
+    "interval": 2,
+    "format": "CPU {usage:>3}%"
+  },
+  "memory": {
+    "interval": 2,
+    "format": "RAM {percentage:>3}%"
+  },
   "pulseaudio": {
     "format": "Vol {volume}%",
     "format-muted": "Muted",
@@ -11,8 +19,9 @@
   },
   "network": {
     "rfkill": false,
-    "format-ethernet": "󰈀 Wired",
-    "format-wifi": "{icon} {essid} {signalStrength}%",
+    "interval": 1,
+    "format-ethernet": "󰈀 Wired  ↓ {bandwidthDownBits:>12} ↑ {bandwidthUpBits:>12}",
+    "format-wifi": "{icon} {essid} {signalStrength}%  ↓ {bandwidthDownBits:>12} ↑ {bandwidthUpBits:>12}",
     "format-icons": ["󰤟", "󰤢", "󰤥", "󰤨"],
     "format-linked": "󰈀 Connecting",
     "format-disconnected": "󰤭 Offline",

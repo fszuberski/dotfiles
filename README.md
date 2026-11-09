@@ -94,7 +94,7 @@ The initial Sway configuration uses Super+Enter for Ghostty, Super+D for the Rof
 
 On Arch, Ghostty and Waybar use JetBrains Mono SemiBold at 12 points; the separately deployed macOS Ghostty override sets 14 points. Waybar shows the active network connection and Bluetooth status. Click either indicator to open its existing Rofi menu. The network indicator reports interface connectivity, not verified Internet access. The clock shows local date and time with seconds.
 
-Waybar uses Meslo Nerd Font as a fallback for its network and Bluetooth icons; it is installed by `playbooks/fonts.yml`.
+Waybar uses Meslo Nerd Font as a fallback for its network and Bluetooth icons; it is installed by `playbooks/fonts.yml`. The network indicator shows download and upload rates in bits per second for the selected interface, refreshed every second.
 
 Sway starts clipboard history watchers for text and images at session startup. Press Super+Shift+V to select an item with Rofi. **Cliphist stores copied content on disk, potentially including passwords or other secrets.** Run `cliphist wipe` to delete the history; to disable collection, remove the two `wl-paste --watch` startup lines and restart the Sway session. This does not clear the current clipboard.
 
