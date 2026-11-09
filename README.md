@@ -91,6 +91,8 @@ GTK 3 and GTK 4 applications use JetBrains Mono SemiBold 14, matching Ghostty. R
 
 The initial Sway configuration uses Super+Enter for Ghostty, Super+D for the Rofi launcher, Super+N for notifications, Super+Shift+Q to close a window, Super+Shift+C to reload and Super+Shift+E to exit. Install Waybar, Rofi and swaync and deploy their configurations before reloading Sway. Sway starts swaync at session startup, not on reload; avoid running another notification daemon simultaneously. Validate with `sway -C` and start a fresh Sway session from a TTY; keep another TTY available for recovery.
 
+Waybar uses Ghostty's JetBrains Mono SemiBold font and shows Wi-Fi and Bluetooth status. Click either indicator to open its existing Rofi menu. Wi-Fi tracks wireless interfaces even when Ethernet is connected. The clock shows local date and time with seconds.
+
 Sway starts clipboard history watchers for text and images at session startup. Press Super+Shift+V to select an item with Rofi. **Cliphist stores copied content on disk, potentially including passwords or other secrets.** Run `cliphist wipe` to delete the history; to disable collection, remove the two `wl-paste --watch` startup lines and restart the Sway session. This does not clear the current clipboard.
 
 Press Super+Ctrl+E to open Yazi in Ghostty. Super+E remains the Sway layout toggle.

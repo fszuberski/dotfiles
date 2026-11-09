@@ -1,16 +1,33 @@
 {
   "layer": "top",
   "position": "top",
-  "height": 28,
+  "height": 34,
   "modules-left": ["sway/workspaces", "sway/mode"],
   "modules-center": ["sway/window"],
-  "modules-right": ["pulseaudio", "clock", "tray"],
+  "modules-right": ["network", "bluetooth", "pulseaudio", "clock", "tray"],
   "sway/window": { "max-length": 60 },
   "pulseaudio": {
     "format": "Vol {volume}%",
     "format-muted": "Muted",
     "on-click": "pavucontrol"
   },
-  "clock": { "format": "{:%a %d %b  %H:%M}" },
+  "network": {
+    "interface": "wl*",
+    "format-wifi": "Wi-Fi {essid} {signalStrength}%",
+    "format-linked": "Wi-Fi connecting",
+    "format-disconnected": "Wi-Fi disconnected",
+    "format-disabled": "Wi-Fi off",
+    "on-click": "networkmanager_dmenu"
+  },
+  "bluetooth": {
+    "format": "BT {status}",
+    "format-off": "BT off",
+    "format-disabled": "BT disabled",
+    "format-on": "BT on",
+    "format-connected": "BT connected ({num_connections})",
+    "format-no-controller": "BT unavailable",
+    "on-click": "rofi-bluetooth"
+  },
+  "clock": { "format": "{:%Y-%m-%d %H:%M:%S}", "interval": 1 },
   "tray": { "spacing": 10 }
 }

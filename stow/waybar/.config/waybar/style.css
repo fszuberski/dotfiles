@@ -2,7 +2,8 @@
   border: none;
   border-radius: 0;
   font-family: "JetBrains Mono", monospace;
-  font-size: 12px;
+  font-size: 14pt;
+  font-weight: 600;
   min-height: 0;
 }
 
@@ -27,7 +28,7 @@ window#waybar {
   background: #f7768e;
 }
 
-#mode, #window, #pulseaudio, #clock, #tray {
+#mode, #window, #network, #bluetooth, #pulseaudio, #clock, #tray {
   padding: 0 10px;
 }
 
