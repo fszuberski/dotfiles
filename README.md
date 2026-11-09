@@ -34,6 +34,7 @@ Configuration and provisioning for three personal machines:
 - `playbooks/tmux.yml` installs tmux and its plugin manager.
 - `playbooks/packages.yml` installs general-purpose packages, including approved Arch applications, utilities, fonts and Rofi Bluetooth dependencies.
 - `playbooks/yay.yml` builds and installs Yay from its current AUR recipe on Arch.
+- `playbooks/aur-apps.yml` installs Google Chrome from the AUR through Yay on Arch.
 - `playbooks/yay-update.yml` explicitly rebuilds and updates Yay from its current AUR recipe.
 - `playbooks/yay-install-built.yml` explicitly installs a selected existing Yay package without changing its checkout.
 - `playbooks/fonts.yml` installs Meslo Nerd Font and JetBrains Mono on Arch Linux or macOS.
@@ -96,6 +97,8 @@ Install PipeWire audio tools with `ansible-playbook -i localhost, playbooks/audi
 Alternatively, `ansible-playbook -i localhost, main.yml --tags audio --ask-become-pass` selects only the audio installation playbook and the always-run platform preflight; it does not deploy configuration or change services.
 
 The Arch general packages include Docker and Compose, but installing them does not enable the Docker service or grant Docker group access. The legacy `nvm` package is also installed alongside system Node.js; your Zsh config loads nvm when it is present.
+
+The Arch setup installs Google Chrome from the AUR through Yay. To run that step separately, first install the general packages and Yay, then run `ansible-playbook -i localhost, playbooks/aur-apps.yml --ask-become-pass`. It skips installed applications, builds missing packages as the regular user and prompts separately for the sudo password Yay requests. Yay's task output is hidden to protect the password. AUR recipes and upstream sources can change and are built without an interactive review pause; review them before running the playbook. Spotify is omitted for now while its AUR recipe is out of sync and its recommended clean-chroot build workflow remains unconfigured.
 
 Sway's audio and media keys control the default PipeWire devices and media player. Waybar displays volume and opens pavucontrol when clicked.
 

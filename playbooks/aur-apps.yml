@@ -1,0 +1,62 @@
+---
+- name: Install approved AUR applications through Yay on Arch Linux
+  hosts: localhost
+  connection: local
+  gather_facts: true
+  vars:
+    aur_app_packages:
+      - google-chrome
+  tasks:
+    - name: Require Arch Linux and a regular user
+      ansible.builtin.assert:
+        that:
+          - ansible_facts['distribution'] == 'Archlinux'
+          - ansible_facts['user_id'] != 'root'
+        fail_msg: Run this playbook as a regular user on Arch Linux without global become.
+
+    - name: Check which AUR applications are installed
+      ansible.builtin.command:
+        argv: [pacman, -Qq, "{{ item }}"]
+      loop: "{{ aur_app_packages }}"
+      register: aur_app_status
+      changed_when: false
+      failed_when: aur_app_status.rc not in [0, 1]
+      check_mode: false
+
+    - name: Select missing AUR applications
+      ansible.builtin.set_fact:
+        missing_aur_apps: "{{ aur_app_status.results | selectattr('rc', 'equalto', 1) | map(attribute='item') | list }}"
+
+    - name: Require Yay and build prerequisites
+      ansible.builtin.command:
+        argv: [pacman, -Qq, yay, base-devel, git, python-pexpect]
+      changed_when: false
+      check_mode: false
+      when: missing_aur_apps | length > 0
+
+    - name: Ask for the sudo password for Yay
+      ansible.builtin.pause:
+        prompt: Sudo password for Yay (may be the same as the Ansible become password)
+        echo: false
+      register: yay_sudo_password
+      no_log: true
+      when: missing_aur_apps | length > 0 and not ansible_check_mode
+
+    - name: Install missing applications with Yay as the regular user
+      ansible.builtin.expect:
+        command: "yay -S --aur --needed --noconfirm --answerclean None --answerdiff None --answeredit None {{ missing_aur_apps | map('quote') | join(' ') }}"
+        responses:
+          'dotfiles-yay-sudo-password:': "{{ yay_sudo_password.user_input }}"
+        timeout: 1800
+      environment:
+        SUDO_PROMPT: 'dotfiles-yay-sudo-password: '
+      become: false
+      no_log: true
+      when: missing_aur_apps | length > 0 and not ansible_check_mode
+
+    - name: Verify the requested applications are installed
+      ansible.builtin.command:
+        argv: [pacman, -Qq, "{{ item }}"]
+      loop: "{{ missing_aur_apps }}"
+      changed_when: false
+      when: not ansible_check_mode
