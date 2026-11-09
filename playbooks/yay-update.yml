@@ -1,0 +1,4 @@
+---
+- import_playbook: yay.yml
+  vars:
+    yay_force_update: true

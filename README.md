@@ -31,6 +31,7 @@ Configuration and provisioning for three personal machines:
 - `playbooks/tmux.yml` installs tmux and its plugin manager.
 - `playbooks/packages.yml` installs general-purpose development packages, including base-devel, Git and Go on Arch.
 - `playbooks/yay.yml` builds and installs Yay from its current AUR recipe on Arch.
+- `playbooks/yay-update.yml` explicitly rebuilds and updates Yay from its current AUR recipe.
 - `playbooks/yay-install-built.yml` explicitly installs a selected existing Yay package without changing its checkout.
 - `playbooks/fonts.yml` installs Meslo Nerd Font and JetBrains Mono on Arch Linux or macOS.
 - `playbooks/ghostty.yml` installs Ghostty on Arch Linux or macOS.
@@ -56,6 +57,8 @@ Configuration and provisioning for three personal machines:
 The intended design separates shared configuration from platform and host overrides. Fleder and Kikimora will initially share an Arch/Sway profile, with room to diverge later. Configuration deployment, package installation, and privileged system changes will be separate operations.
 
 The Arch setup builds Yay from the current `master` branch of its AUR repository (the repository's default branch), cloning it to `~/code/yay` and building as the regular user. If Yay is already installed it skips the checkout and build; it does not update an installed Yay. Otherwise it checks the existing checkout's origin and branch, then **deletes recognized ignored build artifacts**, including `pkg/`, `src/` and Yay source and package archives, before fast-forwarding and rebuilding. It refuses to clean when other checkout changes are present. Do not keep personal files in those build paths. The recipe and upstream source can change between runs: inspect them before running the playbook, which builds third-party code without an interactive review pause.
+
+To explicitly rebuild Yay from the latest AUR recipe, run `ansible-playbook -i localhost, playbooks/yay-update.yml --ask-become-pass`. This optional playbook is not part of the main setup and performs the same checkout safety checks and build-artifact cleanup.
 
 If a trusted Yay package was already built but installation failed, explicitly select it with `ansible-playbook -i localhost, playbooks/yay-install-built.yml --ask-become-pass -e "yay_package_path=$HOME/code/yay/ACTUAL_PACKAGE_FILENAME"`. This installs the chosen file without modifying the checkout; inspect the package before selecting it.
 
