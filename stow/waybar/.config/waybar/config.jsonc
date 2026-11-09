@@ -12,11 +12,11 @@
     "on-click": "pavucontrol"
   },
   "network": {
-    "interface": "wl*",
+    "rfkill": false,
+    "format-ethernet": "Wired connected",
     "format-wifi": "Wi-Fi {essid} {signalStrength}%",
-    "format-linked": "Wi-Fi connecting",
-    "format-disconnected": "Wi-Fi disconnected",
-    "format-disabled": "Wi-Fi off",
+    "format-linked": "Network connecting",
+    "format-disconnected": "Network disconnected",
     "on-click": "networkmanager_dmenu"
   },
   "bluetooth": {
