@@ -44,6 +44,9 @@
 - import_playbook: playbooks/packages.yml
   tags: install
 
+- import_playbook: playbooks/yay.yml
+  tags: install
+
 - import_playbook: playbooks/zsh.yml
   tags: install
 

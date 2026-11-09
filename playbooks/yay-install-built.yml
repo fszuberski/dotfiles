@@ -1,0 +1,40 @@
+---
+- name: Install an explicitly selected, already-built Yay package
+  hosts: localhost
+  connection: local
+  gather_facts: true
+  tasks:
+    - name: Require Arch Linux and a regular user
+      ansible.builtin.assert:
+        that:
+          - ansible_facts['distribution'] == 'Archlinux'
+          - ansible_facts['user_id'] != 'root'
+        fail_msg: Run this playbook as a regular user on Arch Linux without global become.
+
+    - name: Require an explicitly selected package in the Yay checkout
+      ansible.builtin.assert:
+        that:
+          - yay_package_path is defined
+          - yay_package_path | default('') | dirname == ansible_facts['env']['HOME'] ~ '/code/yay'
+          - yay_package_path | default('') | basename is match('^yay-(?!debug-)[^/]+[.]pkg[.]tar[.][A-Za-z0-9]+$')
+        fail_msg: Set yay_package_path to the full path of the intended Yay package in ~/code/yay.
+
+    - name: Inspect the selected package without following symlinks
+      ansible.builtin.stat:
+        path: "{{ yay_package_path }}"
+        follow: false
+      register: yay_built_package
+
+    - name: Require a regular package file
+      ansible.builtin.assert:
+        that:
+          - yay_built_package.stat.exists
+          - yay_built_package.stat.isreg | default(false)
+          - not (yay_built_package.stat.islnk | default(false))
+        fail_msg: The selected Yay package must be an existing regular file, not a symlink.
+
+    - name: Install the selected Yay package
+      community.general.pacman:
+        name: "{{ yay_package_path }}"
+        state: present
+      become: true

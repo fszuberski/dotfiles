@@ -1,0 +1,149 @@
+---
+- name: Build and install Yay from its current AUR recipe
+  hosts: localhost
+  connection: local
+  gather_facts: true
+  vars:
+    yay_dir: "{{ ansible_facts['env']['HOME'] }}/code/yay"
+
+  tasks:
+    - name: Require Arch Linux and a regular user
+      ansible.builtin.assert:
+        that:
+          - ansible_facts['distribution'] == 'Archlinux'
+          - ansible_facts['user_id'] != 'root'
+        fail_msg: Run this playbook as a regular user on Arch Linux without global become.
+
+    - name: Check whether Yay is already installed
+      ansible.builtin.command:
+        argv: [pacman, -Qq, yay]
+      register: yay_installed
+      changed_when: false
+      failed_when: yay_installed.rc not in [0, 1]
+      check_mode: false
+
+    - name: Inspect the requested checkout path
+      ansible.builtin.stat:
+        path: "{{ yay_dir }}"
+        follow: false
+      register: yay_checkout
+      when: yay_installed.rc == 1
+
+    - name: Refuse symlinks and non-directory checkout paths
+      ansible.builtin.assert:
+        that:
+          - not (yay_checkout.stat.islnk | default(false))
+          - not yay_checkout.stat.exists or (yay_checkout.stat.isdir | default(false))
+        fail_msg: "{{ yay_dir }} is not a regular directory; inspect it manually."
+      when: yay_installed.rc == 1
+
+    - name: Check the existing checkout origin
+      ansible.builtin.command:
+        argv: [git, -C, "{{ yay_dir }}", remote, get-url, origin]
+      register: yay_origin
+      changed_when: false
+      check_mode: false
+      when: yay_installed.rc == 1 and yay_checkout.stat.exists
+
+    - name: Check the existing checkout branch
+      ansible.builtin.command:
+        argv: [git, -C, "{{ yay_dir }}", branch, --show-current]
+      register: yay_branch
+      changed_when: false
+      check_mode: false
+      when: yay_installed.rc == 1 and yay_checkout.stat.exists
+
+    - name: Check for existing checkout changes and build files
+      ansible.builtin.command:
+        argv: [git, -C, "{{ yay_dir }}", status, --porcelain, --untracked-files=normal, --ignored]
+      register: yay_status
+      changed_when: false
+      check_mode: false
+      when: yay_installed.rc == 1 and yay_checkout.stat.exists
+
+    - name: Require the expected Yay AUR checkout on master
+      ansible.builtin.assert:
+        that:
+          - yay_origin.stdout == 'https://aur.archlinux.org/yay.git'
+          - yay_branch.stdout == 'master'
+        fail_msg: "{{ yay_dir }} is not the expected Yay AUR checkout on master; inspect it manually."
+      when: yay_installed.rc == 1 and yay_checkout.stat.exists
+
+    - name: Refuse checkout changes other than recognized build artifacts
+      ansible.builtin.assert:
+        that:
+          - item is match('^!! (pkg/|src/|yay-(debug-)?[0-9][A-Za-z0-9._+~-]*[.]tar[.](gz|xz|zst))$')
+        fail_msg: "Unexpected checkout change {{ item }}; inspect it manually before cleaning."
+      loop: "{{ yay_status.stdout_lines | default([]) }}"
+      when: yay_installed.rc == 1 and yay_checkout.stat.exists
+
+    - name: Clean recognized Yay build artifacts
+      ansible.builtin.file:
+        path: "{{ yay_dir }}/{{ item[3:] | regex_replace('/$', '') }}"
+        state: absent
+      loop: "{{ yay_status.stdout_lines | default([]) }}"
+      when: yay_installed.rc == 1 and yay_checkout.stat.exists
+
+    - name: Check the build prerequisites
+      ansible.builtin.command:
+        argv: [pacman, -Qq, base-devel, git, go]
+      changed_when: false
+      check_mode: false
+      when: yay_installed.rc == 1
+
+    - name: Create the checkout parent directory
+      ansible.builtin.file:
+        path: "{{ yay_dir | dirname }}"
+        state: directory
+        mode: '0755'
+      when: yay_installed.rc == 1 and not ansible_check_mode
+
+    - name: Clone the Yay AUR default branch
+      ansible.builtin.git:
+        repo: https://aur.archlinux.org/yay.git
+        dest: "{{ yay_dir }}"
+        version: master
+        update: false
+      when: yay_installed.rc == 1 and not yay_checkout.stat.exists and not ansible_check_mode
+
+    - name: Fast-forward the existing Yay AUR checkout
+      ansible.builtin.command:
+        argv: [git, -C, "{{ yay_dir }}", pull, --ff-only, origin, master]
+      environment:
+        LC_ALL: C
+      register: yay_pull
+      changed_when: "'Already up to date.' not in yay_pull.stdout"
+      when: yay_installed.rc == 1 and yay_checkout.stat.exists and not ansible_check_mode
+
+    - name: Build Yay as the regular user
+      ansible.builtin.command:
+        argv: [makepkg, --noconfirm]
+        chdir: "{{ yay_dir }}"
+      when: yay_installed.rc == 1 and not ansible_check_mode
+
+    - name: Find the built package path
+      ansible.builtin.command:
+        argv: [makepkg, --packagelist]
+        chdir: "{{ yay_dir }}"
+      register: yay_package_list
+      changed_when: false
+      when: yay_installed.rc == 1 and not ansible_check_mode
+
+    - name: Select the Yay package
+      ansible.builtin.set_fact:
+        yay_package_files: "{{ yay_package_list.stdout_lines | select('search', '/yay-(?!debug-)[^/]+\\.pkg\\.tar\\.') | list }}"
+      when: yay_installed.rc == 1 and not ansible_check_mode
+
+    - name: Require exactly one Yay package
+      ansible.builtin.assert:
+        that:
+          - yay_package_files | length == 1
+        fail_msg: Could not identify exactly one built Yay package.
+      when: yay_installed.rc == 1 and not ansible_check_mode
+
+    - name: Install the built Yay package
+      community.general.pacman:
+        name: "{{ yay_package_files[0] }}"
+        state: present
+      become: true
+      when: yay_installed.rc == 1 and not ansible_check_mode
