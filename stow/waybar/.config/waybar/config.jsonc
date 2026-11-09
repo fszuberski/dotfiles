@@ -3,7 +3,7 @@
   "position": "top",
   "height": 34,
   "modules-left": ["sway/workspaces", "sway/mode"],
-  "modules-right": ["tray", "cpu", "custom/cpu-temperature", "custom/gpu-status", "memory", "network", "bluetooth", "pulseaudio", "clock", "custom/power"],
+  "modules-right": ["tray", "cpu", "custom/cpu-temperature", "custom/gpu-status", "memory", "network", "bluetooth", "custom/notifications", "pulseaudio", "clock", "custom/power"],
   "cpu": {
     "interval": 2,
     "format": "<span foreground='#7aa2f7'></span> {usage:>3}%"
@@ -56,6 +56,21 @@
     "format-no-controller": "󰂲",
     "tooltip-format": "Bluetooth: {status}",
     "on-click": "rofi-bluetooth"
+  },
+  "custom/notifications": {
+    "exec": "swaync-client --subscribe-waybar",
+    "return-type": "json",
+    "format": "{icon} {text}",
+    "format-icons": {
+      "default": "<span foreground='#7aa2f7'>󰂚</span>",
+      "dnd-notification": "<span foreground='#ff9e64'>󰂛</span>",
+      "dnd-none": "<span foreground='#ff9e64'>󰂛</span>",
+      "dnd-inhibited-notification": "<span foreground='#ff9e64'>󰂛</span>",
+      "dnd-inhibited-none": "<span foreground='#ff9e64'>󰂛</span>"
+    },
+    "on-click": "swaync-client --toggle-panel",
+    "restart-interval": 5,
+    "exec-on-event": false
   },
   "clock": { "format": "{:%Y-%m-%d %H:%M:%S}", "interval": 1 },
   "custom/power": {

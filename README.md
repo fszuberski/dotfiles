@@ -98,6 +98,8 @@ Waybar uses Meslo Nerd Font as a fallback for its network and Bluetooth icons; i
 
 Click the Arch icon at the right end of Waybar to open a Rofi menu for suspend or shutdown. Selecting an option immediately requests that action through systemd; Escape cancels the menu.
 
+Waybar's bell shows the swaync notification count; click it to toggle the notification center.
+
 The Waybar CPU temperature indicator reads the Intel `coretemp` package or AMD `k10temp` Tctl sensor; it displays `N/A` if neither is available. Tctl can include an AMD-specific offset and need not be the same as a physical die temperature.
 
 The GPU indicator reads utilization and the edge temperature from the first AMD GPU using the `amdgpu` driver, without elevated privileges. Unavailable readings are omitted, and the indicator is hidden if neither is available. Fleder's Intel GPU currently has no unprivileged usage source or separate temperature sensor. The AMD readings still need verification on Kikimora.
