@@ -1,0 +1,55 @@
+---
+- name: Prepare the ReGreet theme without activating it
+  hosts: localhost
+  connection: local
+  gather_facts: true
+  vars:
+    regreet_theme_files:
+      - source: "{{ playbook_dir }}/../configuration/greetd/regreet.toml"
+        dest: /etc/greetd/dotfiles-regreet.toml
+      - source: "{{ playbook_dir }}/../configuration/greetd/regreet.css"
+        dest: /etc/greetd/dotfiles-regreet.css
+  tasks:
+    - name: Require Arch Linux and a regular user
+      ansible.builtin.assert:
+        that:
+          - ansible_facts['distribution'] == 'Archlinux'
+          - ansible_facts['user_id'] != 'root'
+        fail_msg: Run this playbook as a regular user on Arch Linux without global become.
+
+    - name: Inspect theme source files
+      ansible.builtin.stat:
+        path: "{{ item.source }}"
+        checksum_algorithm: sha256
+      loop: "{{ regreet_theme_files }}"
+      register: regreet_theme_sources
+
+    - name: Inspect theme destinations without following symlinks
+      ansible.builtin.stat:
+        path: "{{ item.dest }}"
+        follow: false
+        checksum_algorithm: sha256
+      loop: "{{ regreet_theme_files }}"
+      register: regreet_theme_destinations
+
+    - name: Refuse to replace a different or non-regular file
+      ansible.builtin.assert:
+        that:
+          - item.0.stat.isreg | default(false)
+          - not (item.1.stat.islnk | default(false))
+          - not item.1.stat.exists or (item.1.stat.isreg | default(false) and item.1.stat.checksum | default('') == item.0.stat.checksum | default(''))
+        fail_msg: "{{ item.1.item.dest }} already exists and differs; inspect it manually."
+      loop: "{{ regreet_theme_sources.results | zip(regreet_theme_destinations.results) | list }}"
+      loop_control:
+        label: "{{ item.1.item.dest }}"
+
+    - name: Install the separate theme files
+      ansible.builtin.copy:
+        src: "{{ item.source }}"
+        dest: "{{ item.dest }}"
+        owner: root
+        group: root
+        mode: '0644'
+        force: false
+      loop: "{{ regreet_theme_files }}"
+      become: true
