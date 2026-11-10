@@ -105,7 +105,7 @@ GTK 3 and GTK 4 applications use JetBrains Mono SemiBold 14. Restart application
 
 The initial Sway configuration uses Super+Enter for Ghostty, Super+D for the Rofi launcher, Super+N for notifications, Super+Shift+Q to close a window, Super+Shift+C to reload and Super+Shift+E to exit. Install Waybar, Rofi and swaync and deploy their configurations before reloading Sway. Sway starts swaync at session startup, not on reload; avoid running another notification daemon simultaneously. Validate with `sway -C` and start a fresh Sway session from a TTY; keep another TTY available for recovery.
 
-On Arch, Ghostty uses JetBrains Mono SemiBold at 12 points and Waybar uses it at 10 points; the separately deployed macOS Ghostty override sets 14 points. Waybar shows the active network connection and Bluetooth status. Click either indicator to open its existing Rofi menu. The network indicator reports interface connectivity, not verified Internet access. The clock shows local date and time with seconds.
+On Arch, Ghostty uses JetBrains Mono SemiBold at 12 points and Waybar uses JetBrains Mono Bold at 10 points; the separately deployed macOS Ghostty override sets 14 points. Waybar shows the active network connection and Bluetooth status. Click either indicator to open its existing Rofi menu. The network indicator reports interface connectivity, not verified Internet access. The clock shows local date and time with seconds.
 
 Waybar uses Meslo Nerd Font as a fallback for its network and Bluetooth icons; it is installed by `playbooks/fonts.yml`. The network indicator shows download and upload rates in bits per second for the selected interface, refreshed every second.
 
