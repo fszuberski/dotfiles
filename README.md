@@ -28,6 +28,8 @@ Configuration and provisioning for three personal machines:
 - `stow/swaync/` contains the Tokyo Night notification styling.
 - `stow/networkmanager-dmenu/` configures the NetworkManager menu to use Rofi.
 - `configuration/greetd/sway-config` is the separate Sway configuration intended for the graphical greeter.
+- `configuration/greetd/regreet.css` is a Tokyo Night login theme prepared for preview; it is not deployed to the greeter yet.
+- `configuration/greetd/regreet.toml` contains the matching ReGreet settings prepared for preview.
 - `stow/karabiner/` contains the existing macOS Karabiner configuration.
 - `stow/macos-window-manager/` contains the existing yabai and skhd configurations.
 - `playbooks/zsh.yml` installs Zsh on the local Arch or macOS machine.
@@ -73,6 +75,8 @@ Configuration and provisioning for three personal machines:
 The intended design separates shared configuration from platform and host overrides. Fleder and Kikimora will initially share an Arch/Sway profile, with room to diverge later. Configuration deployment, package installation, and privileged system changes will be separate operations.
 
 The Arch setup builds Yay from the current `master` branch of its AUR repository (the repository's default branch), cloning it to `~/code/yay` and building as the regular user. If Yay is already installed it skips the checkout and build; it does not update an installed Yay. Otherwise it checks the existing checkout's origin and branch, then **deletes recognized ignored build artifacts**, including `pkg/`, `src/` and Yay source and package archives, before fast-forwarding and rebuilding. It refuses to clean when other checkout changes are present. Do not keep personal files in those build paths. The recipe and upstream source can change between runs: inspect them before running the playbook, which builds third-party code without an interactive review pause.
+
+To preview the prepared ReGreet theme without changing boot login, run `regreet --demo --config "$PWD/configuration/greetd/regreet.toml" --style "$PWD/configuration/greetd/regreet.css"` from the repository root in a graphical session. Demo mode does not authenticate through greetd; close it when finished. The actual boot greeter is unchanged until the configuration and stylesheet are deployed separately.
 
 To explicitly rebuild Yay from the latest AUR recipe, run `ansible-playbook -i localhost, playbooks/yay-update.yml --ask-become-pass`. This optional playbook is not part of the main setup and performs the same checkout safety checks and build-artifact cleanup.
 

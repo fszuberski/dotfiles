@@ -1,0 +1,116 @@
+/* Tokyo Night styling for the ReGreet login screen. */
+window {
+  background-color: #1a1b26;
+  color: #c0caf5;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12pt;
+  font-weight: 600;
+}
+
+frame.background {
+  background-color: transparent;
+  color: #c0caf5;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+frame.background > grid {
+  background-color: #24283b;
+  padding: 30px;
+}
+
+label {
+  color: #c0caf5;
+}
+
+entry, passwordentry, dropdown, combobox button {
+  background: #1a1b26;
+  color: #c0caf5;
+  border: 1px solid #414868;
+  border-radius: 0;
+}
+
+entry:focus, passwordentry:focus-within {
+  border-color: #7aa2f7;
+}
+
+button {
+  background: #7aa2f7;
+  color: #1a1b26;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+button:hover, button:focus-visible {
+  background: #a9c1f8;
+  color: #1a1b26;
+}
+
+grid > button label, grid > box > button label,
+button.suggested-action label, button.destructive-action label {
+  color: #1a1b26;
+}
+
+button.suggested-action {
+  background: #7aa2f7;
+  color: #1a1b26;
+  border: none;
+  box-shadow: none;
+}
+
+grid > box > button:first-child:not(.suggested-action) {
+  background: #414868;
+  color: #c0caf5;
+}
+
+grid > box > button:first-child:not(.suggested-action) label {
+  color: #c0caf5;
+}
+
+button.destructive-action {
+  background: #414868;
+  border: none;
+  box-shadow: none;
+}
+
+button.destructive-action:first-child {
+  background: #e0af68;
+  color: #1a1b26;
+}
+
+button.destructive-action:last-child {
+  background: #ff9e64;
+  color: #1a1b26;
+}
+
+popover, popover contents, popover list, popover listview, popover row,
+popover modelbutton {
+  background: #24283b;
+  color: #c0caf5;
+  border-radius: 0;
+}
+
+popover row:hover, popover row:selected, popover modelbutton:hover,
+popover modelbutton:selected {
+  background: #414868;
+  color: #c0caf5;
+}
+
+infobar, infobar > revealer > box {
+  background: #24283b;
+  color: #c0caf5;
+  border-color: #414868;
+  box-shadow: none;
+}
+
+infobar.error, infobar.error > revealer > box {
+  background: #24283b;
+  color: #f7768e;
+  border-color: #f7768e;
+}
+
+infobar.error label {
+  color: #f7768e;
+}

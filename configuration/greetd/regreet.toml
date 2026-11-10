@@ -1,0 +1,10 @@
+[appearance]
+greeting_msg = ""
+
+[commands]
+reboot = ["systemctl", "reboot"]
+poweroff = ["systemctl", "poweroff"]
+
+[widget.clock]
+format = ""
+label_width = 0
