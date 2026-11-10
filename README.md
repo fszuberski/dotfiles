@@ -61,6 +61,7 @@ Configuration and provisioning for three personal machines:
 - `playbooks/portals.yml` installs the desktop portal service and Wayland and GTK backends on Arch Linux.
 - `playbooks/greeter.yml` installs greetd and ReGreet without enabling a graphical login service.
 - `playbooks/regreet-theme.yml` prepares separate root-owned ReGreet theme files without activating them.
+- `playbooks/regreet-theme-test.yml` prepares a separate themed greeter test without changing boot login.
 - `playbooks/greeter-test-config.yml` deploys an alternate greeter test configuration without replacing the active greetd configuration.
 - `playbooks/greeter-boot-config.yml` prepares a separate greetd boot configuration and service drop-in without enabling or starting it.
 - `playbooks/greeter-enable.yml` explicitly enables the prepared greetd service without starting it immediately.
@@ -80,6 +81,8 @@ The Arch setup builds Yay from the current `master` branch of its AUR repository
 To preview the prepared ReGreet theme without changing boot login, run `regreet --demo --config "$PWD/configuration/greetd/regreet.toml" --style "$PWD/configuration/greetd/regreet.css"` from the repository root in a graphical session. Demo mode does not authenticate through greetd; close it when finished. The actual boot greeter is unchanged until the configuration and stylesheet are deployed separately.
 
 To prepare the reviewed theme files for a future greeter test, run `ansible-playbook -i localhost, playbooks/regreet-theme.yml --ask-become-pass`. It installs separate files under `/etc/greetd/dotfiles-regreet.*`, refusing to replace differing files or symlinks. It does not change the active greeter, restart a service, or activate the theme; existing files that differ must be inspected manually.
+
+After staging the theme, `ansible-playbook -i localhost, playbooks/regreet-theme-test.yml --ask-become-pass` prepares separate themed Sway and greetd test configurations. It checks the staged theme and refuses conflicting test files; it does not start a greeter or change boot login. A separate TTY test is required before activation.
 
 To explicitly rebuild Yay from the latest AUR recipe, run `ansible-playbook -i localhost, playbooks/yay-update.yml --ask-become-pass`. This optional playbook is not part of the main setup and performs the same checkout safety checks and build-artifact cleanup.
 

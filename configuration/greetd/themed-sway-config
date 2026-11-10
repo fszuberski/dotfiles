@@ -1,0 +1,4 @@
+# Separate test compositor; the active boot greeter remains unchanged.
+output * bg #1a1b26 solid_color
+exec "regreet --config /etc/greetd/dotfiles-regreet.toml --style /etc/greetd/dotfiles-regreet.css; swaymsg exit"
+include /etc/sway/config.d/*

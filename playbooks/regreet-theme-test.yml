@@ -1,0 +1,89 @@
+---
+- name: Prepare a separate themed greeter test
+  hosts: localhost
+  connection: local
+  gather_facts: true
+  vars:
+    regreet_theme_files:
+      - source: "{{ playbook_dir }}/../configuration/greetd/regreet.toml"
+        dest: /etc/greetd/dotfiles-regreet.toml
+      - source: "{{ playbook_dir }}/../configuration/greetd/regreet.css"
+        dest: /etc/greetd/dotfiles-regreet.css
+    themed_test_files:
+      - source: "{{ playbook_dir }}/../configuration/greetd/themed-sway-config"
+        dest: /etc/greetd/dotfiles-themed-sway-config
+      - source: "{{ playbook_dir }}/../configuration/greetd/themed-test-config.toml"
+        dest: /etc/greetd/dotfiles-themed-test-config.toml
+  tasks:
+    - name: Require Arch Linux and a regular user
+      ansible.builtin.assert:
+        that:
+          - ansible_facts['distribution'] == 'Archlinux'
+          - ansible_facts['user_id'] != 'root'
+        fail_msg: Run this playbook as a regular user on Arch Linux without global become.
+
+    - name: Inspect prepared theme sources
+      ansible.builtin.stat:
+        path: "{{ item.source }}"
+        checksum_algorithm: sha256
+      loop: "{{ regreet_theme_files }}"
+      register: theme_sources
+
+    - name: Inspect staged theme files without following symlinks
+      ansible.builtin.stat:
+        path: "{{ item.dest }}"
+        follow: false
+        checksum_algorithm: sha256
+      loop: "{{ regreet_theme_files }}"
+      register: theme_destinations
+
+    - name: Require the reviewed root-owned theme
+      ansible.builtin.assert:
+        that:
+          - item.0.stat.isreg | default(false)
+          - item.1.stat.isreg | default(false)
+          - not (item.1.stat.islnk | default(false))
+          - item.1.stat.uid | default(-1) == 0
+          - item.1.stat.mode | default('') == '0644'
+          - item.1.stat.checksum | default('') == item.0.stat.checksum | default('')
+        fail_msg: "{{ item.1.item.dest }} is missing or differs; prepare and review the theme first."
+      loop: "{{ theme_sources.results | zip(theme_destinations.results) | list }}"
+      loop_control:
+        label: "{{ item.1.item.dest }}"
+
+    - name: Inspect test configuration sources
+      ansible.builtin.stat:
+        path: "{{ item.source }}"
+        checksum_algorithm: sha256
+      loop: "{{ themed_test_files }}"
+      register: test_sources
+
+    - name: Inspect test destinations without following symlinks
+      ansible.builtin.stat:
+        path: "{{ item.dest }}"
+        follow: false
+        checksum_algorithm: sha256
+      loop: "{{ themed_test_files }}"
+      register: test_destinations
+
+    - name: Refuse to replace a different or non-regular file
+      ansible.builtin.assert:
+        that:
+          - item.0.stat.isreg | default(false)
+          - not (item.1.stat.islnk | default(false))
+          - not item.1.stat.exists or (item.1.stat.isreg | default(false) and item.1.stat.checksum | default('') == item.0.stat.checksum | default(''))
+        fail_msg: "{{ item.1.item.dest }} already exists and differs; inspect it manually."
+      loop: "{{ test_sources.results | zip(test_destinations.results) | list }}"
+      loop_control:
+        label: "{{ item.1.item.dest }}"
+
+    - name: Install separate themed test configuration
+      ansible.builtin.copy:
+        src: "{{ item.source }}"
+        dest: "{{ item.dest }}"
+        owner: root
+        group: root
+        mode: '0644'
+        force: false
+      loop: "{{ themed_test_files }}"
+      become: true

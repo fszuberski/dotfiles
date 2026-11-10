@@ -1,0 +1,7 @@
+# Explicitly invoked test configuration; it does not change boot login.
+[terminal]
+vt = "current"
+
+[default_session]
+command = "dbus-run-session sway --config /etc/greetd/dotfiles-themed-sway-config"
+user = "greeter"
