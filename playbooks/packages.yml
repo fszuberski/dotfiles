@@ -29,6 +29,11 @@
           - git-delta
           - go
           - httpie
+          - jdk11-openjdk
+          - jdk17-openjdk
+          - jdk21-openjdk
+          - jdk25-openjdk
+          - kotlin
           - nodejs
           - noto-fonts
           - npm

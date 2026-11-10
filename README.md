@@ -129,7 +129,7 @@ Install PipeWire audio tools with `ansible-playbook -i localhost, playbooks/audi
 
 Alternatively, `ansible-playbook -i localhost, main.yml --tags audio --ask-become-pass` selects only the audio installation playbook and the always-run platform preflight; it does not deploy configuration or change services.
 
-The Arch general packages include Docker and Compose, but installing them does not enable the Docker service or grant Docker group access. The legacy `nvm` package is also installed alongside system Node.js; your Zsh config loads nvm when it is present.
+The Arch general packages include OpenJDK 11, 17, 21 and 25 and Kotlin. Use `archlinux-java status` to see the installed Java environments and `sudo archlinux-java set <environment>` to select the system default. They also include Docker and Compose, but installing them does not enable the Docker service or grant Docker group access. The legacy `nvm` package is installed alongside system Node.js; your Zsh config loads nvm when it is present.
 
 The Arch setup installs Google Chrome and JetBrains Toolbox from the AUR through Yay. To run that step separately, first install the general packages and Yay, then run `ansible-playbook -i localhost, playbooks/aur-apps.yml --ask-become-pass`. It skips installed applications, builds missing packages as the regular user and prompts separately for the sudo password Yay requests. Yay's task output is hidden to protect the password. AUR recipes and upstream sources can change and are built without an interactive review pause; review them before running the playbook. Spotify is omitted for now while its AUR recipe is out of sync and its recommended clean-chroot build workflow remains unconfigured.
 
