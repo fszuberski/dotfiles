@@ -127,6 +127,9 @@
 - import_playbook: playbooks/greeter.yml
   tags: install
 
+- import_playbook: playbooks/regreet-theme.yml
+  tags: system
+
 - import_playbook: playbooks/greeter-test-config.yml
   tags: system
 

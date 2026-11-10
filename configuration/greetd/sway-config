@@ -1,4 +1,4 @@
 # Separate compositor session for ReGreet; this is not the user's Sway config.
 output * bg #1a1b26 solid_color
-exec "regreet; swaymsg exit"
+exec "regreet --config /etc/greetd/dotfiles-regreet.toml --style /etc/greetd/dotfiles-regreet.css; swaymsg exit"
 include /etc/sway/config.d/*

@@ -11,6 +11,10 @@
         dest: /etc/greetd/dotfiles-boot-config.toml
       - source: "{{ playbook_dir }}/../configuration/greetd/greetd-service.conf"
         dest: /etc/systemd/system/greetd.service.d/dotfiles.conf
+      - source: "{{ playbook_dir }}/../configuration/greetd/regreet.toml"
+        dest: /etc/greetd/dotfiles-regreet.toml
+      - source: "{{ playbook_dir }}/../configuration/greetd/regreet.css"
+        dest: /etc/greetd/dotfiles-regreet.css
   tasks:
     - name: Require Arch Linux and a regular user
       ansible.builtin.assert:

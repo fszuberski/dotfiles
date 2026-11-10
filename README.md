@@ -28,8 +28,8 @@ Configuration and provisioning for three personal machines:
 - `stow/swaync/` contains the Tokyo Night notification styling.
 - `stow/networkmanager-dmenu/` configures the NetworkManager menu to use Rofi.
 - `configuration/greetd/sway-config` is the separate Sway configuration intended for the graphical greeter.
-- `configuration/greetd/regreet.css` is a Tokyo Night login theme prepared for preview; it is not deployed to the greeter yet.
-- `configuration/greetd/regreet.toml` contains the matching ReGreet settings prepared for preview.
+- `configuration/greetd/regreet.css` and `regreet.toml` contain the Tokyo Night ReGreet theme and settings.
+- `configuration/greetd/sway-config-unthemed` preserves the original greeter configuration for recovery.
 - `stow/karabiner/` contains the existing macOS Karabiner configuration.
 - `stow/macos-window-manager/` contains the existing yabai and skhd configurations.
 - `playbooks/zsh.yml` installs Zsh on the local Arch or macOS machine.
@@ -62,6 +62,7 @@ Configuration and provisioning for three personal machines:
 - `playbooks/greeter.yml` installs greetd and ReGreet without enabling a graphical login service.
 - `playbooks/regreet-theme.yml` prepares separate root-owned ReGreet theme files without activating them.
 - `playbooks/regreet-theme-test.yml` prepares a separate themed greeter test without changing boot login.
+- `playbooks/regreet-theme-activate.yml` explicitly activates the staged theme on an existing greeter, preserving a backup.
 - `playbooks/greeter-test-config.yml` deploys an alternate greeter test configuration without replacing the active greetd configuration.
 - `playbooks/greeter-boot-config.yml` prepares a separate greetd boot configuration and service drop-in without enabling or starting it.
 - `playbooks/greeter-enable.yml` explicitly enables the prepared greetd service without starting it immediately.
@@ -78,11 +79,13 @@ The intended design separates shared configuration from platform and host overri
 
 The Arch setup builds Yay from the current `master` branch of its AUR repository (the repository's default branch), cloning it to `~/code/yay` and building as the regular user. If Yay is already installed it skips the checkout and build; it does not update an installed Yay. Otherwise it checks the existing checkout's origin and branch, then **deletes recognized ignored build artifacts**, including `pkg/`, `src/` and Yay source and package archives, before fast-forwarding and rebuilding. It refuses to clean when other checkout changes are present. Do not keep personal files in those build paths. The recipe and upstream source can change between runs: inspect them before running the playbook, which builds third-party code without an interactive review pause.
 
-To preview the prepared ReGreet theme without changing boot login, run `regreet --demo --config "$PWD/configuration/greetd/regreet.toml" --style "$PWD/configuration/greetd/regreet.css"` from the repository root in a graphical session. Demo mode does not authenticate through greetd; close it when finished. The actual boot greeter is unchanged until the configuration and stylesheet are deployed separately.
+To preview the ReGreet theme, run `regreet --demo --config "$PWD/configuration/greetd/regreet.toml" --style "$PWD/configuration/greetd/regreet.css"` from the repository root in a graphical session. Demo mode does not authenticate through greetd; close it when finished.
 
 To prepare the reviewed theme files for a future greeter test, run `ansible-playbook -i localhost, playbooks/regreet-theme.yml --ask-become-pass`. It installs separate files under `/etc/greetd/dotfiles-regreet.*`, refusing to replace differing files or symlinks. It does not change the active greeter, restart a service, or activate the theme; existing files that differ must be inspected manually.
 
 After staging the theme, `ansible-playbook -i localhost, playbooks/regreet-theme-test.yml --ask-become-pass` prepares separate themed Sway and greetd test configurations. It checks the staged theme and refuses conflicting test files; it does not start a greeter or change boot login. A separate TTY test is required before activation.
+
+After testing, activate the theme on an existing installation with `ansible-playbook -i localhost, playbooks/regreet-theme-activate.yml --ask-become-pass`. It requires the staged theme and the exact original or already-themed root-owned greeter configuration, saves a backup when replacing the original, and does not restart greetd. Save work and keep a recovery TTY available before logging out or rebooting. To restore the original greeter from the repository root, run `sudo install -o root -g root -m 0644 configuration/greetd/sway-config-unthemed /etc/greetd/dotfiles-sway-config`; it takes effect on the next greeter start. After restoring, the main setup's greeter checks will refuse the old configuration until the activation playbook is run again.
 
 To explicitly rebuild Yay from the latest AUR recipe, run `ansible-playbook -i localhost, playbooks/yay-update.yml --ask-become-pass`. This optional playbook is not part of the main setup and performs the same checkout safety checks and build-artifact cleanup.
 

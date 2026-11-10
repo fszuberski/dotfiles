@@ -1,0 +1,100 @@
+---
+- name: Activate the tested ReGreet theme at the next greeter start
+  hosts: localhost
+  connection: local
+  gather_facts: true
+  vars:
+    regreet_theme_files:
+      - source: "{{ playbook_dir }}/../configuration/greetd/regreet.toml"
+        dest: /etc/greetd/dotfiles-regreet.toml
+      - source: "{{ playbook_dir }}/../configuration/greetd/regreet.css"
+        dest: /etc/greetd/dotfiles-regreet.css
+  tasks:
+    - name: Require Arch Linux and a regular user
+      ansible.builtin.assert:
+        that:
+          - ansible_facts['distribution'] == 'Archlinux'
+          - ansible_facts['user_id'] != 'root'
+        fail_msg: Run this playbook as a regular user on Arch Linux without global become.
+
+    - name: Inspect reviewed theme files
+      ansible.builtin.stat:
+        path: "{{ item.source }}"
+        checksum_algorithm: sha256
+      loop: "{{ regreet_theme_files }}"
+      register: theme_sources
+
+    - name: Inspect staged theme files without following symlinks
+      ansible.builtin.stat:
+        path: "{{ item.dest }}"
+        follow: false
+        checksum_algorithm: sha256
+      loop: "{{ regreet_theme_files }}"
+      register: theme_destinations
+
+    - name: Require the reviewed root-owned theme
+      ansible.builtin.assert:
+        that:
+          - item.0.stat.isreg | default(false)
+          - item.1.stat.isreg | default(false)
+          - not (item.1.stat.islnk | default(false))
+          - item.1.stat.uid | default(-1) == 0
+          - item.1.stat.mode | default('') == '0644'
+          - item.1.stat.checksum | default('') == item.0.stat.checksum | default('')
+        fail_msg: "{{ item.1.item.dest }} is missing or differs; stage and review the theme first."
+      loop: "{{ theme_sources.results | zip(theme_destinations.results) | list }}"
+      loop_control:
+        label: "{{ item.1.item.dest }}"
+
+    - name: Inspect the original and themed greeter configurations
+      ansible.builtin.stat:
+        path: "{{ item }}"
+        checksum_algorithm: sha256
+        follow: false
+      loop:
+        - "{{ playbook_dir }}/../configuration/greetd/sway-config-unthemed"
+        - "{{ playbook_dir }}/../configuration/greetd/sway-config"
+        - /etc/greetd/dotfiles-sway-config
+      register: greeter_configs
+
+    - name: Require the original or already-activated root-owned greeter
+      ansible.builtin.assert:
+        that:
+          - greeter_configs.results[0].stat.isreg | default(false)
+          - greeter_configs.results[1].stat.isreg | default(false)
+          - greeter_configs.results[2].stat.isreg | default(false)
+          - not (greeter_configs.results[2].stat.islnk | default(false))
+          - greeter_configs.results[2].stat.uid | default(-1) == 0
+          - greeter_configs.results[2].stat.mode | default('') == '0644'
+          - greeter_configs.results[2].stat.checksum in [greeter_configs.results[0].stat.checksum, greeter_configs.results[1].stat.checksum]
+        fail_msg: The installed greeter differs from both expected versions; inspect it manually.
+
+    - name: Check whether the temporary greeter test is active
+      ansible.builtin.command:
+        argv: [systemctl, is-active, dotfiles-greeter-test.service]
+      register: greeter_test_status
+      changed_when: false
+      failed_when: greeter_test_status.rc not in [0, 3, 4]
+      check_mode: false
+
+    - name: Require the temporary greeter test to be stopped
+      ansible.builtin.assert:
+        that:
+          - greeter_test_status.rc != 0
+        fail_msg: Stop dotfiles-greeter-test.service before activating the theme.
+
+    - name: Activate the themed greeter and back up the original
+      ansible.builtin.copy:
+        src: "{{ playbook_dir }}/../configuration/greetd/sway-config"
+        dest: /etc/greetd/dotfiles-sway-config
+        owner: root
+        group: root
+        mode: '0644'
+        backup: true
+      register: activated_greeter
+      become: true
+
+    - name: Show the backup location when a backup was created
+      ansible.builtin.debug:
+        msg: "Previous greeter configuration saved at {{ activated_greeter.backup_file }}"
+      when: activated_greeter.backup_file is defined

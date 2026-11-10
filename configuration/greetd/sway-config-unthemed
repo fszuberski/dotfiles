@@ -1,0 +1,4 @@
+# Separate compositor session for ReGreet; this is not the user's Sway config.
+output * bg #1a1b26 solid_color
+exec "regreet; swaymsg exit"
+include /etc/sway/config.d/*
