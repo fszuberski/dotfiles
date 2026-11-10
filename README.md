@@ -109,7 +109,7 @@ On Arch, Ghostty uses JetBrains Mono SemiBold at 12 points and Waybar uses JetBr
 
 Waybar uses Meslo Nerd Font as a fallback for its network and Bluetooth icons; it is installed by `playbooks/fonts.yml`. The network indicator shows download and upload rates in bits per second for the selected interface, refreshed every second.
 
-Click the Arch icon at the right end of Waybar to open a Rofi menu for suspend or shutdown. Selecting an option immediately requests that action through systemd; Escape cancels the menu.
+Click the Arch icon at the right end of Waybar to open a Rofi menu for suspend, restart or shutdown. Selecting an option immediately requests that action through systemd; Escape cancels the menu.
 
 Waybar's bell shows the swaync notification count; click it to toggle the notification center.
 
