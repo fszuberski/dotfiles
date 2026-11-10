@@ -57,6 +57,23 @@
       become: true
       when: ansible_facts['distribution'] == 'Archlinux'
 
+    - name: Check the default Java environment on Arch Linux
+      ansible.builtin.command:
+        argv: [archlinux-java, get]
+      register: default_java_environment
+      changed_when: false
+      failed_when: default_java_environment.rc not in [0, 1]
+      check_mode: false
+      when: ansible_facts['distribution'] == 'Archlinux'
+
+    - name: Select OpenJDK 25 as the default on Arch Linux
+      ansible.builtin.command:
+        argv: [archlinux-java, set, java-25-openjdk]
+      become: true
+      when:
+        - ansible_facts['distribution'] == 'Archlinux'
+        - default_java_environment.stdout | trim != 'java-25-openjdk'
+
     - name: Install general packages on macOS
       community.general.homebrew:
         name:
