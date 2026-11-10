@@ -6,6 +6,7 @@
   vars:
     aur_app_packages:
       - google-chrome
+      - jetbrains-toolbox
   tasks:
     - name: Require Arch Linux and a regular user
       ansible.builtin.assert:
