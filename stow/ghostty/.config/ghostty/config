@@ -21,7 +21,7 @@ cursor-style-blink = false
 macos-titlebar-style = hidden
 
 ## Window padding
-window-padding-y = 14,0
+window-padding-y = 0
 window-padding-x = 0
 
 ## macos behavior
