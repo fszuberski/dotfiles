@@ -20,6 +20,7 @@
           - bluez-utils
           - btop
           - calibre
+          - cmus
           - docker
           - docker-compose
           - fastfetch
@@ -44,11 +45,13 @@
           - otf-font-awesome
           - pass
           - python-pexpect
+          - qbittorrent
           - ripgrep-all
           - rofi
           - ttf-roboto
           - ttf-roboto-mono
           - unzip
+          - usbutils
           - wget
           - zathura
           - zathura-cb

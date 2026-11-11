@@ -16,3 +16,21 @@
         enabled: true
         state: started
       become: true
+
+    - name: Disable USB autosuspend for ASUS USB-BT500 adapters
+      ansible.builtin.copy:
+        dest: /etc/udev/rules.d/99-asus-bt500-power.rules
+        content: |
+          ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="0b05", ATTR{idProduct}=="190e", TEST=="power/control", ATTR{power/control}="on"
+        owner: root
+        group: root
+        mode: '0644'
+      become: true
+      notify: Reload udev rules
+
+  handlers:
+    - name: Reload udev rules
+      ansible.builtin.command:
+        argv: [udevadm, control, --reload-rules]
+      changed_when: true
+      become: true
