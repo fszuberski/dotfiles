@@ -7,6 +7,7 @@
     aur_app_packages:
       - google-chrome
       - jetbrains-toolbox
+      - spotify
   tasks:
     - name: Require Arch Linux and a regular user
       ansible.builtin.assert:
@@ -34,6 +35,50 @@
       changed_when: false
       check_mode: false
       when: missing_aur_apps | length > 0
+
+    - name: Check for Spotify's signing key in the user's keyring
+      ansible.builtin.command:
+        argv: [gpg, --list-keys, E1096BCBFF6D418796DE78515384CE82BA52C83A]
+      register: spotify_signing_key
+      changed_when: false
+      failed_when: spotify_signing_key.rc not in [0, 2]
+      check_mode: false
+      when: "'spotify' in missing_aur_apps"
+
+    - name: Download and import Spotify's signing key
+      when: "'spotify' in missing_aur_apps and spotify_signing_key.rc == 2 and not ansible_check_mode"
+      block:
+        - name: Create temporary file for Spotify's signing key
+          ansible.builtin.tempfile:
+            state: file
+          register: spotify_key_file
+
+        - name: Download Spotify's signing key
+          ansible.builtin.get_url:
+            url: https://download.spotify.com/debian/pubkey_5384CE82BA52C83A.gpg
+            dest: "{{ spotify_key_file.path }}"
+            mode: '0600'
+
+        - name: Inspect Spotify's signing key fingerprint
+          ansible.builtin.command:
+            argv: [gpg, --batch, --with-colons, --import-options, show-only, --import, "{{ spotify_key_file.path }}"]
+          register: spotify_key_details
+          changed_when: false
+
+        - name: Verify Spotify's signing key fingerprint
+          ansible.builtin.assert:
+            that:
+              - "'fpr:::::::::E1096BCBFF6D418796DE78515384CE82BA52C83A:' in spotify_key_details.stdout"
+
+        - name: Import Spotify's signing key
+          ansible.builtin.command:
+            argv: [gpg, --batch, --import, "{{ spotify_key_file.path }}"]
+      always:
+        - name: Remove temporary Spotify signing key file
+          ansible.builtin.file:
+            path: "{{ spotify_key_file.path }}"
+            state: absent
+          when: spotify_key_file.path is defined
 
     - name: Ask for the sudo password for Yay
       ansible.builtin.pause:
