@@ -54,6 +54,8 @@
           - ttf-roboto-mono
           - unzip
           - usbutils
+          - vlc
+          - vlc-plugin-ffmpeg
           - wget
           - zathura
           - zathura-cb
