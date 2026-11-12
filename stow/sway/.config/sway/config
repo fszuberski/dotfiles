@@ -12,6 +12,7 @@ client.background       #1a1b26
 
 input type:keyboard {
     xkb_layout "pl"
+    xkb_options "caps:escape"
 }
 
 input "0:0:MX_Master_3_Mouse" {
