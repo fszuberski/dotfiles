@@ -11,6 +11,28 @@
           - ansible_facts['distribution'] == 'Archlinux' or ansible_facts['system'] == 'Darwin'
         fail_msg: This playbook supports Arch Linux and macOS only.
 
+    - name: Check installed Arch kernels
+      ansible.builtin.command:
+        argv: [pacman, -Qq, "{{ item }}"]
+      loop: [linux, linux-lts]
+      register: installed_arch_kernels
+      changed_when: false
+      failed_when: installed_arch_kernels.rc not in [0, 1]
+      check_mode: false
+      when: ansible_facts['distribution'] == 'Archlinux'
+
+    - name: Install headers for installed Arch kernels
+      community.general.pacman:
+        name: "{{ item.item }}-headers"
+        state: present
+      loop: "{{ installed_arch_kernels.results }}"
+      loop_control:
+        label: "{{ item.item }}"
+      become: true
+      when:
+        - ansible_facts['distribution'] == 'Archlinux'
+        - item.rc == 0
+
     - name: Install general packages on Arch Linux
       community.general.pacman:
         name:
@@ -54,6 +76,7 @@
           - ttf-roboto-mono
           - unzip
           - usbutils
+          - v4l2loopback-dkms
           - vlc
           - vlc-plugin-ffmpeg
           - wget
