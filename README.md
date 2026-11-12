@@ -50,6 +50,7 @@ Configuration and provisioning for three personal machines:
 - `playbooks/clipboard.yml` installs wl-clipboard and cliphist on Arch Linux.
 - `playbooks/yazi.yml` installs the Yazi terminal file manager on Arch Linux.
 - `playbooks/audio.yml` installs PipeWire audio tools on Arch Linux, stopping if the PulseAudio server is installed.
+- The Sway configuration uses Rofi to select a screen or window for `xdg-desktop-portal-wlr` screen sharing. After deploying it, restart the user service with `systemctl --user restart xdg-desktop-portal-wlr.service`; active screen shares will stop.
 - `playbooks/brightness.yml` installs brightnessctl on Arch Linux.
 - `playbooks/network.yml` installs NetworkManager and its Rofi-compatible menu without changing system services.
 - `playbooks/polkit-agent.yml` installs a graphical polkit authentication agent on Arch Linux.
