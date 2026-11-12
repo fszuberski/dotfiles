@@ -65,6 +65,7 @@
           - ntfs-3g
           - nvm
           - obs-studio
+          - openssh
           - otf-font-awesome
           - pass
           - python-pexpect
