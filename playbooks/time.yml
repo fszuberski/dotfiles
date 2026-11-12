@@ -1,0 +1,23 @@
+---
+- name: Configure time on Arch Linux
+  hosts: localhost
+  connection: local
+  gather_facts: true
+  tasks:
+    - name: Require Arch Linux
+      ansible.builtin.assert:
+        that:
+          - ansible_facts['distribution'] == 'Archlinux'
+        fail_msg: This playbook supports Arch Linux only.
+
+    - name: Set the timezone to Europe/Warsaw
+      community.general.timezone:
+        name: Europe/Warsaw
+      become: true
+
+    - name: Enable and start time synchronization
+      ansible.builtin.systemd_service:
+        name: systemd-timesyncd.service
+        enabled: true
+        state: started
+      become: true

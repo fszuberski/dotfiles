@@ -73,6 +73,7 @@ Configuration and provisioning for three personal machines:
 - `playbooks/macos-window-manager-services.yml` starts their macOS user services.
 - `playbooks/yabai-sudoers.yml` explicitly configures validated sudo access for yabai's scripting addition on macOS.
 - `playbooks/login-shell.yml` explicitly sets the local Arch user's login shell to Zsh.
+- `playbooks/time.yml` sets the Arch timezone to Europe/Warsaw and enables systemd time synchronization.
 - `legacy/` preserves the previous project as a reference; it is not part of the new deployment.
 - `PLAN.md` tracks the incremental implementation.
 
@@ -100,7 +101,9 @@ After installing the prerequisites in `DEPENDENCIES.md`, run as the regular user
 ansible-playbook -i localhost, main.yml --ask-become-pass
 ```
 
-This entry point checks all selected Stow packages for conflicts first, installs the configured packages and desktop applications, applies system changes including the Zsh login shell, Bluetooth service and greetd graphical login, then deploys the selected Stow configurations. Existing conflicting files are not replaced; resolve each explicitly before retrying. `--tags config` runs only the preflight and configuration deployment; `--tags install` runs only installation; `--tags system` runs the login-shell, Bluetooth and greetd system changes and requires their packages to be installed first. OpenCode itself and tmux plugins are not installed by this playbook. Neovim installs its plugins on startup rather than through Ansible. macOS has separate playbooks and is not supported by this entry point yet.
+This entry point checks all selected Stow packages for conflicts first, installs the configured packages and desktop applications, applies system changes including the Zsh login shell, Bluetooth service, time synchronization and greetd graphical login, then deploys the selected Stow configurations. Existing conflicting files are not replaced; resolve each explicitly before retrying. `--tags config` runs only the preflight and configuration deployment; `--tags install` runs only installation; `--tags system` runs the login-shell, Bluetooth, time and greetd system changes and requires their packages to be installed first. OpenCode itself and tmux plugins are not installed by this playbook. Neovim installs its plugins on startup rather than through Ansible. macOS has separate playbooks and is not supported by this entry point yet.
+
+To configure the timezone and enable time synchronization independently, run `ansible-playbook -i localhost, playbooks/time.yml --ask-become-pass`. Check the result with `timedatectl status`; synchronization may take a little time and requires network access. Avoid running another NTP client simultaneously.
 
 GTK 3 and GTK 4 applications use JetBrains Mono SemiBold 14. Restart applications to pick up the change; applications with their own font settings or non-GTK toolkits may not follow it.
 

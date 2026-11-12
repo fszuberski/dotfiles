@@ -142,6 +142,9 @@
 - import_playbook: playbooks/bluetooth-service.yml
   tags: system
 
+- import_playbook: playbooks/time.yml
+  tags: system
+
 - name: Deploy the shared Arch configuration
   hosts: localhost
   connection: local
