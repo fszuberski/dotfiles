@@ -33,6 +33,7 @@
           - pipewire
           - pipewire-pulse
           - wireplumber
+          - rtkit
           - pavucontrol
           - playerctl
         state: present

@@ -17,11 +17,21 @@
         state: started
       become: true
 
+    - name: Disable btusb driver autosuspend on subsequent module loads
+      ansible.builtin.copy:
+        dest: /etc/modprobe.d/99-bluetooth-power.conf
+        content: |
+          options btusb enable_autosuspend=0
+        owner: root
+        group: root
+        mode: '0644'
+      become: true
+
     - name: Disable USB autosuspend for ASUS USB-BT500 adapters
       ansible.builtin.copy:
         dest: /etc/udev/rules.d/99-asus-bt500-power.rules
         content: |
-          ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="0b05", ATTR{idProduct}=="190e", TEST=="power/control", ATTR{power/control}="on"
+          ACTION=="add|bind", SUBSYSTEM=="usb", ATTR{idVendor}=="0b05", ATTR{idProduct}=="190e", TEST=="power/control", ATTR{power/control}="on"
         owner: root
         group: root
         mode: '0644'
