@@ -17,6 +17,7 @@
         dotfiles_stow_packages:
           - zsh
           - tmux
+          - yazi
           - git
           - nvim
           - ghostty
