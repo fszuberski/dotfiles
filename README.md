@@ -36,6 +36,7 @@ Configuration and provisioning for three personal machines:
 - `stow/macos-window-manager/` contains the existing yabai and skhd configurations.
 - `playbooks/zsh.yml` installs Zsh on the local Arch or macOS machine.
 - `playbooks/nvim.yml` installs Neovim on the local Arch or macOS machine.
+- `playbooks/rust.yml` installs rustup's stable Rust toolchain on Kikimora and Aethar only.
 - `playbooks/nvim-config.yml` deploys the Neovim configuration with Stow.
 - `playbooks/tmux.yml` installs tmux and its plugin manager.
 - `playbooks/packages.yml` installs general-purpose packages, including approved Arch applications, utilities, fonts and Rofi Bluetooth dependencies.
@@ -139,6 +140,8 @@ Install PipeWire audio tools with `ansible-playbook -i localhost, playbooks/audi
 Alternatively, `ansible-playbook -i localhost, main.yml --tags audio --ask-become-pass` selects only the audio installation playbook and the always-run platform preflight; it does not deploy configuration or change services.
 
 The Arch general packages include OpenJDK 11, 17, 21 and 25, Kotlin, Gradle and Maven; the playbook selects OpenJDK 25 as the system default. Use `archlinux-java status` to see the installed Java environments and `sudo archlinux-java set <environment>` to select another default; the playbook restores Java 25 on its next run. They also include Docker and Compose, but installing them does not enable the Docker service or grant Docker group access. The legacy `nvm` package is installed alongside system Node.js; your Zsh config loads nvm when it is present.
+
+On Kikimora, the main setup's `install` tag also runs `playbooks/rust.yml`; on Aethar run `ansible-playbook -i localhost, playbooks/rust.yml` separately as the regular user. Other hosts are skipped. Install native build prerequisites first: on Arch, update the system and install `base-devel`; on macOS, install Apple's command line developer tools with `xcode-select --install`. The playbook downloads and executes the current official rustup installer over HTTPS, installing stable, Cargo, rustfmt, Clippy and rust-analyzer in the user's home; review upstream before running. It does not update an existing stable toolchain or change an existing default, and stops on conflicting commands, custom Rust directories or an existing non-stable default; inspect and resolve those manually. Project-specific rustup overrides can still select another toolchain. Deploy the Zsh configuration and start a new shell to add `~/.cargo/bin` to PATH on those hosts. Verify with `rustup show`, `rustc --version`, `cargo --version`, `cargo fmt --version`, `cargo clippy --version` and `rust-analyzer --version`. These installation steps have not been validated on either host.
 
 Steam is installed only on Kikimora. The general package playbook enables the Arch `multilib` repository if needed and refreshes the package databases on each run before installing packages. To apply the general package changes from the repository root, run `ansible-playbook -i localhost, playbooks/packages.yml --ask-become-pass`. This installs all missing general packages and selects OpenJDK 25 as the default.
 

@@ -1,0 +1,122 @@
+---
+- name: Set up Rust on Kikimora and Aethar
+  hosts: localhost
+  connection: local
+  gather_facts: true
+  tasks:
+    - name: Configure the supported hosts only
+      when: >-
+        (ansible_facts['hostname'] == 'kikimora' and ansible_facts['distribution'] == 'Archlinux') or
+        (ansible_facts['hostname'] == 'aethar' and ansible_facts['system'] == 'Darwin')
+      block:
+        - name: Require a regular user and default Rust directories
+          ansible.builtin.assert:
+            that:
+              - ansible_facts['user_id'] != 'root'
+              - ansible_facts['env']['CARGO_HOME'] | default('') in ['', ansible_facts['env']['HOME'] ~ '/.cargo']
+              - ansible_facts['env']['RUSTUP_HOME'] | default('') in ['', ansible_facts['env']['HOME'] ~ '/.rustup']
+            fail_msg: Run as the regular user with default CARGO_HOME and RUSTUP_HOME; inspect custom installations manually.
+
+        - name: Inspect existing Rust directories
+          ansible.builtin.stat:
+            path: "{{ ansible_facts['env']['HOME'] }}/{{ item }}"
+            follow: false
+          loop: [.cargo, .rustup, .cargo/bin/rustup]
+          register: rust_paths
+
+        - name: Inspect Rust commands on PATH
+          ansible.builtin.shell: |
+            for cmd in rustup rustc cargo rustfmt cargo-clippy rust-analyzer; do
+              path=$(command -v "$cmd" || true)
+              case "$path" in
+                ''|"$HOME/.cargo/bin/"*) ;;
+                *) echo "$cmd: $path"; exit 1 ;;
+              esac
+            done
+          args:
+            executable: /bin/sh
+          changed_when: false
+          check_mode: false
+
+        - name: Refuse incomplete or conflicting Rust directories
+          ansible.builtin.assert:
+            that:
+              - >-
+                (not rust_paths.results[0].stat.exists and not rust_paths.results[0].stat.islnk | default(false) and
+                 not rust_paths.results[1].stat.exists and not rust_paths.results[1].stat.islnk | default(false)) or
+                (rust_paths.results[0].stat.isdir | default(false) and
+                 rust_paths.results[1].stat.isdir | default(false) and
+                 rust_paths.results[2].stat.executable | default(false))
+            fail_msg: Existing Rust directories are incomplete or conflicting; inspect them manually before proceeding.
+
+        - name: Inspect the existing default toolchain
+          ansible.builtin.command:
+            argv: ["{{ ansible_facts['env']['HOME'] }}/.cargo/bin/rustup", default]
+          register: rust_default
+          changed_when: false
+          check_mode: false
+          when: rust_paths.results[2].stat.exists
+
+        - name: Refuse to change an existing default toolchain
+          ansible.builtin.assert:
+            that:
+              - rust_default.stdout is match('^stable-\S+ \(default\)')
+            fail_msg: The existing rustup default is not stable; select and manage it manually before retrying.
+          when: rust_paths.results[2].stat.exists
+
+        - name: Install a new stable Rust toolchain
+          when:
+            - not rust_paths.results[2].stat.exists
+            - not ansible_check_mode
+          block:
+            - name: Create a temporary installer file
+              ansible.builtin.tempfile:
+                state: file
+                suffix: rustup-init.sh
+              register: rust_installer
+
+            - name: Download and run the official rustup installer
+              block:
+                - name: Download rustup installer over HTTPS
+                  ansible.builtin.get_url:
+                    url: https://sh.rustup.rs
+                    dest: "{{ rust_installer.path }}"
+                    mode: '0700'
+                    force: true
+                - name: Install stable and requested components without modifying shell files
+                  ansible.builtin.command:
+                    argv: [sh, "{{ rust_installer.path }}", -y, --no-modify-path, --default-toolchain, stable, --component, rustfmt, --component, clippy, --component, rust-analyzer]
+              always:
+                - name: Remove temporary installer
+                  ansible.builtin.file:
+                    path: "{{ rust_installer.path }}"
+                    state: absent
+
+        - name: Verify rustup is available after installation
+          ansible.builtin.stat:
+            path: "{{ ansible_facts['env']['HOME'] }}/.cargo/bin/rustup"
+          register: installed_rustup
+          when: not ansible_check_mode
+
+        - name: Require an executable rustup installation
+          ansible.builtin.assert:
+            that:
+              - installed_rustup.stat.executable | default(false)
+            fail_msg: Rustup installation did not create an executable at ~/.cargo/bin/rustup; inspect installer output and Rust directories before retrying.
+          when: not ansible_check_mode
+
+        - name: Inspect installed stable components
+          ansible.builtin.command:
+            argv: ["{{ ansible_facts['env']['HOME'] }}/.cargo/bin/rustup", component, list, --toolchain, stable, --installed]
+          register: rust_components
+          changed_when: false
+          check_mode: false
+          when: rust_paths.results[2].stat.exists or not ansible_check_mode
+
+        - name: Add missing stable components without updating the toolchain
+          ansible.builtin.command:
+            argv: ["{{ ansible_facts['env']['HOME'] }}/.cargo/bin/rustup", component, add, --toolchain, stable, "{{ item }}"]
+          loop: [cargo, rustfmt, clippy, rust-analyzer]
+          when:
+            - rust_components.stdout is defined
+            - not (rust_components.stdout is search('(?m)^' ~ item ~ '(-[^ ]+)?( |$)'))

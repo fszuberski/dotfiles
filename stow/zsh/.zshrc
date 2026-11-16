@@ -95,6 +95,9 @@ elif [[ -r /opt/homebrew/opt/nvm/nvm.sh ]]; then
 fi
 
 # PATH
+if [[ ${HOST%%.*} == kikimora || ${HOST%%.*} == aethar ]]; then
+  path=("$HOME/.cargo/bin" $path)
+fi
 # go
 GOPATH="$HOME/go"
 PATH="$GOPATH/bin:$PATH"
