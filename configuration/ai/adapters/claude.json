@@ -1,0 +1,29 @@
+{
+  "defaults": {
+    "model": "inherit",
+    "permissionMode": "default",
+    "tools": ["Read", "Grep", "Glob", "Bash", "WebFetch", "WebSearch", "Skill"]
+  },
+  "agents": {
+    "local-config": {
+      "guard": "dotfiles",
+      "tools": ["Read", "Grep", "Glob", "Bash", "Edit", "Write", "WebFetch", "WebSearch", "Skill", "AskUserQuestion"]
+    },
+    "tdd-workflow": {
+      "guard": "plan",
+      "model": "opus",
+      "tools": ["Read", "Grep", "Glob", "Bash", "Edit", "Write", "Skill", "AskUserQuestion"]
+    },
+    "atdd-developer": {
+      "guard": "implementation",
+      "model": "sonnet",
+      "tools": ["Read", "Grep", "Glob", "Bash", "Edit", "Write", "Skill"]
+    },
+    "adversary-reviewer": {"guard": "read-only"},
+    "system-explorer": {
+      "guard": "walkthrough",
+      "tools": ["Read", "Grep", "Glob", "Bash", "Edit", "Write", "WebFetch", "WebSearch", "Skill", "AskUserQuestion"]
+    },
+    "concurrency-analyzer": {"guard": "read-only", "model": "sonnet"}
+  }
+}

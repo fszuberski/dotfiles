@@ -1,0 +1,13 @@
+[
+  "pwd",
+  "git rev-parse --show-toplevel",
+  "git branch --show-current",
+  "git --no-optional-locks status --short",
+  "git diff --no-ext-diff --no-textconv",
+  "git diff --no-ext-diff --no-textconv HEAD",
+  "git diff --no-ext-diff --no-textconv --cached",
+  "git log -5 --oneline",
+  "git ls-files --others --exclude-standard",
+  "git ls-files --error-unmatch PLAN.md",
+  "git check-ignore PLAN.md"
+]

@@ -1,0 +1,53 @@
+# Local machine configuration
+
+You configure a personal Linux or macOS machine through `~/code/dotfiles`.
+Priorities: do not break the machine, keep changes reversible, then make it work.
+
+## Source of truth and ownership
+
+- Persistent changes belong in the repository and are applied from it. Never make a deployed `~/.config` or `/etc` file the final source of truth.
+- Stow owns user-level dotfiles. Ansible owns packages, services, system files, users, and kernel or boot settings. When ownership could reasonably go either way, state your choice and why.
+- Inspect the complete symlink chain. Edit the repository target, not the deployed symlink. If a regular file occupies an expected Stow destination, stop and report the conflict; do not overwrite, adopt, or delete it.
+- IMPORTANT: editing a repository file behind an existing Stow link changes the deployed file immediately, and an application may hot-reload it. A later Stow simulation does not preview that content change. For sensitive changes, prepare a candidate outside the live source, validate it, agree the activation and rollback, then replace the source with approval.
+- Imperative commands are acceptable for inspection and approved temporary experiments. Declare their side effects and cleanup first. Persist any retained setting declaratively and re-apply from the repository.
+- Report unmanaged files, manual changes, and package drift; do not silently reconcile them in either direction.
+
+## Inspect and plan
+
+1. Read the README, applicable instructions, deployment wrapper, relevant inventory, playbooks, host variables, and Stow packages. Follow existing structure rather than creating a competing deployment mechanism.
+2. Inspect Git status and existing changes. Tell the user about relevant dirty files before editing them; stop if work cannot be kept separable.
+3. Identify OS, version, architecture, current host, and applicable host variables. Discover package manager, shell, graphical session, or network state only where relevant. Do not assume macOS and GNU utilities accept the same flags.
+4. Read the intended repository files and deployed state. Prefer installed-version documentation and man pages over remembered defaults.
+5. Propose the smallest change, exact apply commands and scope, expected disruption, validation, and rollback. Obtain approval before every privileged apply and every high-risk action, privileged or not.
+
+## Change, preview, apply, verify
+
+1. Edit only the affected repository files. Do not refactor unrelated roles or configurations.
+2. Run relevant syntax/configuration validators and existing lint checks. Do not add tests where repository instructions prohibit them.
+3. Preview affected Ansible scope using `--syntax-check` and `--check --diff`, with applicable tags/limits. Inspect tasks that skip check mode, run commands despite check mode, or cannot predict effects. Never present a successful check as proof of a safe apply. Hide secret-bearing diffs.
+4. For Stow, use the repository wrapper: `sh deployment/deploy.sh --check stow/<package> "$HOME"`. Report conflicts; never use `--adopt`. A linked content edit may need no restow, but still needs application-specific validation and activation.
+5. State the exact command before an approved privileged run. Apply only the affected package/playbook/tag/host. If the repository provides no sufficiently narrow scope, report that rather than inventing flags or applying everything.
+6. Verify actual symlink targets, parsed configuration, service state, and effective behavior. Repeat the affected apply for idempotency only when safe and reasonably inexpensive. Explain skips, expected non-repeatable operations, or existing non-idempotent behavior; do not conceal change reporting with `changed_when: false`.
+7. Obtain an independent adversary-reviewer review after non-trivial changes and before claiming completion. Pass requirements and constraints, not your correctness claims. Resolve substantiated blockers/majors within scope, re-review, and escalate after two unsuccessful fix rounds.
+8. Leave changes unstaged and uncommitted unless explicitly requested. A requested commit must explain why, not just list files.
+
+## Repository quality
+
+- Prefer idempotent Ansible modules over shell commands. Where commands are necessary, use genuine `creates`/`removes`/change detection appropriate to the operation, not an arbitrary suppression of changes.
+- Use supported `validate:` commands, drop-ins rather than vendor-file edits, and appropriate platform/host conditions.
+- Use backups for changed system files where useful. Secret-bearing backups need restrictive ownership/permissions and an approved location; do not create public or committed credential copies. Use the existing secret mechanism, `no_log`, and `diff: false` where appropriate.
+- Do not install from curl-to-shell. A necessary installer must become a reviewed, pinned and checksummed repository task, with approval.
+
+## Risk and rollback
+
+- Disk/filesystem operations, boot/initramfs, mounts, PAM, sudoers, SSH daemon, firewall, networking, kernel settings, encryption, package removal, recursive permissions, and destructive Git/cleanup operations require explicit approval. Never assume an Ansible wrapper makes them safe.
+- For remote-access/network changes, ask the user to establish a second independent session or recovery console. You cannot claim one exists unless confirmed. Provide and validate a rollback path before applying; use timed rollback where appropriate and approved.
+- Rollback must identify this task's exact change. Prefer reverting its commit if committed; otherwise prepare a scoped reverse edit that preserves unrelated work. Never recommend a blanket checkout/reset. Re-apply the restored repository state and document effects Ansible cannot undo, such as removed data, migrations, or package downgrades.
+
+## Reporting
+
+For routine changes, keep the response short: important findings, changed paths,
+preview/verification evidence, activation requirements, and blockers.
+For risky changes include Goal, Findings (including drift), Plan and approvals,
+Repo changes, Dry run limitations, Applied commands/results, Verification,
+Rollback, and unresolved questions. Do not label an unapplied change as applied.

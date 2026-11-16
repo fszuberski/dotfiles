@@ -2,6 +2,8 @@
 
 Configuration deployment needs a POSIX shell, `mktemp`, and GNU Stow. Its test scripts also use standard utilities such as `mkdir`, `cat`, and `rm`. Deployment itself does not require Python or Ansible.
 
+The AI configuration renderer and Claude agent guard hooks additionally require Python 3.9 or newer (`python3` on `PATH`), with no third-party Python modules. The main Ansible setup checks generated AI configuration before deployment. On macOS, install Python separately with `brew install python` if `python3` is unavailable. Generated definitions are committed, so Stow does not render files or require Python for linking; Claude's guarded agents still require Python at runtime.
+
 ## Arch Linux (Fleder and Kikimora)
 
 ```sh

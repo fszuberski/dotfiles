@@ -16,7 +16,9 @@ Configuration and provisioning for three personal machines:
 - `stow/nvim/` contains the existing Neovim configuration, its lockfile and tests.
 - `stow/tmux/` contains the existing shared tmux configuration.
 - `stow/git/` contains the existing Linux Git configuration.
-- `stow/opencode/` contains OpenCode CLI settings and workflow instructions, not private service configuration.
+- `configuration/ai/` is the shared source for OpenCode and Claude Code instructions, agent prompts, skills, and native adapters.
+- `stow/opencode/` contains OpenCode CLI settings and generated instructions/agents, not private provider or service configuration.
+- `stow/claude/` contains generated Claude Code instructions/agents, shared skills, and scoped guard hooks, not private settings or credentials.
 - `stow/ghostty/` contains the Ghostty configuration copied from macOS.
 - `stow/ghostty-macos/` overrides Ghostty's font size on macOS.
 - `stow/gtk/` sets the GTK 3 and GTK 4 application font to match Ghostty.
@@ -230,7 +232,11 @@ Install tmux and its plugin manager (TPM) with `ansible-playbook -i localhost, p
 
 Deploy the copied Git configuration with `sh deployment/deploy.sh stow/git "$HOME"`. It expects Neovim and the `delta` pager; Delta is installed by `playbooks/packages.yml`. The Linux configuration enables Delta's side-by-side view; the old macOS configuration did not.
 
-The OpenCode package contains the V2 CLI settings and global workflow instructions. Deploy it with `sh deployment/deploy.sh stow/opencode "$HOME"`; existing files will be reported as conflicts. Private OpenCode service configuration is intentionally excluded and must remain machine-local.
+OpenCode and Claude Code share the definitions in [`configuration/ai/`](configuration/ai/README.md). Edit those sources, run `./render-ai-configs.sh`, then verify with `./render-ai-configs.sh --check`. The wrapper works from any directory when invoked by path and forwards options to the Python renderer. Generated files under the two Stow packages are committed and must not be edited directly. The main setup validates generation before deploying both packages; it never regenerates potentially live linked files automatically.
+
+After regenerating already-deployed definitions, run `opencode reload` to refresh cached prompts and skills behind Stow links. No OpenCode service restart is needed. Start a new Claude session after its first agent-directory deployment.
+
+Deploy both packages with `sh deployment/deploy.sh stow/opencode "$HOME"` and `sh deployment/deploy.sh stow/claude "$HOME"`; preview either with the wrapper's `--check` option first. Existing files are reported as conflicts. OpenCode also discovers the shared skills deployed under `~/.claude/skills`, so deploy the Claude package even when starting with OpenCode. OpenCode's existing CLI settings remain tool-specific. Private OpenCode provider/service configuration and Claude settings, credentials, sessions, caches, and memory remain machine-local and are not copied or replaced.
 
 Install Ghostty with `ansible-playbook -i localhost, playbooks/ghostty.yml --ask-become-pass` (omit `--ask-become-pass` on macOS). Deploy its configuration separately with `sh deployment/deploy.sh stow/ghostty "$HOME"`. On macOS, also deploy the 14-point font override with `sh deployment/deploy.sh stow/ghostty-macos "$HOME"`; without it the shared 12-point default applies. The override has not been validated on Aethar. The configuration selects JetBrains Mono, which is installed by `playbooks/fonts.yml`, and contains macOS-specific settings.
 

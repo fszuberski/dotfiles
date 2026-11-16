@@ -23,6 +23,7 @@
           - ghostty
           - gtk
           - opencode
+          - claude
           - sway
           - swaylock
           - waybar
@@ -36,6 +37,16 @@
         dotfiles_stow_packages: "{{ dotfiles_stow_packages + ['kanshi-fleder'] }}"
       when: ansible_facts['hostname'] == 'fleder'
       tags: always
+
+    - name: Validate generated AI configuration without changing live linked files
+      ansible.builtin.command:
+        argv:
+          - python3
+          - "{{ playbook_dir }}/deployment/render-ai-configs.py"
+          - --check
+      changed_when: false
+      check_mode: false
+      tags: config
 
     - name: Check all configuration packages for conflicts
       ansible.builtin.command:

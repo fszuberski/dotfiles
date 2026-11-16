@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "agents": {
+    "local-config": {
+      "description": "Configure or troubleshoot a personal Linux or macOS machine through ~/code/dotfiles (Ansible + Stow). Inspect first, preview, verify, and obtain approval for privileged or risky applies.",
+      "skills": [],
+      "delegates": ["adversary-reviewer", "concurrency-analyzer"]
+    },
+    "tdd-workflow": {
+      "description": "Main-thread TDD orchestrator. Agree a branch plan, delegate one authorized step to atdd-developer, independently verify and review it, then wait. Never implements code itself.",
+      "skills": ["system-analysis", "java-testing"],
+      "delegates": ["atdd-developer", "adversary-reviewer"]
+    },
+    "atdd-developer": {
+      "description": "Implement one authorized story, instruction, or plan step through evidenced RED, GREEN, and scoped REFACTOR. Return verification evidence; never commit, edit plans, or spawn agents.",
+      "skills": ["java-testing"],
+      "delegates": []
+    },
+    "adversary-reviewer": {
+      "description": "Independently review a change, plan, or design for evidenced correctness, security, scope, and operability failures. Read-only except approved verification artifacts; zero findings is valid.",
+      "skills": ["java-testing"],
+      "delegates": []
+    },
+    "system-explorer": {
+      "description": "Comprehensive system analysis and optional Marp walkthroughs, architecture diagrams, and decision recovery. Does not implement code; writes only approved walkthrough reports.",
+      "skills": ["system-analysis", "system-walkthrough"],
+      "delegates": ["adversary-reviewer", "concurrency-analyzer"]
+    },
+    "concurrency-analyzer": {
+      "description": "Analyze concurrency, async lifecycles, resource ownership, backpressure, and distributed retry risks. Require runtime-specific evidence and concrete failure scenarios; do not modify reviewed files.",
+      "skills": [],
+      "delegates": []
+    }
+  }
+}

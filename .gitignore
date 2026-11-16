@@ -2,5 +2,10 @@
 .idea/
 /PLAN.md
 /stow/opencode/.config/opencode/service.json
+/stow/opencode/.config/opencode/opencode.json
+/stow/opencode/.config/opencode/opencode.jsonc
+/stow/claude/.claude/settings.json
+/stow/claude/.claude/settings.local.json
+/stow/claude/.claude/.credentials.json
 /legacy/configuration/home/.config/opencode/service.json
 /configuration/home/.config/opencode/service.json
