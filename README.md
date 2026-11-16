@@ -232,7 +232,7 @@ Install tmux and its plugin manager (TPM) with `ansible-playbook -i localhost, p
 
 Deploy the copied Git configuration with `sh deployment/deploy.sh stow/git "$HOME"`. It expects Neovim and the `delta` pager; Delta is installed by `playbooks/packages.yml`. The Linux configuration enables Delta's side-by-side view; the old macOS configuration did not.
 
-OpenCode and Claude Code share the definitions in [`configuration/ai/`](configuration/ai/README.md). Edit those sources, run `./render-ai-configs.sh`, then verify with `./render-ai-configs.sh --check`. The wrapper works from any directory when invoked by path and forwards options to the Python renderer. Generated files under the two Stow packages are committed and must not be edited directly. The main setup validates generation before deploying both packages; it never regenerates potentially live linked files automatically.
+OpenCode and Claude Code share the definitions in [`configuration/ai/`](configuration/ai/README.md). Edit those sources, run `python3 deployment/render-ai-configs.py`, then verify with `python3 deployment/render-ai-configs.py --check`. The renderer works from any directory when invoked by path. Generated files under the two Stow packages are committed and must not be edited directly. The main setup validates generation before deploying both packages; it never regenerates potentially live linked files automatically.
 
 After regenerating already-deployed definitions, run `opencode reload` to refresh cached prompts and skills behind Stow links. No OpenCode service restart is needed. Start a new Claude session after its first agent-directory deployment.
 

@@ -2,6 +2,7 @@
 """Scoped Claude guardrails, not a shell sandbox. Uses only the standard library."""
 
 import json
+import os
 from pathlib import Path
 import shlex
 import subprocess
@@ -41,6 +42,14 @@ def project_root(cwd):
     return Path(result.stdout.strip()).resolve()
 
 
+def owning_project(target):
+    """Find the Git owner of an existing or not-yet-created/deleted file."""
+    parent = target.parent
+    while not parent.exists():
+        parent = parent.parent
+    return project_root(parent)
+
+
 def direct_git_mutation(command):
     """Recognize common direct Git mutations; all other shell forms still ask."""
     try:
@@ -58,11 +67,52 @@ def direct_git_mutation(command):
     return index < len(words) and words[index] in GIT_MUTATIONS
 
 
+def scoped_commit_command(command, cwd):
+    """Recognize only ordinary explicit-file staging/new commits, never execute them."""
+    # Deliberately reject expansion/compound syntax, even inside a quoted message.
+    # Native approvals still apply; this is not a general shell parser or sandbox.
+    if any(char in command for char in "\n\r;&|<>`$\\"):
+        return False
+    try:
+        words = shlex.split(command)
+    except ValueError:
+        return False
+    if words[:2] == ["git", "commit"]:
+        arguments = words[2:]
+        return bool(arguments) and len(arguments) % 2 == 0 and all(
+            arguments[index] == "-m" and bool(arguments[index + 1].strip())
+            for index in range(0, len(arguments), 2)
+        )
+    if words[:3] != ["git", "add", "--"] or len(words) < 4:
+        return False
+    root = project_root(cwd)
+    if cwd != root:
+        return False
+    for value in words[3:]:
+        path = Path(value)
+        if (not path.parts or path.is_absolute() or ".." in path.parts
+                or ".git" in path.parts or any(char in value for char in "*?[:")):
+            return False
+        target = (root / path).resolve()
+        if target == root or not within(target, root) or target.is_dir():
+            return False
+        if owning_project(target) != root:
+            return False
+    return True
+
+
 def check(payload, policy, fallback):
     name = payload.get("agent_type") or fallback
     if name not in policy["agents"]:
         return decision("deny", "No dotfiles guard policy exists for this agent identity.")
     role = policy["agents"][name]
+    if role["guard"] in {"plan-commit", "implementation"}:
+        # Claude documents this as the original project, even after a cwd change.
+        # Fail closed if it is absent; never silently retarget a worker or committer.
+        initial = Path(os.environ["CLAUDE_PROJECT_DIR"]).resolve(strict=True)
+        current = Path(payload["cwd"]).resolve(strict=True)
+        if project_root(current) != project_root(initial):
+            return decision("deny", "This worker/committer must stay in the session's original target repository.")
     tool = payload.get("tool_name")
     if tool not in {"Bash", "Edit", "Write", "NotebookEdit", "Agent", "Task"}:
         raise ValueError("Unexpected tool for this scoped guard.")
@@ -84,7 +134,17 @@ def check(payload, policy, fallback):
         if command.strip() in policy["shell_inspections"]:
             return None  # Do not override native permission denies or asks.
         if role["guard"] != "dotfiles" and direct_git_mutation(command):
-            return decision("deny", "This role cannot mutate Git index, refs, history or working-tree state through Git.")
+            if role["guard"] != "plan-commit":
+                return decision("deny", "This role cannot mutate Git index, refs, history or working-tree state through Git.")
+            cwd = Path(payload["cwd"]).resolve(strict=True)
+            if cwd != project_root(cwd) or not scoped_commit_command(command, cwd):
+                return decision("deny", "Use only root-local git add -- <explicit files> or git commit -m <message>; no routing, bulk staging, amend, push, or other Git mutations.")
+            return decision(
+                "ask",
+                "Confirm the fixed target repository, attributable task-only changes, "
+                "verification and staged diff. This permits only the ordinary local "
+                "staging/commit operation, not unrelated changes or broader Git authority.",
+            )
         return decision(
             "ask",
             "Command is outside the exact inspection allowlist. Review its side effects; "
@@ -120,7 +180,7 @@ def check(payload, policy, fallback):
         repo = (Path.home() / "code/dotfiles").resolve()
         if not within(lexical, repo) or not within(target, repo):
             return decision("deny", "Edit the repository file under ~/code/dotfiles, not a deployed path or symlink escape.")
-    elif guard == "plan":
+    elif guard in {"plan", "plan-commit"}:
         allowed = root / "PLAN.md"
         if lexical != allowed or target != allowed:
             return decision("deny", "The orchestrator may edit only the project root's PLAN.md, not a symlink escape.")
@@ -129,6 +189,8 @@ def check(payload, policy, fallback):
             return decision("deny", "Implementation workers cannot edit plan files.")
         if not within(target, root):
             return decision("deny", "Implementation edits must stay in the current project.")
+        if owning_project(target) != root:
+            return decision("deny", "Implementation edits cannot enter a nested repository or submodule.")
     elif guard == "walkthrough":
         reports = root / "docs/walkthrough"
         if not within(target, reports) or target == reports:

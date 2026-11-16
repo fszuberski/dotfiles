@@ -23,7 +23,7 @@
         {"action": "edit", "resource": "*", "effect": "ask"}
       ]
     },
-    "tdd-workflow": {
+    "adversarial-tdd": {
       "mode": "primary",
       "permissions": [
         {"action": "question", "resource": "*", "effect": "allow"},
@@ -40,7 +40,110 @@
         {"action": "shell", "resource": "git worktree *", "effect": "deny"}
       ]
     },
+    "tdd": {
+      "mode": "primary",
+      "permissions": [
+        {"action": "question", "resource": "*", "effect": "allow"},
+        {"action": "edit", "resource": "PLAN.md", "effect": "allow"},
+        {"action": "shell", "resource": "git add *", "effect": "deny"},
+        {"action": "shell", "resource": "git commit *", "effect": "deny"},
+        {"action": "shell", "resource": "git push *", "effect": "deny"},
+        {"action": "shell", "resource": "git stash *", "effect": "deny"},
+        {"action": "shell", "resource": "git reset *", "effect": "deny"},
+        {"action": "shell", "resource": "git restore *", "effect": "deny"},
+        {"action": "shell", "resource": "git checkout *", "effect": "deny"},
+        {"action": "shell", "resource": "git switch *", "effect": "deny"},
+        {"action": "shell", "resource": "git clean *", "effect": "deny"},
+        {"action": "shell", "resource": "git worktree *", "effect": "deny"}
+      ]
+    },
+    "simple": {
+      "mode": "primary",
+      "permissions": [
+        {"action": "question", "resource": "*", "effect": "allow"},
+        {"action": "edit", "resource": "PLAN.md", "effect": "allow"},
+        {"action": "shell", "resource": "git add *", "effect": "deny"},
+        {"action": "shell", "resource": "git commit *", "effect": "deny"},
+        {"action": "shell", "resource": "git push *", "effect": "deny"},
+        {"action": "shell", "resource": "git stash *", "effect": "deny"},
+        {"action": "shell", "resource": "git reset *", "effect": "deny"},
+        {"action": "shell", "resource": "git restore *", "effect": "deny"},
+        {"action": "shell", "resource": "git checkout *", "effect": "deny"},
+        {"action": "shell", "resource": "git switch *", "effect": "deny"},
+        {"action": "shell", "resource": "git clean *", "effect": "deny"},
+        {"action": "shell", "resource": "git worktree *", "effect": "deny"}
+      ]
+    },
+    "yolo": {
+      "mode": "primary",
+      "permissions": [
+        {"action": "question", "resource": "*", "effect": "allow"},
+        {"action": "edit", "resource": "PLAN.md", "effect": "allow"},
+        {"action": "external_directory", "resource": "*", "effect": "ask"},
+        {"action": "shell", "resource": "git *", "effect": "deny"},
+        {"action": "shell", "resource": "git status *", "effect": "ask"},
+        {"action": "shell", "resource": "git diff *", "effect": "ask"},
+        {"action": "shell", "resource": "git log *", "effect": "ask"},
+        {"action": "shell", "resource": "git show *", "effect": "ask"},
+        {"action": "shell", "resource": "git rev-parse *", "effect": "ask"},
+        {"action": "shell", "resource": "git ls-files *", "effect": "ask"},
+        {"action": "shell", "resource": "git check-ignore *", "effect": "ask"},
+        {"action": "shell", "resource": "git add -- *", "effect": "ask"},
+        {"action": "shell", "resource": "git commit -m *", "effect": "ask"},
+        {"action": "shell", "resource": "git commit *--amend*", "effect": "deny"},
+        {"action": "shell", "resource": "git commit *--all*", "effect": "deny"},
+        {"action": "shell", "resource": "git commit * -a*", "effect": "deny"},
+        {"action": "shell", "resource": "git commit *--no-verify*", "effect": "deny"},
+        {"action": "shell", "resource": "git commit * -n*", "effect": "deny"}
+      ]
+    },
+    "developer": {
+      "mode": "subagent",
+      "permissions": [
+        {"action": "edit", "resource": "*", "effect": "allow"},
+        {"action": "edit", "resource": "PLAN.md", "effect": "deny"},
+        {"action": "edit", "resource": "*/PLAN.md", "effect": "deny"},
+        {"action": "edit", "resource": ".git", "effect": "deny"},
+        {"action": "edit", "resource": ".git/*", "effect": "deny"},
+        {"action": "edit", "resource": "*/.git/*", "effect": "deny"},
+        {"action": "edit", "resource": "*.env", "effect": "ask"},
+        {"action": "edit", "resource": "*.env.*", "effect": "ask"},
+        {"action": "shell", "resource": "git add *", "effect": "deny"},
+        {"action": "shell", "resource": "git commit *", "effect": "deny"},
+        {"action": "shell", "resource": "git push *", "effect": "deny"},
+        {"action": "shell", "resource": "git stash *", "effect": "deny"},
+        {"action": "shell", "resource": "git reset *", "effect": "deny"},
+        {"action": "shell", "resource": "git restore *", "effect": "deny"},
+        {"action": "shell", "resource": "git checkout *", "effect": "deny"},
+        {"action": "shell", "resource": "git switch *", "effect": "deny"},
+        {"action": "shell", "resource": "git clean *", "effect": "deny"},
+        {"action": "shell", "resource": "git worktree *", "effect": "deny"}
+      ]
+    },
     "atdd-developer": {
+      "mode": "subagent",
+      "permissions": [
+        {"action": "edit", "resource": "*", "effect": "allow"},
+        {"action": "edit", "resource": "PLAN.md", "effect": "deny"},
+        {"action": "edit", "resource": "*/PLAN.md", "effect": "deny"},
+        {"action": "edit", "resource": ".git", "effect": "deny"},
+        {"action": "edit", "resource": ".git/*", "effect": "deny"},
+        {"action": "edit", "resource": "*/.git/*", "effect": "deny"},
+        {"action": "edit", "resource": "*.env", "effect": "ask"},
+        {"action": "edit", "resource": "*.env.*", "effect": "ask"},
+        {"action": "shell", "resource": "git add *", "effect": "deny"},
+        {"action": "shell", "resource": "git commit *", "effect": "deny"},
+        {"action": "shell", "resource": "git push *", "effect": "deny"},
+        {"action": "shell", "resource": "git stash *", "effect": "deny"},
+        {"action": "shell", "resource": "git reset *", "effect": "deny"},
+        {"action": "shell", "resource": "git restore *", "effect": "deny"},
+        {"action": "shell", "resource": "git checkout *", "effect": "deny"},
+        {"action": "shell", "resource": "git switch *", "effect": "deny"},
+        {"action": "shell", "resource": "git clean *", "effect": "deny"},
+        {"action": "shell", "resource": "git worktree *", "effect": "deny"}
+      ]
+    },
+    "clean-coder": {
       "mode": "subagent",
       "permissions": [
         {"action": "edit", "resource": "*", "effect": "allow"},

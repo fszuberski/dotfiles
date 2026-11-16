@@ -9,12 +9,35 @@
       "guard": "dotfiles",
       "tools": ["Read", "Grep", "Glob", "Bash", "Edit", "Write", "WebFetch", "WebSearch", "Skill", "AskUserQuestion"]
     },
-    "tdd-workflow": {
+    "adversarial-tdd": {
       "guard": "plan",
       "model": "opus",
       "tools": ["Read", "Grep", "Glob", "Bash", "Edit", "Write", "Skill", "AskUserQuestion"]
     },
     "atdd-developer": {
+      "guard": "implementation",
+      "model": "sonnet",
+      "tools": ["Read", "Grep", "Glob", "Bash", "Edit", "Write", "Skill"]
+    },
+    "tdd": {
+      "guard": "plan",
+      "model": "opus",
+      "tools": ["Read", "Grep", "Glob", "Bash", "Edit", "Write", "Skill", "AskUserQuestion"]
+    },
+    "simple": {
+      "guard": "plan",
+      "tools": ["Read", "Grep", "Glob", "Bash", "Edit", "Write", "Skill", "AskUserQuestion"]
+    },
+    "yolo": {
+      "guard": "plan-commit",
+      "tools": ["Read", "Grep", "Glob", "Bash", "Edit", "Write", "Skill", "AskUserQuestion"]
+    },
+    "developer": {
+      "guard": "implementation",
+      "model": "sonnet",
+      "tools": ["Read", "Grep", "Glob", "Bash", "Edit", "Write", "Skill"]
+    },
+    "clean-coder": {
       "guard": "implementation",
       "model": "sonnet",
       "tools": ["Read", "Grep", "Glob", "Bash", "Edit", "Write", "Skill"]

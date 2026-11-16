@@ -14,6 +14,14 @@
     "git check-ignore PLAN.md"
   ],
   "agents": {
+    "adversarial-tdd": {
+      "guard": "plan",
+      "delegates": [
+        "atdd-developer",
+        "clean-coder",
+        "adversary-reviewer"
+      ]
+    },
     "adversary-reviewer": {
       "guard": "read-only",
       "delegates": []
@@ -22,8 +30,16 @@
       "guard": "implementation",
       "delegates": []
     },
+    "clean-coder": {
+      "guard": "implementation",
+      "delegates": []
+    },
     "concurrency-analyzer": {
       "guard": "read-only",
+      "delegates": []
+    },
+    "developer": {
+      "guard": "implementation",
       "delegates": []
     },
     "local-config": {
@@ -33,6 +49,13 @@
         "concurrency-analyzer"
       ]
     },
+    "simple": {
+      "guard": "plan",
+      "delegates": [
+        "developer",
+        "clean-coder"
+      ]
+    },
     "system-explorer": {
       "guard": "walkthrough",
       "delegates": [
@@ -40,11 +63,18 @@
         "concurrency-analyzer"
       ]
     },
-    "tdd-workflow": {
+    "tdd": {
       "guard": "plan",
       "delegates": [
         "atdd-developer",
-        "adversary-reviewer"
+        "clean-coder"
+      ]
+    },
+    "yolo": {
+      "guard": "plan-commit",
+      "delegates": [
+        "developer",
+        "clean-coder"
       ]
     }
   }

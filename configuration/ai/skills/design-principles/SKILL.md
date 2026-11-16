@@ -1,0 +1,98 @@
+---
+name: design-principles
+description: Apply contextual SOLID, GRASP, simplicity, coupling, cohesion, and state-management guidance during behavior-preserving refactoring. Map evidenced design problems to small transformations without speculative abstractions.
+---
+
+# Design principles
+
+Use when assessing design or refactoring working code. Read this skill in full;
+it is self-contained and requires no other ALF agents or references. Repository
+instructions, authorized scope, observable behavior, and established architecture
+constrain its application. Principles guide judgment, not mechanical compliance.
+
+## Priority and tension
+
+1. Correctness, safety, and agreed contracts precede any principle.
+2. KISS/YAGNI outweigh DRY when sharing would force premature abstraction.
+3. Cohesive responsibilities matter more than minimizing file count, but additional classes are not inherently better.
+4. Prefer explicit, understandable code over cleverness. Explain the concrete maintenance benefit, not just a principle's name.
+5. Testability is design feedback, not a mandate to isolate every class with mocks. Prefer lightweight real collaborators; replace external boundaries deliberately.
+6. Preserve existing architecture and idiomatic language choices. Ports/interfaces with one implementation can be justified by boundary ownership; an interface for every class is not required. Do not introduce architecture or dependencies beyond the authorized scope.
+
+## SOLID
+
+| Principle | Core rule | Evidence to investigate | Possible transformation |
+| --- | --- | --- | --- |
+| Single Responsibility (SRP) | Group one cohesive responsibility/reason to change | Business policy mixed with persistence or presentation; unrelated operations | Extract Method/Class, Move Method, Split Module |
+| Open/Closed (OCP) | Protect stable policy from repeatedly changing variations where that variation is real | The same growing type dispatch repeated across consumers | Strategy or polymorphism when simpler than the conditional; keep clear local switches when appropriate |
+| Liskov Substitution (LSP) | Subtypes preserve the base contract, including preconditions, postconditions, and invariants | Unsupported base operations, stronger preconditions, broken guarantees | Replace Inheritance with Delegation, reshape internal interfaces without changing public contracts |
+| Interface Segregation (ISP) | Clients should not depend on unrelated capabilities | Clients forced to implement unused methods or import unrelated concerns | Extract Role Interface, Split Interface |
+| Dependency Inversion (DIP) | High-level policy owns the abstractions it needs rather than depending on infrastructure details | Domain/application code constructs drivers or reaches into adapters | Dependency injection, application-owned ports at justified boundaries |
+
+OCP does not prohibit editing existing code. LSP concerns behavioral contracts,
+not merely return-type width. DIP does not require abstractions around stable
+values or every concrete collaborator.
+
+## GRASP — responsibility assignment
+
+General Responsibility Assignment Software Patterns, associated with Craig Larman:
+
+| Principle | Guidance | Evidence to investigate |
+| --- | --- | --- |
+| Information Expert | Place behavior with the information needed to perform it | External code repeatedly interprets another object's internal state |
+| Creator | Place creation with a cohesive owner that contains or closely uses the object | Construction knowledge scattered across unrelated callers |
+| Controller | Coordinate system events through an application/use-case boundary | Business policy in UI or transport code; an oversized coordinating service |
+| Low Coupling | Reduce unnecessary knowledge between components | Broad ripple changes and dependencies on implementation details |
+| High Cohesion | Keep closely related responsibilities together | Methods use disjoint state or serve unrelated reasons to change |
+| Polymorphism | Use substitutable implementations for meaningful type variation | Repeated type checks that grow together; not every conditional |
+| Pure Fabrication | Introduce a non-domain service when it improves cohesion and coupling | Persistence/formatting concerns crowd a domain object |
+| Indirection | Mediate a volatile dependency when it earns its complexity | Tight coupling that repeatedly forces coordinated edits |
+| Protected Variations | Stabilize boundaries around evidenced variation | Recurring changes propagate across otherwise independent consumers |
+
+These are candidate signals, not automatic defects. Neither every `new` call
+nor every application service warrants a factory or richer entity.
+
+## Simplicity
+
+- **DRY — Don't Repeat Yourself:** represent the same knowledge consistently. Similar-looking code with different reasons to change is not necessarily duplication. Extract a shared rule or constant only when ownership and semantics align. Validation at multiple trust boundaries can be deliberate defense in depth, not a reason to delete checks.
+- **KISS — Keep It Simple:** choose the simplest design that meets current requirements and established boundaries. Inline needless helpers, collapse unnecessary hierarchies, or use a direct function instead of an imposed pattern. A justified architectural port is not needless solely because it has one adapter.
+- **YAGNI — You Aren't Gonna Need It:** avoid speculative extension points, unused configuration, and premature plugin systems. Remove only demonstrably unused code within scope; account for reflective, framework, and external consumers first.
+
+## Coupling, cohesion, and contracts
+
+- **Law of Demeter:** minimize knowledge of collaborators' internal structure. Hide an unstable traversal behind an appropriate operation; fluent APIs and immutable value navigation are not inherently violations.
+- **Tell, Don't Ask:** put decisions with the owner of relevant state when this strengthens cohesion. DTOs, queries, projections, and intentional data-oriented designs need not acquire behavior merely to eliminate getters.
+- **Command-Query Separation (CQS):** distinguish observation from mutation and avoid surprising side effects. Atomic operations that return a result (such as dequeue or save) can be appropriate; do not mechanically split them and introduce races or change their contracts. CQS does not mandate CQRS infrastructure.
+- **Composition over Inheritance:** prefer delegation for reuse unless a real substitutable relationship warrants inheritance. Inspect framework contracts and consumers before reshaping a hierarchy.
+- **Encapsulation:** protect invariants and avoid exposing mutable internal state. Extract behavior, use immutable views, or copy deliberately; account for allocation costs, identity semantics, and compatibility.
+- **Separation of Concerns:** keep business policy, transport, persistence, and other effects at appropriate existing boundaries. It does not require separate deployables or a new module for every concern.
+- **Modularity:** seek clear, cohesive boundaries that can be reasoned about and tested independently. Independent deployment is optional, not a requirement to turn modules into services.
+
+## Data, state, and errors
+
+- Favor immutability where it simplifies reasoning, especially for shared values. Mutation can remain appropriate within a controlled owner; changing it must preserve identity, lifecycle, concurrency, and performance contracts.
+- Favor pure functions for deterministic calculation and explicit effect boundaries. Inject time or randomness where behavior needs control; randomness itself is not a defect. Preserve intentional semi-random test fixtures and set only scenario-relevant fields according to `java-testing` when applicable.
+- Expose hidden dependencies where useful, without adding parameters or interfaces mechanically. Test setup friction may indicate too much responsibility, unsuitable boundaries, or overly fine-grained mocks; investigate rather than prescribe a pattern.
+- Preserve language/project error idioms and existing API semantics. Exceptions, result types, optionals, nulls, and error codes have contextual uses; replacing them can be a behavior change, not cleanup.
+- Validate at appropriate trust boundaries and provide useful, non-secret-bearing error context. Postel's Law (liberal acceptance) is not permission to silently accept malformed data. Compatibility exceptions must be explicit.
+
+## Principle → refactoring quick map
+
+| Observed problem | Relevant principles | Candidate transformation |
+| --- | --- | --- |
+| Unrelated responsibilities in one unit | SRP, High Cohesion | Extract Class/Method or Split Module |
+| Repeated decisions using another object's internals | Information Expert, Tell, Don't Ask | Move Method to an appropriate owner |
+| Repeated growing type dispatch | OCP, Polymorphism | Strategy or polymorphism if it reduces real complexity |
+| Broad interface forces unused methods | ISP | Extract a role-specific interface |
+| Policy coupled to volatile infrastructure | DIP, Protected Variations | Inject a boundary dependency/application-owned port |
+| Fragile traversal through internal objects | Law of Demeter, Encapsulation | Hide Delegate or expose a cohesive operation |
+| Same business knowledge duplicated | DRY, KISS | Extract a shared rule without conflating separate concepts |
+| Inheritance used only for reuse | LSP, Composition | Replace Inheritance with Delegation |
+| Uncontrolled mutable shared state | Encapsulation, Immutability | Constrain ownership or introduce immutable values |
+| Hidden time, random, or I/O dependency | Pure functions, Separation of Concerns | Make the relevant dependency explicit |
+| Abstraction with no present purpose | KISS, YAGNI | Inline or remove it when consumers/contracts permit |
+
+Use canonical principle names when reporting. State the observed problem,
+transformation, and preserved behavior; naming a principle alone is not evidence
+that a refactor is necessary or safe. No numerical complexity or sizing quotas
+are imposed by this skill.
