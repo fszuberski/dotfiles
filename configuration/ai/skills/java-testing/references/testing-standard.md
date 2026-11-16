@@ -50,13 +50,16 @@ class CheckoutServiceTest {
 
     @Test
     void shouldReduceOrderTotalGivenCustomerDiscount() {
+        // given: a cart with a 10,000-cent subtotal and a 1,000-cent customer discount
         ShoppingCart shoppingCart = randomShoppingCart();
         shoppingCart.setSubtotalInCents(10_000);
         when(discountRepository.findDiscountInCents(shoppingCart.getCustomerId()))
                 .thenReturn(1_000);
 
+        // when: the customer places the order
         Order placedOrder = checkoutService.placeOrder(shoppingCart);
 
+        // then: the order total reflects the customer discount
         assertEquals(9_000, placedOrder.getTotalInCents());
     }
 }
@@ -80,11 +83,14 @@ class CheckoutWithMockedPricingTest {
 
     @Test
     void shouldUseCalculatedTotalGivenPricedCart() {
+        // given: a cart priced at 9,000 cents
         ShoppingCart shoppingCart = randomShoppingCart();
         when(pricingService.calculateTotalInCents(shoppingCart)).thenReturn(9_000);
 
+        // when: the customer places the order
         Order placedOrder = checkoutService.placeOrder(shoppingCart);
 
+        // then: the order has the calculated total
         assertEquals(9_000, placedOrder.getTotalInCents());
     }
 }
@@ -133,6 +139,20 @@ Tests must be parallelizable by ensuring that each test instance uses unique dat
 
 ## Java and JUnit conventions
 
+### Given/When/Then phase comments
+
+When writing or modifying Java tests, you **must** add Given/When/Then phase comments with short, scenario-specific descriptions:
+
+- `// given: ...` describes the relevant preconditions.
+- `// when: ...` describes the action under test.
+- `// then: ...` describes the observable outcome.
+
+Bare labels such as `// given` are insufficient. Describe the scenario's intent, not mechanical code steps such as creating an object or calling a method.
+
+When an assertion also executes the action, such as `assertThrows`, use a descriptive combined `// when/then: ...` comment covering both the action and the expected outcome. Do not split code artificially just to separate phases.
+
+This requirement applies only to newly written or modified tests; do not rewrite unrelated existing tests solely to add these comments. Phase comments are not required in `@BeforeEach` methods or fixture helpers.
+
 ### Strongly prefer parameterized tests for equivalent scenarios
 
 Use parameterized tests by default when multiple cases exercise the same behavior with different inputs or expected results. Prefer separate tests when the behavior, setup, or assertions differ materially and combining them would obscure intent.
@@ -143,8 +163,10 @@ Preferred example:
 @ParameterizedTest
 @NullAndEmptySource
 void shouldRejectItemGivenNullOrEmptyId(String itemId) {
+    // given: a valid shopping cart
     ShoppingCart shoppingCart = randomShoppingCart();
 
+    // when/then: adding a null or empty item ID is rejected with IllegalArgumentException
     assertThrows(IllegalArgumentException.class, () -> shoppingCart.addItem(itemId));
 }
 ```
@@ -154,15 +176,19 @@ Separate tests for comparison; prefer the parameterized form for these equivalen
 ```java
 @Test
 void shouldRejectItemGivenNullId() {
+    // given: a valid shopping cart
     ShoppingCart shoppingCart = randomShoppingCart();
 
+    // when/then: adding a null item ID is rejected with IllegalArgumentException
     assertThrows(IllegalArgumentException.class, () -> shoppingCart.addItem(null));
 }
 
 @Test
 void shouldRejectItemGivenEmptyId() {
+    // given: a valid shopping cart
     ShoppingCart shoppingCart = randomShoppingCart();
 
+    // when/then: adding an empty item ID is rejected with IllegalArgumentException
     assertThrows(IllegalArgumentException.class, () -> shoppingCart.addItem(""));
 }
 ```
@@ -183,19 +209,24 @@ class ShoppingCartTest {
 
         @Test
         void shouldContainItemGivenValidId() {
+            // given: a cart containing item-2
             ShoppingCart shoppingCart = randomShoppingCart();
             shoppingCart.setItemIds(new HashSet<>(Set.of("item-2")));
 
+            // when: item-1 is added to the cart
             shoppingCart.addItem("item-1");
 
+            // then: the cart contains both the new and existing items
             assertEquals(Set.of("item-1", "item-2"), shoppingCart.getItemIds());
         }
 
         @ParameterizedTest
         @NullAndEmptySource
         void shouldRejectItemGivenNullOrEmptyId(String itemId) {
+            // given: a valid shopping cart
             ShoppingCart shoppingCart = randomShoppingCart();
 
+            // when/then: adding a null or empty item ID is rejected with IllegalArgumentException
             assertThrows(IllegalArgumentException.class, () -> shoppingCart.addItem(itemId));
         }
     }
@@ -205,29 +236,37 @@ class ShoppingCartTest {
 
         @Test
         void shouldRemoveItemGivenExistingId() {
+            // given: a cart containing item-1 and item-2
             ShoppingCart shoppingCart = randomShoppingCart();
             shoppingCart.setItemIds(new HashSet<>(Set.of("item-1", "item-2")));
 
+            // when: item-1 is removed from the cart
             shoppingCart.removeItem("item-1");
 
+            // then: only item-2 remains in the cart
             assertEquals(Set.of("item-2"), shoppingCart.getItemIds());
         }
 
         @Test
         void shouldLeaveItemsUnchangedGivenUnknownId() {
+            // given: a cart containing item-1 and item-2 but not unknown-item
             ShoppingCart shoppingCart = randomShoppingCart();
             shoppingCart.setItemIds(new HashSet<>(Set.of("item-1", "item-2")));
 
+            // when: removal of unknown-item is requested
             shoppingCart.removeItem("unknown-item");
 
+            // then: the cart still contains both original items
             assertEquals(Set.of("item-1", "item-2"), shoppingCart.getItemIds());
         }
 
         @ParameterizedTest
         @NullAndEmptySource
         void shouldRejectRemovalGivenNullOrEmptyId(String itemId) {
+            // given: a valid shopping cart
             ShoppingCart shoppingCart = randomShoppingCart();
 
+            // when/then: removing a null or empty item ID is rejected with IllegalArgumentException
             assertThrows(IllegalArgumentException.class, () -> shoppingCart.removeItem(itemId));
         }
     }
