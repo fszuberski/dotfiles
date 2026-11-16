@@ -5,6 +5,7 @@
   gather_facts: true
   vars:
     aur_app_packages:
+      - claude-code
       - google-chrome
       - jetbrains-toolbox
       - spotify
@@ -19,7 +20,7 @@
     - name: Check which AUR applications are installed
       ansible.builtin.command:
         argv: [pacman, -Qq, "{{ item }}"]
-      loop: "{{ aur_app_packages }}"
+      loop: "{{ aur_app_packages + (['heroic-games-launcher-bin', 'sunshine'] if ansible_facts['hostname'] == 'kikimora' else []) }}"
       register: aur_app_status
       changed_when: false
       failed_when: aur_app_status.rc not in [0, 1]

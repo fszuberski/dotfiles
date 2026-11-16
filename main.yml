@@ -53,6 +53,9 @@
 - import_playbook: playbooks/packages.yml
   tags: install
 
+- import_playbook: playbooks/ollama.yml
+  tags: ollama
+
 - import_playbook: playbooks/yay.yml
   tags: install
 

@@ -37,8 +37,9 @@ Configuration and provisioning for three personal machines:
 - `playbooks/nvim-config.yml` deploys the Neovim configuration with Stow.
 - `playbooks/tmux.yml` installs tmux and its plugin manager.
 - `playbooks/packages.yml` installs general-purpose packages, including approved Arch applications, utilities, fonts and Rofi Bluetooth dependencies.
+- `playbooks/ollama.yml` installs Ollama with AMD Vulkan support and enables its service on Kikimora only.
 - `playbooks/yay.yml` builds and installs Yay from its current AUR recipe on Arch.
-- `playbooks/aur-apps.yml` installs Google Chrome and JetBrains Toolbox from the AUR through Yay on Arch.
+- `playbooks/aur-apps.yml` installs Google Chrome, JetBrains Toolbox and Spotify from the AUR through Yay on Arch, plus Heroic Games Launcher and Sunshine on Kikimora.
 - `playbooks/yay-update.yml` explicitly rebuilds and updates Yay from its current AUR recipe.
 - `playbooks/yay-install-built.yml` explicitly installs a selected existing Yay package without changing its checkout.
 - `playbooks/fonts.yml` installs Meslo Nerd Font and JetBrains Mono on Arch Linux or macOS.
@@ -137,7 +138,13 @@ Alternatively, `ansible-playbook -i localhost, main.yml --tags audio --ask-becom
 
 The Arch general packages include OpenJDK 11, 17, 21 and 25, Kotlin, Gradle and Maven; the playbook selects OpenJDK 25 as the system default. Use `archlinux-java status` to see the installed Java environments and `sudo archlinux-java set <environment>` to select another default; the playbook restores Java 25 on its next run. They also include Docker and Compose, but installing them does not enable the Docker service or grant Docker group access. The legacy `nvm` package is installed alongside system Node.js; your Zsh config loads nvm when it is present.
 
-The Arch setup installs Google Chrome and JetBrains Toolbox from the AUR through Yay. To run that step separately, first install the general packages and Yay, then run `ansible-playbook -i localhost, playbooks/aur-apps.yml --ask-become-pass`. It skips installed applications, builds missing packages as the regular user and prompts separately for the sudo password Yay requests. Yay's task output is hidden to protect the password. AUR recipes and upstream sources can change and are built without an interactive review pause; review them before running the playbook. Spotify is omitted for now while its AUR recipe is out of sync and its recommended clean-chroot build workflow remains unconfigured.
+Steam is installed only on Kikimora. The general package playbook enables the Arch `multilib` repository if needed and refreshes the package databases on each run before installing packages. To apply the general package changes from the repository root, run `ansible-playbook -i localhost, playbooks/packages.yml --ask-become-pass`. This installs all missing general packages and selects OpenJDK 25 as the default.
+
+Update the Arch system with `sudo pacman -Syu` before running the package playbook to avoid a partial upgrade; the playbook refreshes package databases but does not upgrade all installed packages.
+
+On Kikimora, Ollama uses the AMD Vulkan backend for local models and a default 32,768-token context. Apply its setup separately with `ansible-playbook -i localhost, playbooks/ollama.yml --ask-become-pass`; changing the context configuration restarts Ollama and interrupts active requests. Download and run a model with `ollama run qwen3:8b`. Use `ollama ps` while the model is loaded to check GPU usage and context. Models are downloaded on demand, not by Ansible. Ollama's default API listens on localhost; the playbook does not change existing network settings. The main setup's `install` tag installs the packages and its `system` tag configures, enables and starts the service; the latter requires the packages to be installed first.
+
+The Arch setup installs Google Chrome, JetBrains Toolbox and Spotify from the AUR through Yay; on Kikimora it also installs Heroic Games Launcher (`heroic-games-launcher-bin`) and Sunshine. To run that step separately, first install the general packages and Yay, then run `ansible-playbook -i localhost, playbooks/aur-apps.yml --ask-become-pass`. It skips installed applications, builds missing packages as the regular user and prompts separately for the sudo password Yay requests. Yay's task output is hidden to protect the password. AUR recipes and upstream sources can change and are built without an interactive review pause; review them before running the playbook. Sunshine is not started automatically. These host restrictions do not remove applications already installed on Fleder; Moonlight is not yet configured.
 
 Sway's audio and media keys control the default PipeWire devices and media player. Waybar displays volume and opens pavucontrol when clicked.
 

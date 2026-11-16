@@ -11,6 +11,32 @@
           - ansible_facts['distribution'] == 'Archlinux' or ansible_facts['system'] == 'Darwin'
         fail_msg: This playbook supports Arch Linux and macOS only.
 
+    - name: Check enabled Arch repositories
+      ansible.builtin.command:
+        argv: [pacman-conf, --repo-list]
+      register: arch_repositories
+      changed_when: false
+      check_mode: false
+      when: ansible_facts['distribution'] == 'Archlinux'
+
+    - name: Enable the Arch multilib repository
+      ansible.builtin.blockinfile:
+        path: /etc/pacman.conf
+        marker: '# {mark} ANSIBLE MANAGED MULTILIB REPOSITORY'
+        block: |
+          [multilib]
+          Include = /etc/pacman.d/mirrorlist
+      become: true
+      when:
+        - ansible_facts['distribution'] == 'Archlinux'
+        - "'multilib' not in arch_repositories.stdout_lines"
+
+    - name: Refresh Arch package databases before installing packages
+      community.general.pacman:
+        update_cache: true
+      become: true
+      when: ansible_facts['distribution'] == 'Archlinux'
+
     - name: Check installed Arch kernels
       ansible.builtin.command:
         argv: [pacman, -Qq, "{{ item }}"]
@@ -89,6 +115,15 @@
         state: present
       become: true
       when: ansible_facts['distribution'] == 'Archlinux'
+
+    - name: Install Steam on Kikimora
+      community.general.pacman:
+        name: steam
+        state: present
+      become: true
+      when:
+        - ansible_facts['distribution'] == 'Archlinux'
+        - ansible_facts['hostname'] == 'kikimora'
 
     - name: Check the default Java environment on Arch Linux
       ansible.builtin.command:
