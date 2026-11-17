@@ -11,6 +11,13 @@
           - ansible_facts['distribution'] == 'Archlinux' or ansible_facts['system'] == 'Darwin'
         fail_msg: This playbook supports Arch Linux and macOS only.
 
+    - name: Require a regular user for Docker group membership on Arch Linux
+      ansible.builtin.assert:
+        that:
+          - ansible_facts['user_id'] != 'root'
+        fail_msg: Run this playbook as the regular user without global become.
+      when: ansible_facts['distribution'] == 'Archlinux'
+
     - name: Check enabled Arch repositories
       ansible.builtin.command:
         argv: [pacman-conf, --repo-list]
@@ -113,6 +120,22 @@
           - zathura-pdf-mupdf
           - zathura-ps
         state: present
+      become: true
+      when: ansible_facts['distribution'] == 'Archlinux'
+
+    - name: Add the regular user to the Docker group on Arch Linux
+      ansible.builtin.user:
+        name: "{{ ansible_facts['user_id'] }}"
+        groups: docker
+        append: true
+      become: true
+      when: ansible_facts['distribution'] == 'Archlinux'
+
+    - name: Enable and start Docker on Arch Linux
+      ansible.builtin.systemd_service:
+        name: docker.service
+        enabled: true
+        state: started
       become: true
       when: ansible_facts['distribution'] == 'Archlinux'
 
