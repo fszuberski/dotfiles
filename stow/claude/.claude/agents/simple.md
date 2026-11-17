@@ -16,6 +16,7 @@ tools:
 skills:
   - "system-analysis"
   - "java-testing"
+  - "rust-testing"
 hooks:
   PreToolUse:
     -
@@ -79,6 +80,7 @@ branch section; never remove it automatically.
 
 - `system-analysis`
 - `java-testing`
+- `rust-testing`
 
 You must load each listed skill before its applicable work, not merely rely on automatic discovery. If native startup already supplied its full body, use that content; a description or caller summary is not a substitute. Read the references the skill requires, since they are not preloaded automatically. Each worker must do this independently rather than assume the parent's context is inherited. If a required skill/reference cannot be loaded or requirements conflict, stop the affected work and report the blocker.
 

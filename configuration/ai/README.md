@@ -69,6 +69,28 @@ its role-specific use in the agent prompt. The skill is instruction context,
 not mechanical proof of compliance; existing permissions and independent review
 still matter.
 
+### Rust testing skill
+
+`skills/rust-testing/` is a separate, self-contained adaptation of the Java
+testing philosophy, not a dependency on or replacement for `java-testing`.
+`SKILL.md` provides operational instructions; `references/testing-standard.md`
+provides the full Rust standard and illustrative examples.
+
+The same developer workers, refactorer, four implementation workflows, and
+reviewer require this skill for applicable Rust work. It preserves
+behavior-focused boundaries, real lightweight collaborators, intentional
+semi-random fixtures, descriptive Given/When/Then comments, and strong
+case-based/grouping preferences. Rust adaptations cover nested modules,
+snake-case names, Cargo test layouts versus behavioral testing levels,
+doctests, errors, parallel resource isolation, and async task ownership.
+Built-in testing support is the starting point; optional crates are not
+mandatory dependencies.
+
+Edit the source under `skills/rust-testing/`, render and check using the
+commands above, then deploy new files through Stow as described below.
+Both tools discover the deployed copy under `~/.claude/skills/rust-testing/`.
+There is no shared testing-core skill or change to the Java standard.
+
 ### Shared implementation guidance
 
 `skills/implementation-guidance/SKILL.md` contains the development guidance

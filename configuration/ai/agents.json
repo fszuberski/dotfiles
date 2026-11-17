@@ -8,42 +8,42 @@
     },
     "adversarial-tdd": {
       "description": "Main-thread adversarial TDD orchestrator. Agree a branch plan, delegate RED/GREEN and REFACTOR, independently verify and arrange adversarial review, then wait. Never implements code itself.",
-      "skills": ["system-analysis", "java-testing"],
+      "skills": ["system-analysis", "java-testing", "rust-testing"],
       "delegates": ["atdd-developer", "clean-coder", "adversary-reviewer"]
     },
     "atdd-developer": {
       "description": "Implement one authorized behavior through evidenced RED/GREEN; perform scoped REFACTOR unless the caller assigns it separately. Return evidence; never commit, edit plans, or spawn agents.",
-      "skills": ["implementation-guidance", "java-testing"],
+      "skills": ["implementation-guidance", "java-testing", "rust-testing"],
       "delegates": []
     },
     "tdd": {
       "description": "Main-thread TDD orchestrator without adversarial review. Delegate RED/GREEN and REFACTOR, verify independently, then wait for the next-step signal. Never implements or commits.",
-      "skills": ["system-analysis", "java-testing"],
+      "skills": ["system-analysis", "java-testing", "rust-testing"],
       "delegates": ["atdd-developer", "clean-coder"]
     },
     "simple": {
       "description": "Main-thread task-directed workflow without mandatory TDD or adversarial review. Delegate implementation and optional safe cleanup, verify independently, then wait. Never implements or commits.",
-      "skills": ["system-analysis", "java-testing"],
+      "skills": ["system-analysis", "java-testing", "rust-testing"],
       "delegates": ["developer", "clean-coder"]
     },
     "yolo": {
       "description": "Main-thread autonomous task-directed workflow in one authorized target repository. Delegate implementation and optional cleanup, verify independently, and make ordinary local task-only commits. No push or history rewriting.",
-      "skills": ["system-analysis", "java-testing"],
+      "skills": ["system-analysis", "java-testing", "rust-testing"],
       "delegates": ["developer", "clean-coder"]
     },
     "developer": {
       "description": "Implement one authorized task using shared architecture/tracer-bullet guidance and task-directed test coverage, without mandatory TDD. Return verification evidence; never commit, edit plans, or spawn agents.",
-      "skills": ["implementation-guidance", "java-testing"],
+      "skills": ["implementation-guidance", "java-testing", "rust-testing"],
       "delegates": []
     },
     "clean-coder": {
       "description": "Refactor one authorized, tested scope without changing behavior. Apply contextual design principles, verify before and after, and return evidence; never commit, edit plans, or spawn agents.",
-      "skills": ["design-principles", "java-testing"],
+      "skills": ["design-principles", "java-testing", "rust-testing"],
       "delegates": []
     },
     "adversary-reviewer": {
       "description": "Independently review a change, plan, or design for evidenced correctness, security, scope, and operability failures. Read-only except approved verification artifacts; zero findings is valid.",
-      "skills": ["java-testing"],
+      "skills": ["java-testing", "rust-testing"],
       "delegates": []
     },
     "system-explorer": {
