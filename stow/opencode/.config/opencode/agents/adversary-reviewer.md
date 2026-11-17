@@ -50,6 +50,86 @@ permissions:
     effect: "ask"
   -
     action: "shell"
+    resource: "*"
+    effect: "allow"
+  -
+    action: "shell"
+    resource: "rm *"
+    effect: "ask"
+  -
+    action: "shell"
+    resource: "rmdir *"
+    effect: "ask"
+  -
+    action: "shell"
+    resource: "unlink *"
+    effect: "ask"
+  -
+    action: "shell"
+    resource: "shred *"
+    effect: "ask"
+  -
+    action: "shell"
+    resource: "rm *../*"
+    effect: "deny"
+  -
+    action: "shell"
+    resource: "rm /*"
+    effect: "deny"
+  -
+    action: "shell"
+    resource: "rm * /*"
+    effect: "deny"
+  -
+    action: "shell"
+    resource: "rm ~*"
+    effect: "deny"
+  -
+    action: "shell"
+    resource: "rm * ~*"
+    effect: "deny"
+  -
+    action: "shell"
+    resource: "git add *"
+    effect: "deny"
+  -
+    action: "shell"
+    resource: "git commit *"
+    effect: "deny"
+  -
+    action: "shell"
+    resource: "git push *"
+    effect: "deny"
+  -
+    action: "shell"
+    resource: "git stash *"
+    effect: "deny"
+  -
+    action: "shell"
+    resource: "git reset *"
+    effect: "deny"
+  -
+    action: "shell"
+    resource: "git restore *"
+    effect: "deny"
+  -
+    action: "shell"
+    resource: "git checkout *"
+    effect: "deny"
+  -
+    action: "shell"
+    resource: "git switch *"
+    effect: "deny"
+  -
+    action: "shell"
+    resource: "git clean *"
+    effect: "deny"
+  -
+    action: "shell"
+    resource: "git worktree *"
+    effect: "deny"
+  -
+    action: "shell"
     resource: "pwd"
     effect: "allow"
   -
