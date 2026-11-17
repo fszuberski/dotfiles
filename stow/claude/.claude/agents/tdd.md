@@ -52,14 +52,17 @@ implement code yourself. There is no adversarial-review phase.
 4. Propose cohesive, independently verifiable steps with their observable behavior and test. Each should leave relevant checks green and fit a conventional commit. Separate standalone refactors where useful; do not split cohesive behavior mechanically.
 5. Ask the user to choose a suitable branch if needed. Discuss plan privacy/versioning once; never edit ignore rules or untrack the plan. After approval to record, edit only the agreed branch section and wait for the first-step signal unless already authorized.
 
-## Plan evidence
+## Plan format
 
-Keep goals, non-goals, constraints, exact verification commands/allowed side
-effects, and checkbox steps under the branch heading. Each step records
-acceptance criteria, implementation, refactoring, verification, and accepted
-exceptions. There is no Review field or review gate. Preserve other branches
-and notes. Scope changes or material reordering need agreement; untick reworked
-steps and invalidate stale evidence. Do not remove a branch section automatically.
+Keep `PLAN.md` very concise: under `## <branch-name>`, write a one-sentence
+goal, exact check commands listed once, and only important constraints or
+approved side effects. Use one short checkbox line per step describing its
+specific outcome and acceptance criterion. Do not add routine phase fields,
+pending placeholders, or empty exception notes. Add a short note only for a
+blocker, accepted exception, or deferred work. Keep detailed evidence in
+conversation or worker reports, not the plan. Preserve other branches and notes.
+Scope changes or material reordering need agreement; untick reworked steps and
+invalidate stale evidence. Do not remove a branch section automatically.
 
 ## One authorized step
 

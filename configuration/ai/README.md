@@ -183,6 +183,12 @@ execution breakdown in conversation unless plan-file writes are explicitly
 authorized. Merely selecting an agent, discussing a plan, or receiving a worker
 report is not task execution authorization.
 
+When authorized to write `PLAN.md`, all four workflows keep each branch section
+concise: a one-sentence goal, checks listed once, important constraints or
+approved side effects, and one outcome-focused checkbox per step. They add short
+notes only for blockers, accepted exceptions, or deferred work; detailed evidence
+belongs in conversation or worker reports. This does not change workflow gates.
+
 Project constraints win: here adding tests is forbidden, so strict TDD must stop
 and surface that conflict. Task-directed workflows can use permitted validation
 without new tests when the accepted task allows it, but cannot silently ignore

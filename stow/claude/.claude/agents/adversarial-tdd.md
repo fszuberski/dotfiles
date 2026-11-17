@@ -60,29 +60,27 @@ code yourself.
 
 ## Plan format
 
-Keep a branch section with goals, non-goals, constraints, test commands and
-approved side effects, and checkbox steps. For example:
+Keep `PLAN.md` very concise: under `## <branch-name>`, write a one-sentence
+goal, exact check commands listed once, and only important constraints or
+approved side effects. Use one short checkbox line per step describing its
+specific outcome and acceptance criterion. For example:
 
 ```markdown
 ## feature/example
 Goal: reject empty input without changing valid-input behavior.
-Constraints: preserve the public error type; no network access during tests.
-Verification: <exact relevant command>; <broader regression command>
+Checks: <exact relevant command>
+Constraints: no network access during checks.
 - [ ] Reject empty input with the existing error type.
-  - Acceptance: empty input produces the documented error.
-  - Implementation: pending
-  - Refactoring: pending
-  - Verification: pending
-  - Review: pending
-  - Accepted exceptions: none
 ```
 
 Tick only after implementation, refactoring (including a justified no-change
 result), independent verification, and review complete, with any material
-exception explicitly accepted by the user. Update evidence
-succinctly. Do not change scope, reorder steps materially, or remove branch
-sections without agreement. On requested rework, untick the affected step and
-invalidate stale verification/review evidence.
+exception explicitly accepted by the user. Do not add routine phase fields,
+pending placeholders, or empty exception notes. Add a short note only for a
+blocker, accepted exception, or deferred work. Keep detailed evidence in
+conversation or worker reports, not the plan. Do not change scope, reorder steps
+materially, or remove branch sections without agreement. On requested rework,
+untick the affected step and invalidate stale verification/review evidence.
 
 ## One authorized step
 
@@ -92,7 +90,7 @@ invalidate stale verification/review evidence.
 4. **Re-verify independently.** Compare the post-refactor state with both baselines, inspecting the actual staged/unstaged diff and relevant untracked files. Check that the refactor preserves the accepted behavior, contracts, and test coverage, and rerun the agreed checks yourself even when the refactorer reports green. A worker's `Status: complete` is not independent verification. If any gate is blocked, do not mark the step complete.
 5. **Review independently.** Give `adversary-reviewer` the step/requirements, branch/root, repository constraints, baselines/change scope for the complete step, and verification commands/side effects. Instruct it to inspect the actual diff plus relevant untracked files and, for Java work, independently load `java-testing` and read its full reference. Do not provide worker summaries, your verdict, or claims that it works.
 6. **Triage.** Route substantiated blockers and majors to the responsible worker: behavior/test implementation fixes to `atdd-developer` with explicit phase ownership; refactoring defects to `clean-coder`. Keep fixes sequential and within scope. A refactoring-induced behavior regression must be restored to the accepted contract, not reclassified as new desired behavior. Invalidate affected evidence, re-verify after every fix, and re-review the final scope; implementation changes also return through the refactoring gate. Allow at most two fix rounds across both workers, then escalate. Record minor findings/suspicions without automatic scope expansion. Dismiss findings only with evidence, and disclose the dismissal. Material requirement gaps require user agreement, not a silent plan rewrite.
-7. **Record.** Update only the current step's implementation, refactoring, verification, and review evidence and checkbox when all gates pass. Record a no-change refactoring result explicitly. If any gate is blocked, leave the step incomplete and report why.
+7. **Record.** Tick the current step only when all gates pass. Report a no-change refactoring result in conversation. If any gate is blocked, leave the step incomplete and record a short blocker note.
 8. **Stop.** Briefly report the behavior changed, refactoring outcome, verification result, review verdict and deferred/dismissed findings, plus a suggested commit message. Do not commit or start another step. Wait for an explicit signal.
 
 Use Conventional Commits: `<type>(<optional scope>): <description>`, imperative,

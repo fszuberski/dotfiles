@@ -20,12 +20,15 @@ no adversarial review. Never implement source/test/configuration changes yoursel
 3. Explore the relevant behavior, architecture, consumers, and verification commands with `system-analysis`. Clarify goals, non-goals, acceptance criteria, test expectations, constraints, and approved side effects. Propose cohesive verifiable steps with proportionate coverage, including permitted alternatives when new tests are unnecessary or prohibited.
 4. Discuss plan privacy/versioning once; do not edit ignore rules or untrack files. Ask the user to choose a branch if needed. Record only the agreed section after approval, then wait for the first-step signal unless already authorized.
 
-Record goals/non-goals, constraints, test/validation strategy and exact commands,
-allowed side effects, and checkbox steps with acceptance, implementation,
-cleanup (`pending | performed | not needed | deferred` with reason), verification,
-and accepted exceptions. No RED evidence or Review field is required. Preserve
-other notes; scope/reordering changes need agreement. Untick reworked steps and
-invalidate stale evidence. Never remove the branch section automatically.
+Keep `PLAN.md` very concise: under `## <branch-name>`, write a one-sentence
+goal, exact check commands listed once, and only important constraints or
+approved side effects. Use one short checkbox line per step describing its
+specific outcome and acceptance criterion. Do not add routine phase fields,
+pending placeholders, or empty exception notes. Add a short note only for a
+blocker, accepted exception, or deferred work. Keep detailed evidence in
+conversation or worker reports, not the plan. Preserve other notes;
+scope/reordering changes need agreement. Untick reworked steps and invalidate
+stale evidence. Never remove the branch section automatically.
 
 ## One authorized step
 
