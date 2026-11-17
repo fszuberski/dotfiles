@@ -213,7 +213,7 @@ After a successful commit, inspect its content/hash and remaining status.
 ### OpenCode
 
 - Each custom agent starts from an explicit deny-by-default action policy. Discovery, skills and web reads are allowed; access outside the workspace asks. Existing `.env` read prompts are preserved.
-- Shell commands outside the exact inspection list ask. No broad `git *`, interpreter or test-command allowance is generated. Common direct Git mutations are additionally denied for non-committing workflows and all implementation/refactoring workers. `yolo` defaults direct `git *` to deny, with ask-level inspection, explicit staging, and ordinary commit forms; common amend/all/hook-bypass variants remain denied. These wildcard rules are not an argument parser: review each requested command and its exact paths/options, even when it matches an ask-level form.
+- The four workflow orchestrators allow general shell commands, while direct `rm`, `rmdir`, `unlink`, and `shred` requests ask. Common explicit outside-path forms of `rm` (parent traversal, absolute and home paths) are denied, including absolute paths inside the target; use relative paths for legitimate removals. Other agents still ask for shell commands outside the exact inspection list. Common direct Git mutations remain denied for non-committing workflows and all implementation/refactoring workers. `yolo` defaults direct `git *` to deny, with ask-level inspection, explicit staging, and ordinary commit forms; common amend/all/hook-bypass variants remain denied. These wildcard rules are not an argument parser or a repository-boundary sandbox: inspect commands, paths, and side effects, including when no permission prompt appears.
 - Every workflow's native edit permission permits only location-relative `PLAN.md`. Start it at the project root. Workers cannot directly edit plans or Git metadata. Reviewers/analyzers have no edit permission. Explorer report writes under `docs/walkthrough/` ask. Target-root/branch pinning and nested-repository exclusion also remain prompt obligations; native static rules do not dynamically pin a session root.
 - Local-config edits all ask for approval; its prompt requires repository targets. OpenCode's location-relative internal paths do not provide the same hard-coded `~/code/dotfiles` root guard as the Claude hook. Review edit destinations instead of assuming exact parity.
 - Only configured delegates are allowed. Children have their own policies, not the parent's policy. MCP and other unlisted tool actions are denied for these agents; add deliberate exceptions in the adapter if needed.
@@ -227,10 +227,10 @@ After a successful commit, inspect its content/hash and remaining status.
 - Agent definitions do not rewrite global/project settings. Native permission rules, workspace trust and other hooks still apply. If a background worker cannot obtain approval for a verification command, it returns blocked; the main agent/user arranges approval rather than silently bypassing it.
 
 These are guardrails, **not an OS sandbox or proof of read-only execution**.
-An approved shell command can execute arbitrary project code, write artifacts,
+A shell command can execute arbitrary project code, write artifacts,
 modify external services or run nested interpreters. Exact command approval
 does not approve arbitrary script contents. Common Git command denials are not
-a complete shell parser; alternative forms still need review. Never approve a
+a complete shell parser; alternative forms still need review. Do not run or approve a
 command that violates the role, and use isolation when reviewing untrusted code.
 Prompt scope constraints still matter, especially when using skills or approving
 verification side effects. Disabling hooks, auto-approving OpenCode requests or

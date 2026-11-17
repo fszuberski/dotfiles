@@ -49,6 +49,46 @@ permissions:
     resource: "*"
     effect: "ask"
   -
+    action: "shell"
+    resource: "*"
+    effect: "allow"
+  -
+    action: "shell"
+    resource: "rm *"
+    effect: "ask"
+  -
+    action: "shell"
+    resource: "rmdir *"
+    effect: "ask"
+  -
+    action: "shell"
+    resource: "unlink *"
+    effect: "ask"
+  -
+    action: "shell"
+    resource: "shred *"
+    effect: "ask"
+  -
+    action: "shell"
+    resource: "rm *../*"
+    effect: "deny"
+  -
+    action: "shell"
+    resource: "rm /*"
+    effect: "deny"
+  -
+    action: "shell"
+    resource: "rm * /*"
+    effect: "deny"
+  -
+    action: "shell"
+    resource: "rm ~*"
+    effect: "deny"
+  -
+    action: "shell"
+    resource: "rm * ~*"
+    effect: "deny"
+  -
     action: "question"
     resource: "*"
     effect: "allow"
